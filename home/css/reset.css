@@ -1,0 +1,4 @@
+/*重置样式*/
+body,div,ul,li,a,h1,p,span,img,span,input,i{margin: 0;padding: 0;}
+ul,li{list-style-type: none;}
+a{text-decoration: none;}
