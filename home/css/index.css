@@ -1,0 +1,317 @@
+/*样式代码*/
+/*问题：多次用到伪类元素清除浮动代码 :after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}*/
+/*工具栏开始*/
+body{background: #d4b9b4;}
+#tool{width: 100%;height: 40px;}
+#tool .t_main{width: 1200px;height: 40px;margin: 0 auto;background: #f1f1f1;position: relative;}
+.tu{margin-right: 50px}
+.tu:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.tu .tl{padding-left: 13px;}
+.tu .tl .ta{height: 40px;color: #666;font-size: 12px;line-height: 40px;display: inline-block;}
+.tl .sep{display: inline-block;width: 1px;height: 12px;background: #666;position: absolute;top: 15px;right: 396px;}
+.tu .tls{padding: 3px 8px;position: absolute;top: 10px;right: 400px;border-radius: 3px;font-size: 12px;background: #385692;}
+.tls .tla{color: #fff;}
+.tl .ta:hover{color: red;}
+/*工具栏结束*/
+
+/*logo区域开始-左边 首页图片*/
+.wrap{width: 100%;height: 109px;}
+.wrap .w_main{width: 1200px;height: 109px;margin: 0 auto;background: #fff;}
+.w_main:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.w_main .logo{width: 430px;height: 109px;margin-left: 50px;line-height: 109px;position: relative;}
+.logo .logo_h1{width: 178px;height: 70px;position: absolute;top: 26px;left: -20px;}
+.logo .logo_pic{display: inline-block;width: 178px;height:100%;background-image: url(../images/logo_t.png);background-repeat: no-repeat;}
+.logo .logo_tit{display: inline-block;width: 238px;height: 39px;line-height: 39px;border-left:2px solid #224890;position: absolute;top: 35px;right: 0;text-align: right;font-weight: 700;font-size: 18px;color: #224890;}
+/*logo区域--右边 注册联系方式*/
+.w_main .reg{width: 208px;height: 109px;margin-right: 50px;}
+.reg .reg_b{padding-top: 15px;}
+.reg .tel{height: 25px;line-height: 25px}
+.reg .tel .ticon{color: #ffb002;padding-right: 10px;vertical-align:middle;}
+.reg .num{font-size: 12px;color: #385692}
+.reg .mail{font-size: 14px;color: #161616}
+.reg_b .btn_b{padding: 10px;}
+.reg_b .btn{margin-left: 24px;width: 60px;text-align: center;border: none;border-radius:3px;cursor: pointer;color: #d9dde7;background: #385692;}
+/*logo区域结束*/
+
+/*头部区域开始*/
+#header{width: 100%;}
+#header .h_main{width: 1200px;height: 40px;margin: 0 auto;background: #375691;}
+.h_main .nav{width: 1007px;margin: 0 auto;}
+.nav:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.h_main .nav_item{width: 109px;height: 40px;text-align: center;line-height: 40px;position: relative;}
+.nav .shade{width: 2px;height: 30px;position: absolute;top: 5px;left: 1px;background: #324d83;;}
+.nav_item .na{color: #fff;}
+.nav .nf{color: #fff;background: #304b7f;border-radius: 3px;}
+.nav .nl{background: #f39f19;border-radius: 3px;}
+
+.nav_item .lock{color: #fff;padding-right: 5px;}
+.nav_item .nav_u{position: absolute;top: 40px;left: 5px;display: none;}
+.nav_item .nav_s{width: 101px;height: 36px;/*transform: rotateY(180deg);opacity: 0;transition: all 0.5s;*/background: #375691;}
+.nav_item .nav_a{color: #fff;}
+
+/*鼠标移入有bug
+.nav .nav_item:hover .nav_u .nav_s{transform: none;opacity: 1;}
+
+.nav .nav_item:hover .nav_u .nav_s:nth-child(1){transition-delay: 0ms;}
+.nav .nav_item:hover .nav_u .nav_s:nth-child(2){transition-delay: 100ms;}
+.nav .nav_item:hover .nav_u .nav_s:nth-child(3){transition-delay: 200ms;}
+.nav .nav_item:hover .nav_u .nav_s:nth-child(4){transition-delay: 300ms;}
+.nav .nav_item:hover .nav_u .nav_s:nth-child(5){transition-delay: 400ms;}
+.nav .nav_item:hover .nav_u .nav_s:nth-child(6){transition-delay: 500ms;}
+
+.nav .nav_item .nav_u .nav_s:nth-child(6){transition-delay: 0ms;}
+.nav .nav_item .nav_u .nav_s:nth-child(5){transition-delay: 100ms;}
+.nav .nav_item .nav_u .nav_s:nth-child(4){transition-delay: 200ms;}
+.nav .nav_item .nav_u .nav_s:nth-child(3){transition-delay: 300ms;}
+.nav .nav_item .nav_u .nav_s:nth-child(2){transition-delay: 400ms;}
+.nav .nav_item .nav_u .nav_s:nth-child(1){transition-delay: 500ms;}*/
+.nav .nav_item:hover .nav_u{display: block;}
+.nav_item:hover .na{color:#b4f157;}
+.nav_item:hover .lock{color:#b4f157;}
+.nav_item .nav_a:hover{color: #b4f157;}
+/*头部区域结束*/
+
+/*banner区域开始*/
+#banner{width: 100%;height: 400px;}
+#banner .b_main{width: 1200px;height: 400px;margin: 0 auto;}
+.b_main .banner_a{display: inline-block;width: 1200px;height: 400px;}
+/*banner区域结束*/
+
+/*指南区域开始*/
+.guild{width: 100%;height: 427px;}
+.g_main{width: 1200px;height: 427px;margin: 0 auto;background: #fff;}
+.g_main .atic{width: 1200px;height: 348px;padding: 26px 0 10px 78px;box-sizing: border-box;}
+.atic:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+/*4个包裹盒子*/
+.atic .a_list{width: 254px;height: 312px;margin-right: 8px;border-radius: 5px;border: 1px solid #959595;}
+/*标题*/
+.a_list .a_tit{height: 42px;text-align: center;line-height: 42px;font-weight: 700;font-size: 18px;color: #fff;border-radius:4px;background: #375691;}
+/*内容*/
+.a_list .a_cont{width: 252px;height: 163px;padding:18px 18px 0;text-align: left;line-height: 25px;font-size: 12px;color: #000;box-sizing:border-box;background: #fff;}
+
+/*作者允许*/
+.a_list .avow{background: #3d5998;}
+.avow .a_ath{height: 26px;text-align: center;line-height: 26px;font-size: 14px;color: #fff;}
+/*详情联系*/
+.a_list .detail{text-align: center;line-height: 50px;}
+.detail .serv{text-align: center;line-height: 50px;font-weight:700;font-size: 18px;}
+.detail .jt{padding-left: 5px;vertical-align:middle;font-weight:700;font-size: 22px;}
+.detail .serv:hover{color: red;}
+/*最后一个盒子单独修改内容*/
+.a_list .act4{width: 252px;height: 163px;padding:18px 18px 0;text-align: left;line-height: 25px;font-size: 12px;color: #000;box-sizing:border-box;background: #fff;}
+.act4 .act4_t{height: 50px;}
+.act4 .act4_b{height: 95px;}
+.act4_b:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.act4_b .act_l{border-right: 1px solid #000;width: 108px;}
+.act4_b .act6{line-height: 24px;}
+/*指南区域结束*/
+
+/*横幅条开始/700多位*/
+.g_main .Explain{width: 1200px;height: 59px;background: #61aae1;}
+.Explain .ach{text-align: center;line-height: 59px;font-weight: 700;font-size: 22px;color: #fff;}
+/*横幅条结束*/
+
+
+/*客户反馈&科研工具开始*/
+.search{width: 100%;}
+.search .s_main{width: 1100px;height: 434px;margin: 0 auto;padding: 22px 50px;background-image: url(../images/search_bg.png);background-repeat: no-repeat;}
+.s_main:after{content: "";height: 0;width: 0;font-size: 0;display: block;clear: both;}
+/*左边客户反馈*/
+.s_main .feedback{width: 719px;height: 434px;overflow: hidden;background: #f0f0f0;}
+.feedback .feedback_tit{height: 90px;text-align: center;line-height: 90px;font-weight: 700;font-size: 28px;/*background: #ccc;*/}
+.feedback .feedback_pic{height: 313px;}
+/*banner区域*/
+.feedback_pic .f_banner{width: 550px;height: 241px;margin: 0 auto;padding: 36px 57px;overflow: hidden;position: relative;}
+.f_banner:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+
+/*人物简介*/
+.f_banner .f_pic{width: }
+
+.f_pic .c_abstract{height: 313px;width: 336px;margin-left: 20px;}
+.cx_tit .cx_item{font-weight: 700;font-size: 16px;margin: 14px 5px 14px 0;}
+.cx_tit:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.c_abstract .c_paper{width: 64px;height: 23px;padding: 2px;border-radius: 3px;margin-bottom: 5px;color: #fff;background: #3d5998;}
+.c_abstract .c_cont{font-size: 14px;line-height: 24px;margin-bottom: 5px;text-align: justif;}
+
+.c_abstract:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+/*l轮播按钮*/
+.feedback_pic .f_btn{width: 37px;height: 131px;background: #e5e5e5;}
+.f_btn .f_btn_a{display: block;width: 37px;height: 131px;}
+.feedback_pic .f_btn_l{position: absolute;top: 30%;left: 1px;}
+.feedback_pic .f_btn_r{position: absolute;top: 30%;right: 1px;}
+.f_btn .fb_i{width: 20px;height: 50px;line-height: 130px;font-weight: 700;font-size: 38px;color: #fff;display: inline-block;}
+
+.f_banner .f_btn:hover{box-shadow: 0 0 2px;}
+
+
+
+/*右边科研工具*/
+.s_main .research{width: 360px;height: 434px;background: #f0f0f0;}
+/*科研工具标题*/
+.research .research_tit{height: 90px;text-align: center;line-height: 90px;font-weight: 700;font-size: 28px;/*background: #ccc;*/}
+/*输入框*/
+.research .research_area{width: 360px;height: 344px;}
+.research_area .research_wrap{width: 233px;height: 40px;margin: 0 auto;border: 1px solid #ddd;border-radius: 3px;position: relative;}
+.research_wrap .r_seach{width: 190px;height: 40px;position: absolute;top: 0;left: 0;}
+.r_seach .r_inp{width: 190px;height: 40px;border: none;outline: none;text-indent: 10px;}
+
+/*搜索图标*/
+.research_wrap .r_seach_btn{width: 43px;height: 40px;position: absolute;top: 0;left: 190px;background: #0e6eab;}
+.r_seach_btn .r_seach_a{width: 43px;height: 40px;text-align: center;display: inline-block;}
+.r_seach_a .r_icon{font-size: 30px;color: #fff;}
+
+/*搜索热词*/
+.research .research_item{width: 155px;margin: 0 auto;padding: 31px 40px 0;}
+.research_item .research_item_p{width: 156px;height: 30px;border: 1px solid #ccd2de;border-radius: 3px;margin-bottom: 4px;background: #3d5998;}
+.research_item_p .research_item_a{display: inline-block;line-height: 30px;color: #fefefe;font-size: 18px;}
+
+.research_item .research_item_p:hover{box-shadow: 0 0 3px #000;}
+/*客户反馈&科研工具结束*/
+
+/*支付区域开始*/
+.pay{width: 100%;height: 290px;}
+.pay .pay_main{width:1200px;height: 250px;margin: 0 auto;padding: 20px 0;background: #fff;}
+.pay_main .pay_item{width: 1200px;height: 250px;background: #f0f0f0;}
+.pay_item:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+/*支付4个盒子*/
+.pay_item .pay_item_b{width: 300px;height: 250px;}
+/*仅仅是设置背景颜色区分使用
+.pay_item_b:nth-child(2){background: pink;}
+.pay_item_b:nth-child(4){background: yellow;}*/
+/*图标*/
+.pay_item_b .pay_item_i{width: 200px;height: 168px;margin: 0 auto;line-height: 168px;text-align: center;}
+.pay_item_b .pay_icon{color: #3d5998;font-size: 80px;}
+/*文字*/
+.pay_item_b .pay_item_p{height: 82px;line-height: 86px;text-align: center;font-size: 24px;font-weight: 700;color: #3d5998;}
+
+.pay_item_b:hover .pay_icon{color: red;}
+.pay_item_b:hover .pay_item_a{color: red;border-bottom: 2px solid red;}
+/*支付区域结束*/
+
+/*学院和新闻开始*/
+.college{width: 100%;}
+.college .c_main{width: 1100px;height: 434px;margin: 0 auto;padding: 22px 50px;background-image: url(../images/search_bg.png);background-repeat: no-repeat;}
+/*左边学院团队*/
+.c_main .c_team{width: 719px;height: 434px;overflow: hidden;background: #fff;}
+/*学院标题*/
+.c_team .c_team_tit{height: 90px;}
+.c_team_tit .c_team_n{height: 60px;line-height: 60px;text-align: center;font-weight: 700;font-size: 28px;}
+.c_team_tit .c_team_c{height: 30px;line-height: 30px;text-align: center;font-size: 16px;}
+/*8个学院盒子*/
+.c_team .c_team_b{width: 719px;height: 344px;overflow: hidden;}
+.c_team_b .c_banner{width: 719px;height: 344px;padding: 36px 57px;box-sizing:border-box;position: relative;}
+/*8个学院列表*/
+.c_banner .c_banner_u{padding: 10px 0 0 25px;}
+.c_banner_u .c_team_l{margin: 0 25px 10px 0;}
+.c_team_l .c_team_a{display: inline-block;width: 120px;height: 120px;}
+.c_banner_u:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+.c_banner_u .c_team_l:hover{box-shadow: 0 0 2px;}
+
+/*轮播按钮*/
+.c_banner .c_btn{width: 30px;height: 50px;line-height: 54px;background: #c9c9c9;}
+.c_btn .c_btn_a{display: inline-block;width: 30px;height: 50px;}
+.c_banner .c_btn_l{position: absolute;top: 144px;left: 32px;}
+.c_banner .c_btn_r{position: absolute;top: 144px;right: 32px;}
+.c_btn_a .cb_i{width: 30px;height: 50px;text-align: center;font-weight: 700;font-size: 32px;color: #fff;display: inline-block;}
+
+
+.c_banner .c_btn:hover{box-shadow: 0 0  2px;}
+
+
+/*右边 新闻及优惠*/
+.c_main .c_news {width: 360px;height: 434px;background: #fff;overflow: hidden;}
+.c_news .c_news_tit{height: 82px;text-align: center;line-height: 82px;font-weight: 700;font-size: 28px;border-bottom: 1px dashed #7c7c7c;}
+.c_news .c_news_b{padding: 40px 0 0 45px;}/*这里加overflow不知道为什么没用，需要在上面的大盒子加*/
+.c_news_u .c_news_l{list-style-type: square;color: #1d55a0;margin-bottom: 20px;font-size: 12px;position: relative;}
+.c_news_tit .c_news_b:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+/*用两个盒子包裹定位在一调直线上，因为不加盒子会a链接升级行块级元素会和后面上下错开，不在同一条直线上*/
+.c_news_l .news_b1{position: absolute;left: 0;top: 0;}
+.c_news_l .news_b2{position: absolute;left: 224px;top: 0;}
+/*两个a链接*/
+.c_news_l .news_link1{display: inline-block;width: 223px;color: #171717;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.c_news_l .news_link2{color: red;margin-left: 10px;}
+.c_news_l .news_link1:hover{text-decoration: underline;}
+.c_news_l .news_link2:hover{color: blue;}
+
+/*学院和新闻结束*/
+
+/*合作伙伴开始*/
+.cooperate{width: 100%;height: 582px;}
+.cooperate .coop_main{width: 1200px;height: 582px;margin: 0 auto;background: #fff;}
+/*合作伙伴标题*/
+.coop_main .coop_t{width: 1200px;height: 146px;position: relative;}
+.coop_t .coop_rim{width: 395px;height: 42px;border: 1px solid #bababa;position: absolute;top: 52px;left: 401px;}
+.coop_t .cool_tit{font-weight: 700;font-size: 24px;padding: 0 20px;position: absolute;top: 35px;left: 460px;background: #fff;}
+.coop_t .cool_dic{color: #717172;font-size: 24px;padding: 0 15px;position: absolute;top: 79px;left: 417px;background: #fff;}
+
+/*合作伙伴logo*/
+.coop_main .coop_m{width: 1089px;height: 347px;margin: 0 auto;border: 5px solid #cdd0d5;padding: 8px 0 0 45px;border-radius: 10px;box-sizing: border-box;}
+.coop_item .coop_pic{margin: 0 45px 7px 0;}
+.coop_pic .coop_link{display: inline-block;width: 299px;height: 99px;}
+.coop_item .coop_pic:hover{box-shadow: 0 0 2px;}
+.coop_main .coop_m:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+/*合作伙伴说明*/
+.coop_main .coop_b{width: 1200px;height: 49px;padding: 15px 0;}
+.coop_b .coop_Exp{font-size: 16px;text-align: center;padding: 2px 0;}
+/*合作伙伴结束*/
+
+/*网页底部开始*/
+#footer{width: 100%;height: 263px;}
+#footer .footer_main{width: 1200px;height: 233px;margin: 0 auto;padding-top: 30px;background: #e6e6e6;}
+/*左边电话图标*/
+.footer_main .footer_tel{width: 170px;height: 45px;margin: 0px auto;padding: 20px 0;}
+.footer_tel .footer_pic{width: 52px;height: 45px;}
+.footer_pic .footer_tel_ico{text-align: center;line-height: 45px;font-size: 50px;}
+/*右边电话号码*/
+.footer_tel .footer_tex{width: 118px;height: 45px;font-weight: 700;font-size: 16px;}
+.footer_tex .footer_num{font-weight: 700;font-size: 16px;}
+.footer_main .footer_tel:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+
+/*网站地图*/
+.footer_main .footer_site{width: 480px;margin: 15px auto 25px;position: relative;}
+.footer_site_u .footer_site_l{margin-right: 10px;padding-left: 10px;}
+.footer_site_l .footer_site_a{font-size: 14px;color: #232323;}
+.footer_site_l .footer_site_s{display: inline-block;margin-top: 5px;width: 1px;height: 14px;background: #000;}
+.footer_main .footer_site:after{content: "";width: 0;height: 0;font-size: 0;display: block;clear: both;}
+.footer_site_l .footer_site_a:hover{color: #ff0000;}
+/*版权*/
+.footer_copy .footer_copy_p{text-align: center;padding: 5px 0;font-size: 12px;}
+/*网页底部结束*/
+
+
+/*侧边联系我们开始*/
+.contact{width: 66px;height: 328px;position: fixed;bottom: 50px;right: 0;padding: 7px 0 0 7px;background: #f4f4f4;}
+.contact_u .contact_l{width: 60px;height: 60px;margin-bottom: 5px;box-shadow: 0 0 1px;position: relative;}
+.contact_l .contact_link{display: inline-block;margin: 3px 0 0 8px;font-weight: 700;font-size: 20px;color: #002b4d;}
+.contact_l:nth-child(1){color: #fff;background: #f39f19;}
+.contact_link .contact_icon{font-size: 44px;color: red;}
+/*微信显示*/
+.contact_l .c_img_b{position: absolute;bottom: -139px;right: 67px;border: 1px solid #00f;display: none;}
+.c_img_b .c_img{box-shadow: none;display: block;}
+.contact_l .c_img_b:after{
+    content: "";
+    width: 0;
+    height: 0;
+    display: block;
+    position: absolute;
+    top: 102px;
+    right: -15px;
+    border-left: 7px solid #00f;
+    border-top: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid transparent;}
+
+
+.contact_u .contact_l:hover .c_img_b{display: block;}
+
+.contact_u .contact_link:hover{color: #f00;}
+.contact_link .contact_icon:hover{color: #0f0;}
+/*侧边联系我们结束*/
