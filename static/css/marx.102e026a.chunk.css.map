@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,UACE,gBACF,CACA,cACE,cAAe,CACf,KAAM,CACN,MAAO,CACP,YAAa,CACb,UAAW,CACX,eACF","file":"marx.102e026a.chunk.css","sourcesContent":[".nav-wrap {\n  padding-top: 83px;\n}\n.head-nav-bar {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 9999;\n  width: 100%;\n  background: #fff;\n}\n"]}
