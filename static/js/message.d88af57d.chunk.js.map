@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/home/message/index.js"],"names":["Message"],"mappings":"kHAAA,2BAQeA,UANC,WACZ,OACI","file":"static/js/message.d88af57d.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nconst Message = () => {\r\n    return (\r\n        <div>Message</div>\r\n    )\r\n}\r\n\r\nexport default Message"],"sourceRoot":""}

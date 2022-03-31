@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/think-society/chapter1.js"],"names":["Ahapter1"],"mappings":"iHAAA,2BAUeA,UARE,WAChB,OACC","file":"static/js/chapter1.f4cbd58d.chunk.js","sourcesContent":["import React from 'react'\n\nconst Ahapter1 = () => {\n\treturn (\n\t\t<div>\n\t\t\t毛泽东思想和社会主义\n\t\t</div>\n\t)\n}\n\nexport default Ahapter1"],"sourceRoot":""}
