@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/home/study/index.js"],"names":["Study"],"mappings":"kHAAA,2BAQeA,UAND,WACV,OACI","file":"static/js/study.0eaf6f72.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nconst Study = () => {\r\n    return (\r\n        <div>Study</div>\r\n    )\r\n}\r\n\r\nexport default Study"],"sourceRoot":""}

@@ -1,0 +1,2 @@
+(this["webpackJsonphooks-admin"]=this["webpackJsonphooks-admin"]||[]).push([[1],{304:function(e,n,t){"use strict";t.r(n);var a=t(34),c=t(82),o=t(55),r=t(0),s=t.n(r),l=t(81),u=t(8);n.default=function(){var e=Object(u.g)(),n=Object(l.c)();return n.username&&n.password||a.d.alert({content:"\u8bf7\u5148\u767b\u5f55!"}).then((function(){e.replace("/login")})),s.a.createElement(c.a,null,s.a.createElement(o.a,null))}}}]);
+//# sourceMappingURL=home.4f1fded8.chunk.js.map
