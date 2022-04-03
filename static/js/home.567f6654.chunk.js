@@ -1,0 +1,2 @@
+(this["webpackJsonphooks-admin"]=this["webpackJsonphooks-admin"]||[]).push([[1],{304:function(n,e,a){"use strict";a.r(e);var t=a(83),s=a(56),o=a(0),u=a.n(o);e.default=function(){return u.a.createElement(t.a,null,u.a.createElement(s.a,null))}}}]);
+//# sourceMappingURL=home.567f6654.chunk.js.map
