@@ -4,40 +4,72 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CallMe</title>
+    <title>Call Me</title>
     <style>
         body,
         html {
-            margin: 0px;
-            padding: 15px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            width: 100%;
+            height: 100%;
         }
 
         .container {
-            display: none;
+            height: 100%;
+            background-color: #ccc;
+            flex: 1;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
-        .content {
+        .notice {
+            text-align: left;
+            flex: 1;
+            overflow-y: scroll;
+            padding: 15px;
+        }
+
+        .title {
             text-align: center;
         }
 
-        .author {
+        .content {
+            text-indent: 2rem;
+            text-align: left;
+        }
+
+        .signed {
             text-align: right;
+            margin-top: 50px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px 10px;
+            color: #7a7a7a;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="content">
-            <h1>欢迎使用!</h1>
-            <p>Here is nothing~</p>
-            <p class="author">by @Hailen</p>
+        <div class="notice">
+            <h1 class="title">欢迎使用!</h1>
+            <p class="content">Here is nothing~</p>
+            <p class="signed">By @Hailen</p>
+            <div id="contact" style="display: none;"></div>
         </div>
-        <div id="contact" style="display: none;"></div>
+        <div class="footer">
+            <span>If you want to use it,</span>
+            <span style="white-space: nowrap;">please contact <b>@Hailen</b> to get.</span>
+        </div>
     </div>
     <script>
         window.onload = function () {
-            function dom(selector) {
+            function $(selector) {
                 return document.querySelector(selector)
             }
 
@@ -51,22 +83,58 @@
                 return res;
             };
 
+            function formatDate() {
+                var date = new Date();
+                var year = date.getFullYear(),
+                    month = date.getMonth() + 1,
+                    day = date.getDate(),
+                    hour = date.getHours(),
+                    min = date.getMinutes(),
+                    sec = date.getSeconds();
+                var mm = month < 10 ? '0' + month : month
+                var dd = day < 10 ? '0' + day : day
+                return `${year}年${mm}月${dd}日`;
+            }
+
             var params = getURLParameters(location.href);
 
-            var cont = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
-            dom('#contact').innerHTML = cont;
+            var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
+            $('#contact').innerHTML = link;
+
             for (var i = 0; i < 100; i++) {
                 console.log('i');
             }
 
-            var config = {
-                show: 'block',
-                hidden: 'none',
-                random: Math.random() > 0.5 ? 'block' : 'none'
+            console.log('params', params)
+            var configContent = {
+                title: params.title || '欢迎使用',
+                signed: params.signed || formatDate() + ' Hailen',
+                content: params.content ||
+                    `这个一个扫码拨打电话的快捷应用入口, 使用简单、方便、快捷。可自定义显示的信息, 扫码后可以看到您发布的内容, 帮助您显示提示信息, 并提示您是否拨打电话。二维码生成后可以打印贴在车辆, 门窗,
+                    墙壁等等...你想放置的任何地方\n(备注: 以上内容都可以自定义修改为您自己的...想免费获取请联系我)`,
             };
 
-            if (params.show) dom(".container").style.display = config[params.show] || 'none';
-            dom("#tel").click();
+            var aa = {
+                title: "欢迎使用",
+                showFooter: "block",
+                showNotice: "block",
+                tel: "13595585549",
+                signed: "2022年9月23日 张三",
+                content: "回家路上分居分居两地时间回来的",
+            }
+
+            $(".title").innerHTML = configContent.title;
+            $(".content").innerHTML = configContent.content;
+            $(".signed").innerHTML = configContent.signed;
+
+            if (params.showNotice) {
+                $(".notice").style.display = params.showNotice
+            }
+            if (params.showFooter) {
+                $(".footer").style.display = params.showFooter
+            }
+            $("#tel").click();
+
         }
     </script>
 </body>
