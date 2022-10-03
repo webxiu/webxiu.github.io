@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CallMe</title>
+    <style>
+        body,
+        html {
+            margin: 0px;
+            padding: 15px;
+        }
+
+        .container {
+            display: none;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .author {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>欢迎使用!</h1>
+            <p>Here is nothing~</p>
+            <p class="author">by @Hailen</p>
+        </div>
+        <div id="contact" style="display: none;"></div>
+    </div>
+    <script>
+        window.onload = function () {
+            function dom(selector) {
+                return document.querySelector(selector)
+            }
+
+            function getURLParameters(url) {
+                const params = url.match(/([^?=&]+)(=([^&]*))/g) || [];
+                const res = params.reduce(function (a, v) {
+                    const val = decodeURIComponent(v.slice(v.indexOf("=") + 1));
+                    a[v.slice(0, v.indexOf("="))] = val;
+                    return a;
+                }, {});
+                return res;
+            };
+
+            var params = getURLParameters(location.href);
+
+            var cont = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
+            dom('#contact').innerHTML = cont;
+            for (var i = 0; i < 100; i++) {
+                console.log('i');
+            }
+
+            var config = {
+                show: 'block',
+                hidden: 'none',
+                random: Math.random() > 0.5 ? 'block' : 'none'
+            };
+
+            if (params.show) dom(".container").style.display = config[params.show] || 'none';
+            dom("#tel").click();
+        }
+    </script>
+</body>
+
+</html>
