@@ -58,12 +58,12 @@ p {
     padding-left: 10px;
     font-weight: 700;
     color: #434343;
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 5px;
 }
 
 .list-item :first-child {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .list-item::after {
