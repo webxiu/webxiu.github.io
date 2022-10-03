@@ -5,60 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Call Me</title>
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        .container {
-            height: 100%;
-            background-color: #ccc;
-            flex: 1;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .notice {
-            text-align: left;
-            flex: 1;
-            overflow-y: scroll;
-            padding: 15px;
-        }
-
-        .title {
-            text-align: center;
-        }
-
-        .content {
-            text-indent: 2rem;
-            text-align: left;
-        }
-
-        .signed {
-            text-align: right;
-            margin-top: 50px;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 14px;
-            padding: 20px 10px;
-            color: #7a7a7a;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <div class="container">
         <div class="notice">
             <h1 class="title">欢迎使用!</h1>
-            <p class="content">Here is nothing~</p>
+            <div class="list-wrap"></div>
+            <div class="content">Here is nothing~</div>
             <p class="signed">By @Hailen</p>
             <div id="contact" style="display: none;"></div>
         </div>
@@ -98,6 +53,14 @@
 
             var params = getURLParameters(location.href);
 
+            var descList = [
+                '自定义显示标题和内容信息',
+                '不限次数, 永久使用',
+                '扫码一键拨打,使用简单、方便、快捷',
+                '可以打印贴在车辆, 门窗, 墙壁等任何地方使用',
+                '作为个人电子名片展示(后期增加)',
+            ];
+
             var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
             $('#contact').innerHTML = link;
 
@@ -105,18 +68,31 @@
                 console.log('i');
             }
 
+            var descHtml = 'CallMe是一个扫码拨打电话的快捷应用入口, 扫码后可以看到您发布的内容,并提示您是否拨打电话。它具备以下功能:'
+            descList.forEach(item => {
+                descHtml += `
+                <div class="list-item">${item}</div>
+                `
+            })
+
             var configContent = {
                 title: params.title || '欢迎使用',
                 signed: params.signed || formatDate() + ' Hailen',
                 content: params.content ||
-                    `这个一个扫码拨打电话的快捷应用入口, 使用简单、方便、快捷。可自定义显示的信息, 扫码后可以看到您发布的内容, 帮助您显示提示信息, 并提示您是否拨打电话。二维码生成后可以打印贴在车辆, 门窗,
-                    墙壁等等...你想放置的任何地方\n(备注: 以上内容都可以自定义为您自己的内容...想免费获取请联系我)`,
+                    `<p class="center">添加微信咨询</p>
+                    <p class="center">
+                        <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
+                    </p>
+                `,
             };
-
+            $('.list-wrap').innerHTML = descHtml;
             $(".title").innerHTML = configContent.title;
             $(".content").innerHTML = configContent.content;
             $(".signed").innerHTML = configContent.signed;
 
+            if (params.showDesc == 'hidden') {
+                $('.list-wrap').innerHTML = '';
+            }
             if (params.showNotice) {
                 $(".notice").style.display = params.showNotice
             }
