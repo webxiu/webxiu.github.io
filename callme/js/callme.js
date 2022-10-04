@@ -98,7 +98,8 @@
         if (params.gen == 'hidden') {
             $(".make-qrcode").innerHTML = ''
         }
-        // $("#tel").click();
+
+        $("#tel").click();
 
         $("#show-code").onclick = function () {
             $("#code-layer").style.display = "block";
