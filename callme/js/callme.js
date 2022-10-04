@@ -44,7 +44,7 @@
                     // 将链接地址字符内容转变成blob地址
                     console.log("first", URL.createObjectURL(blob));
                     link.href = URL.createObjectURL(blob);
-                    link.download = "pic.png";
+                    link.download = `Code_${Date.now()}.png`;
                     document.body.appendChild(link);
                     link.click();
                 });
@@ -54,12 +54,31 @@
             return Object.keys(json).map(key => key + '=' + json[key]).join('&');
         }
 
+        // 判断多种浏览器
+        var browser = {
+            versions: function () {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                return {
+                    trident: u.indexOf('Trident') > -1, //IE内核 
+                    presto: u.indexOf('Presto') > -1, //opera内核 
+                    webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核 
+                    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核 
+                    mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端 
+                    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端 
+                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器 
+                    iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器 
+                    iPad: u.indexOf('iPad') > -1, //是否iPad 
+                    webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部 
+                };
+            }(),
+            language: (navigator.browserLanguage || navigator.language).toLowerCase()
+        }
+
         var params = getURLParameters(location.href);
         if (!params.tel) {
             location.href = '../404.html'
             return;
         }
-
 
         var descList = [
             "扫码一键拨打电话, 使用简单、方便、快捷",
@@ -97,7 +116,6 @@
         $(".signed").innerHTML = configContent.signed;
         $(".make-qrcode").innerHTML = '<span id="show-code" class="text-button">生成二维码</span>';
 
-
         if (params.showList == "hidden") {
             $(".list-wrap").innerHTML = "";
         }
@@ -112,7 +130,6 @@
         if (params.gen == 'hidden') {
             $(".make-qrcode").innerHTML = ''
         }
-
 
         if (params.tel != '10086' && params.tel != '10010') {
             $("#tel").click();
@@ -179,7 +196,17 @@
 
             var canvas = qrcode._el.childNodes[0];
             codeUrl = canvas.toDataURL("image/png");
-            scodeTipDom.style.display = 'block'
+
+            var ua = navigator.userAgent.toLowerCase();
+            if (browser.versions.mobile && ua.match(/MicroMessenger/i) == 'micromessenger') {
+                //在微信中打开
+                scodeTipDom.style.display = 'block'
+                $("#download").style.display = 'none'
+            } else {
+                //否则就是PC浏览器打开
+                scodeTipDom.style.display = 'none'
+                $("#download").style.display = 'block'
+            }
         };
 
         $("#reset").onclick = function () {
@@ -192,8 +219,9 @@
             scodeTipDom.style.display = 'none';
         };
 
-        // $("#download").onclick = function () {
-        //     codeUrl && downloadCode(codeUrl);
-        // };
+        $("#download").onclick = function () {
+            codeUrl && downloadCode(codeUrl);
+        };
+
     };
 })(window, document);

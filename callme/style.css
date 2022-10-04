@@ -208,6 +208,7 @@ p {
     margin-right: 15px;
     overflow: hidden;
     display: inline-block;
+    cursor: pointer;
 }
 
 .form-button:last-child {
@@ -263,4 +264,9 @@ p {
 .code-tip {
     display: none;
     margin: 5px 0 20px;
+}
+
+#download {
+    display: none;
+    margin-top: 20px;
 }
