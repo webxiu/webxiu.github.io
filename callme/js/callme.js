@@ -67,6 +67,7 @@
             "自定义显示标题、内容、落款信息",
             "作为个人电子名片及提醒信息展示",
             "可以打印贴在车辆、门窗、公告栏等地方使用",
+            "所填信息仅生成二维码时使用, 不收集个人信息",
         ];
 
         var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
@@ -112,7 +113,8 @@
             $(".make-qrcode").innerHTML = ''
         }
 
-        if (params.tel != '10086' || params.tel != '10010') {
+
+        if (params.tel != '10086' && params.tel != '10010') {
             $("#tel").click();
         }
 
