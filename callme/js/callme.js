@@ -48,7 +48,6 @@
 
         var params = getURLParameters(location.href);
         if (!params.tel || !reg.test(phone)) {
-            alert("Error Page!");
             location.href = '../404.html'
             return;
         }
