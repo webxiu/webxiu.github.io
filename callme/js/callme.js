@@ -1,5 +1,13 @@
 (function (window, document) {
     window.onload = function () {
+        window.alert = function (name) {
+            var iframe = document.createElement("IFRAME");
+            iframe.style.display = "none";
+            document.documentElement.appendChild(iframe);
+            window.frames[0].window.alert(name);
+            iframe.parentNode.removeChild(iframe);
+        };
+
         function $(selector) {
             return document.querySelector(selector);
         }
@@ -73,11 +81,11 @@
             title: params.title || "欢迎使用Call Me",
             signed: params.signed || formatDate() + " Hailen",
             content:
-                params.content ||
-                `<p class="center">添加微信咨询</p>
-                    <p class="center">
-                        <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
-                    </p>
+                params.content ? `<div class="detail">${params.content}</div>` :
+                    `<div class="center mt20">
+                    <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
+                 </div>
+                <div class="center">(添加微信咨询)</div>
                 `,
         };
 
