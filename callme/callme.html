@@ -3,106 +3,78 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Call Me</title>
     <link rel="stylesheet" href="./style.css">
+    <script src="./js/qrcode.js"></script>
+    <script src="./js/callme.js"></script>
 </head>
 
 <body>
     <div class="container">
+        <div class="make-qrcode">
+            <span id="show-code" class="text-button">生成二维码</span>
+        </div>
         <div class="notice">
-            <h1 class="title">欢迎使用!</h1>
+            <h3 class="title">欢迎使用Call Me</h3>
             <div class="list-wrap"></div>
             <div class="content">Here is nothing~</div>
             <p class="signed">By @Hailen</p>
             <div id="contact" style="display: none;"></div>
         </div>
+
         <div class="footer">
             <span>If you want to use it,</span>
             <span style="white-space: nowrap;">please contact <b>@Hailen</b> to get.</span>
         </div>
+
+        <div id="code-layer" class="layer">
+            <div class="callme-modal">
+                <div class="modal-header">
+                    <span></span>
+                    <div id="close-layer" class="callme-modal-close">×</div>
+                    <div class="header">生成二维码</div>
+                </div>
+                <div class="modal-content">
+                    <form class="callme-form">
+                        <div class="form-item mb15">
+                            <label for="title" class="form-label label-colon">手机</label>
+                            <input id="phone" name="phone" type="text" class="form-input" maxlength="11"
+                                placeholder="请输入手机号">
+                        </div>
+                        <div class="form-item mb15">
+                            <label for="title" class="form-label label-colon">标题</label>
+                            <input id="title" name="title" type="text" class="form-input" maxlength="10"
+                                placeholder="请输入标题">
+                        </div>
+                        <div class="form-item mb15">
+                            <label for="content" class="form-label label-colon">内容</label>
+                            <textarea id="content" name="content" rows="3" maxlength="120" class="form-textarea"
+                                placeholder="请输入内容, 限制120个字以内"></textarea>
+                        </div>
+                        <div class="form-item mb15">
+                            <label for="signed" class="form-label label-colon">落款</label>
+                            <input id="signed" name="signed" type="text" class="form-input" maxlength="18"
+                                placeholder="2022年xx月xx日 张三">
+                        </div>
+
+                        <div class="buttons">
+                            <div class="form-button primary" id="submit">提交</div>
+                            <div class="form-button default" id="reset">清空</div>
+                        </div>
+                        <!-- <input type="reset" value="重新输入" class="form-button default" /> -->
+                    </form>
+                    <div class="qrcode-box">
+                        <div class="qrcode"></div>
+                        <div class="code-tip">(长按二维码保存)</div>
+                        <!-- <div id="download" class="form-button default">下载二维码</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <script>
-        window.onload = function () {
-            function $(selector) {
-                return document.querySelector(selector)
-            }
-
-            function getURLParameters(url) {
-                const params = url.match(/([^?=&]+)(=([^&]*))/g) || [];
-                const res = params.reduce(function (a, v) {
-                    const val = decodeURIComponent(v.slice(v.indexOf("=") + 1));
-                    a[v.slice(0, v.indexOf("="))] = val;
-                    return a;
-                }, {});
-                return res;
-            };
-
-            function formatDate() {
-                var date = new Date();
-                var year = date.getFullYear(),
-                    month = date.getMonth() + 1,
-                    day = date.getDate(),
-                    hour = date.getHours(),
-                    min = date.getMinutes(),
-                    sec = date.getSeconds();
-                var mm = month < 10 ? '0' + month : month
-                var dd = day < 10 ? '0' + day : day
-                return `${year}年${mm}月${dd}日`;
-            }
-
-            var params = getURLParameters(location.href);
-
-            var descList = [
-                '自定义显示标题和内容信息',
-                '不限次数, 永久使用',
-                '扫码一键拨打,使用简单、方便、快捷',
-                '可以打印贴在车辆, 门窗, 墙壁等任何地方使用',
-                '作为个人电子名片展示(后期增加)',
-            ];
-
-            var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
-            $('#contact').innerHTML = link;
-
-            for (var i = 0; i < 100; i++) {
-                console.log('i');
-            }
-
-            var descHtml = 'CallMe是一个扫码拨打电话的快捷应用入口, 扫码后可以看到您发布的内容,并提示您是否拨打电话。它具备以下功能:'
-            descList.forEach(item => {
-                descHtml += `
-                <div class="list-item">${item}</div>
-                `
-            })
-
-            var configContent = {
-                title: params.title || '欢迎使用',
-                signed: params.signed || formatDate() + ' Hailen',
-                content: params.content ||
-                    `<p class="center">添加微信咨询</p>
-                    <p class="center">
-                        <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
-                    </p>
-                `,
-            };
-            $('.list-wrap').innerHTML = descHtml;
-            $(".title").innerHTML = configContent.title;
-            $(".content").innerHTML = configContent.content;
-            $(".signed").innerHTML = configContent.signed;
-
-            if (params.showDesc == 'hidden') {
-                $('.list-wrap').innerHTML = '';
-            }
-            if (params.showNotice) {
-                $(".notice").style.display = params.showNotice
-            }
-            if (params.showFooter) {
-                $(".footer").style.display = params.showFooter
-            }
-            $("#tel").click();
-
-        }
-    </script>
 </body>
 
 </html>
