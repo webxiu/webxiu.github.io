@@ -47,6 +47,12 @@
         }
 
         var params = getURLParameters(location.href);
+        if (!params.tel || !reg.test(phone)) {
+            alert("Error Page!");
+            location.href = '../404.html'
+            return;
+        }
+
 
         var descList = [
             "扫码一键拨打电话, 使用简单、方便、快捷",
@@ -87,7 +93,7 @@
         if (params.showList == "hidden") {
             $(".list-wrap").innerHTML = "";
         }
-        console.log('params', params)
+
         // 显示整个内容
         if (params.showNotice) {
             $(".notice").style.display = params.showNotice;
@@ -135,7 +141,6 @@
                 return;
             }
             $('.qrcode').innerHTML = '';
-
 
             var codeQuery = jsonToUrlParam({
                 gen: 'hidden',
