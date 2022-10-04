@@ -63,10 +63,10 @@
 
         var descList = [
             "扫码一键拨打电话, 使用简单、方便、快捷",
-            "不限次数, 永久使用, 访问受网络差异影响",
-            "可以打印贴在车辆、门窗、墙壁等直接使用",
-            "作为个人电子名片信息展示",
+            "不限次数、永久使用, 访问受网络差异影响",
             "自定义显示标题、内容、落款信息",
+            "作为个人电子名片及提醒信息展示",
+            "可以打印贴在车辆、门窗、公告栏等地方使用",
         ];
 
         var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
@@ -112,7 +112,9 @@
             $(".make-qrcode").innerHTML = ''
         }
 
-        $("#tel").click();
+        if (params.tel != '10086' || params.tel != '10010') {
+            $("#tel").click();
+        }
 
         $("#show-code").onclick = function () {
             $("#code-layer").style.display = "block";
