@@ -100,7 +100,7 @@
             "所填信息仅生成二维码时使用, 不收集个人信息",
         ];
 
-        var link = '<a href="tel:' + params.tel + '" id="tel">Call Me</a>';
+        var link = '<a href="tel:' + params.tel + '" id="tel">直接呼叫</a>';
         $("#contact").innerHTML = link;
 
         var descHtml = `<div class="introduce">Call Me是一个扫码拨打电话的快捷应用入口, 请使用微信扫码打开, 生成自己的二维码请点击右上角, 生成完成后扫码后即可查看, 并提示您是否拨打电话。它具备以下功能:</div>`;
@@ -144,6 +144,8 @@
 
         if (params.tel != '10086' && params.tel != '10010') {
             $("#tel").click();
+        } else {
+            $("#tel").style.display = "none";
         }
 
         var phoneDom = $("#phone");
