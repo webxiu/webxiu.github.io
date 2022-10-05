@@ -8,6 +8,7 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Call Me</title>
     <link rel="stylesheet" href="./style.css">
+    <script src="./js/md5.js"></script>
     <script src="./js/qrcode.js"></script>
     <script src="./js/callme.js"></script>
     <script>
@@ -48,10 +49,17 @@
                 </div>
                 <div class="modal-content">
                     <form class="callme-form">
-                        <div class="form-item mb15">
-                            <label for="phone" class="form-label label-colon">手机</label>
-                            <input id="phone" name="phone" type="text" class="form-input" maxlength="11"
-                                placeholder="请输入手机号">
+                        <div class="flex just-between">
+                            <div class="form-item mb15" style="flex:1">
+                                <label for="phone" class="form-label label-colon">手机</label>
+                                <input id="phone" name="phone" type="text" class="form-input" maxlength="11"
+                                    placeholder="请输入手机号">
+                            </div>
+                            <div class="form-item mb15 ml10" style="flex: 1">
+                                <label for="yqCode" class="form-label label-colon">邀请码</label>
+                                <input id="yqCode" name="yqCode" type="text" class="form-input" maxlength="11"
+                                    placeholder="输入邀请码">
+                            </div>
                         </div>
                         <div class="form-item mb15">
                             <label for="title" class="form-label label-colon">标题</label>

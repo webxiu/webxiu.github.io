@@ -7,6 +7,14 @@ html {
     height: 100%;
 }
 
+.flex {
+    display: flex;
+}
+
+.just-between {
+    justify-content: space-between;
+}
+
 .ta-c {
     text-align: center;
 }
@@ -19,11 +27,15 @@ html {
     margin-top: 20px;
 }
 
+.ml10 {
+    margin-left: 10px;
+}
+
 .label-colon::after {
     content: ':';
     position: relative;
     top: -0.5px;
-    margin: 0 8px 0 2px;
+    margin: 0 5px 0 2px;
 }
 
 p {
@@ -128,7 +140,7 @@ p {
     top: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    width: 90%;
+    width: 96%;
     min-height: 300px;
     border-radius: 10px;
     box-sizing: border-box;
@@ -144,9 +156,9 @@ p {
 .layer .modal-content {
     flex: 1;
     overflow-y: scroll;
-    padding-right: 10px;
+    padding-right: 15px;
     padding-bottom: 40px;
-    margin: 0 5px 10px 15px;
+    margin: 0 2px 0px 10px;
 }
 
 .callme-modal-close {
@@ -165,7 +177,7 @@ p {
 }
 
 .layer .callme-modal form {
-    width: 96%;
+    width: 100%;
     margin: 20px auto 0;
 }
 
@@ -174,9 +186,10 @@ p {
 }
 
 .form-label {
-    width: 48px;
+    min-width: 48px;
     text-align: justify;
-    padding-top: 5px;
+    padding-top: 9px;
+    white-space: nowrap;
 }
 
 .form-input,
@@ -196,7 +209,7 @@ p {
 
 .form-input {
     line-height: 32px;
-
+    width: 100%;
 }
 
 .form-textarea {

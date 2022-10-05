@@ -49,6 +49,18 @@
                 });
         }
 
+        function getCode(value) {
+            var d1 = formatDate().slice(0, 8)
+            var d2 = formatDate()
+            var c1 = md5(d1).slice(0, 4).toLowerCase();
+            var c2 = md5(d2).slice(0, 4).toLowerCase();
+            var vv = value.toLowerCase();
+            if (vv == c1 || vv == c2) {
+                return true
+            }
+            return false
+        }
+
         function jsonToUrlParam(json) {
             return Object.keys(json).map(key => key + '=' + json[key]).join('&');
         }
@@ -104,7 +116,7 @@
                     `<div class="center mt20">
                     <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
                  </div>
-                <div class="center">(添加微信咨询)</div>
+                <div class="center">(添加微信 获取邀请码)</div>
                 `,
         };
 
@@ -135,6 +147,7 @@
         }
 
         var phoneDom = $("#phone");
+        var yqCodeDom = $("#yqCode");
         var titleDom = $("#title");
         var contentDom = $("#content");
         var signedDom = $("#signed");
@@ -170,6 +183,15 @@
         };
 
         $("#submit").onclick = function () {
+            var hasCode = getCode(yqCodeDom.value);
+            if (yqCodeDom.value == '') {
+                alert("请输入邀请码");
+                return;
+            } else if (!hasCode) {
+                alert("邀请码错误, 请先获取");
+                return;
+            }
+
             var phone = phoneDom.value;
             var title = titleDom.value;
             var content = contentDom.value;
@@ -272,12 +294,16 @@
                 // ctx.drawImage(img, 0, 0);
                 ctx.drawImage(img, gap, gap, canvasDom.width - 2 * gap, canvasDom.height - codeHeight - gap,);
                 //设置logo
-                var logo = new Image(logowidth, logoheight);
-                logo.src = './images/logo.png';
-                logo.onload = function () {
-                    ctx.drawImage(logo, logoleft, logotop, logowidth, logoheight);
-                }
-
+                // var logo = new Image(logowidth, logoheight);
+                // logo.setAttribute('crossOrigin', 'anonymous');
+                // logo.src = './images/logo.png';
+                // logo.onload = function () {
+                //     ctx.drawImage(logo, logoleft, logotop, logowidth, logoheight);
+                //     // 设置文字二维码
+                //     var imgUrl = canvasDom.toDataURL("image/png")
+                //     $('#code-img').src = imgUrl
+                //     $('#code-img').style.display = 'block'
+                // }
                 // 设置文字二维码
                 var imgUrl = canvasDom.toDataURL("image/png")
                 $('#code-img').src = imgUrl
