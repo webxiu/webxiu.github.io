@@ -7,6 +7,10 @@ html {
     height: 100%;
 }
 
+.ta-c {
+    text-align: center;
+}
+
 .mb15 {
     margin-bottom: 15px;
 }
@@ -127,17 +131,22 @@ p {
     width: 90%;
     min-height: 300px;
     border-radius: 10px;
-    padding: 15px 5px 15px 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     max-height: calc(100% - 40px);
 }
 
+.layer .modal-header {
+    border-bottom: 1px solid #eee;
+}
+
 .layer .modal-content {
     flex: 1;
     overflow-y: scroll;
     padding-right: 10px;
+    padding-bottom: 40px;
+    margin: 0 5px 10px 15px;
 }
 
 .callme-modal-close {
@@ -152,6 +161,7 @@ p {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
+    padding: 10px 0;
 }
 
 .layer .callme-modal form {
@@ -227,7 +237,6 @@ p {
 }
 
 .callme-modal .qrcode-box {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,7 +244,7 @@ p {
 }
 
 
-.qrcode-box .qrcode img {
+.qrcode-box img {
     /* pointer-events: none;*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -256,6 +265,11 @@ p {
     padding: 0 10px;
 }
 
+#code-img {
+    width: 100%;
+    display: none;
+}
+
 .text-button {
     color: #1989fa;
     cursor: pointer;
@@ -268,5 +282,4 @@ p {
 
 #download {
     display: none;
-    margin-top: 20px;
 }

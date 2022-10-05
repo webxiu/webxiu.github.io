@@ -42,7 +42,6 @@
                 .then((res) => res.blob())
                 .then((blob) => {
                     // 将链接地址字符内容转变成blob地址
-                    console.log("first", URL.createObjectURL(blob));
                     link.href = URL.createObjectURL(blob);
                     link.download = `Code_${Date.now()}.png`;
                     document.body.appendChild(link);
@@ -114,7 +113,7 @@
         $(".title").innerHTML = configContent.title;
         $(".content").innerHTML = configContent.content;
         $(".signed").innerHTML = configContent.signed;
-        $(".make-qrcode").innerHTML = '<span id="show-code" class="text-button">生成二维码</span>';
+        $(".make-qrcode").innerHTML = '<span id="show-code" class="text-button">生成我的二维码</span>';
 
         if (params.showList == "hidden") {
             $(".list-wrap").innerHTML = "";
@@ -143,20 +142,34 @@
             $("#code-layer").style.display = "none";
         };
 
-
         var phoneDom = $("#phone");
         var titleDom = $("#title");
         var contentDom = $("#content");
         var signedDom = $("#signed");
+        var codeNameDom = $("#codeName");
         var scodeTipDom = $(".code-tip");
         var qrcode = null;
         var codeUrl = "";
+
+        var USER_KEY = 'user_key'
+        var getUserInfo = () => JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+        var setUserInfo = (userInfo) => localStorage.setItem(USER_KEY, JSON.stringify(userInfo));
+        var removeUserInfo = () => localStorage.removeItem(USER_KEY);
+        var userInfo = getUserInfo()
+        if (userInfo.phone) {
+            phoneDom.value = userInfo.phone;
+            titleDom.value = userInfo.title;
+            contentDom.value = userInfo.content;
+            signedDom.value = userInfo.signed;
+            codeNameDom.value = userInfo.codeName;
+        }
 
         $("#submit").onclick = function () {
             var phone = phoneDom.value;
             var title = titleDom.value;
             var content = contentDom.value;
             var signed = signedDom.value;
+            var codeName = codeNameDom.value;
 
             var reg = /^1[3-9]\d{9}$/
             if (!reg.test(phone)) {
@@ -164,11 +177,16 @@
                 return;
             }
 
-            if (!title || !content || !signed) {
-                alert("标题、内容及落款不能为空");
+            if (!title || !content || !signed || !codeName) {
+                alert("标题、内容、落款及标题不能为空");
                 return;
             }
+            // 清空qrcode生成内容
             $('.qrcode').innerHTML = '';
+
+            setUserInfo({
+                phone: phone, title: title, content: content, signed: signed, codeName: codeName
+            })
 
             var codeQuery = jsonToUrlParam({
                 gen: 'hidden',
@@ -183,12 +201,11 @@
 
             // 获取表单的值
             var url = `https://webxiu.github.io/callme/callme.html?${codeQuery}`;
-            console.log('url', url)
-
+            qrcode && qrcode.clear();
             qrcode = new QRCode($(".qrcode"), {
                 text: url,
-                width: 226,
-                height: 226,
+                width: 400,
+                height: 400,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H,
@@ -196,6 +213,7 @@
 
             var canvas = qrcode._el.childNodes[0];
             codeUrl = canvas.toDataURL("image/png");
+
 
             var ua = navigator.userAgent.toLowerCase();
             if (browser.versions.mobile && ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -207,6 +225,60 @@
                 scodeTipDom.style.display = 'none'
                 $("#download").style.display = 'block'
             }
+
+
+            var canvasDom = document.createElement('canvas')
+            // 二维码下方文字高度
+            var codeHeight = 80;
+            //二维码宽高
+            var qrcodewidth = 400;
+            var qrcodeheight = 400;
+            //canvas宽高
+            var canvaswidth = qrcodewidth;
+            var canvasheight = qrcodeheight + codeHeight;
+            //logo宽高
+            var logowidth = 100;
+            var logoheight = 100;
+            //文字描述位置
+            var textleft = qrcodewidth / 2;
+            var texttop = qrcodeheight + codeHeight / 2;
+            //logo位置
+            var logoleft = (qrcodewidth - logowidth) / 2;
+            var logotop = (qrcodeheight - logoheight) / 2;
+            // 二维码距离边缘间隙
+            var gap = 20
+
+            var img = new Image();
+            img.src = codeUrl;
+            img.onload = function () {
+                canvasDom.width = canvaswidth;
+                canvasDom.height = canvasheight;
+                var ctx = canvasDom.getContext('2d');
+                //设置画布背景
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvasDom.width, canvasDom.height);
+                //设置文字样式
+                ctx.fillStyle = '#000000';
+                ctx.font = 'bold ' + 22 + 'px Arial';
+                ctx.textAlign = 'center';
+                //文字描述
+                ctx.fillText(codeNameDom.value || "(请扫码联系)", textleft, texttop);
+                //绘制二维码
+                // ctx.drawImage(img, 0, 0);
+                ctx.drawImage(img, gap, gap, canvasDom.width - 2 * gap, canvasDom.height - codeHeight - gap,);
+                //设置logo
+                var logo = new Image(logowidth, logoheight);
+                logo.src = './images/logo.png';
+                logo.onload = function () {
+                    ctx.drawImage(logo, logoleft, logotop, logowidth, logoheight);
+                }
+
+                // 设置文字二维码
+                var imgUrl = canvasDom.toDataURL("image/png")
+                $('#code-img').src = imgUrl
+                $('#code-img').style.display = 'block'
+            }
+
         };
 
         $("#reset").onclick = function () {
@@ -217,6 +289,7 @@
             qrcode && qrcode.clear();
             $('.qrcode').innerHTML = '';
             scodeTipDom.style.display = 'none';
+            removeUserInfo()
         };
 
         $("#download").onclick = function () {
