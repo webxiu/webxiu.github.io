@@ -134,14 +134,6 @@
             $("#tel").click();
         }
 
-        $("#show-code").onclick = function () {
-            $("#code-layer").style.display = "block";
-        };
-
-        $("#close-layer").onclick = function () {
-            $("#code-layer").style.display = "none";
-        };
-
         var phoneDom = $("#phone");
         var titleDom = $("#title");
         var contentDom = $("#content");
@@ -155,14 +147,27 @@
         var getUserInfo = () => JSON.parse(localStorage.getItem(USER_KEY) || '{}');
         var setUserInfo = (userInfo) => localStorage.setItem(USER_KEY, JSON.stringify(userInfo));
         var removeUserInfo = () => localStorage.removeItem(USER_KEY);
-        var userInfo = getUserInfo()
-        if (userInfo.phone) {
-            phoneDom.value = userInfo.phone;
-            titleDom.value = userInfo.title;
-            contentDom.value = userInfo.content;
-            signedDom.value = userInfo.signed;
-            codeNameDom.value = userInfo.codeName;
+
+        function setFormData() {
+            var userInfo = getUserInfo()
+            if (userInfo.phone) {
+                phoneDom.value = userInfo.phone;
+                titleDom.value = userInfo.title;
+                contentDom.value = userInfo.content;
+                signedDom.value = userInfo.signed;
+                codeNameDom.value = userInfo.codeName;
+            }
         }
+        setFormData();
+
+        $("#show-code").onclick = function () {
+            setFormData()
+            $("#code-layer").style.display = "block";
+        };
+
+        $("#close-layer").onclick = function () {
+            $("#code-layer").style.display = "none";
+        };
 
         $("#submit").onclick = function () {
             var phone = phoneDom.value;
