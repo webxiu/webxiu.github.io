@@ -178,7 +178,7 @@
             }
 
             if (!title || !content || !signed || !codeName) {
-                alert("标题、内容、落款及标题不能为空");
+                alert("标题、内容、落款及名称不能为空");
                 return;
             }
             // 清空qrcode生成内容
