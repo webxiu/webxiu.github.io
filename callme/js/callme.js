@@ -191,12 +191,11 @@
         var yqCode = yqCodeDom.value;
         var title = titleDom.value;
         var content = contentDom.value;
-        var editHtml = window.editHtml;
+        // var editHtml = window.editHtml;
         var signed = signedDom.value;
         var codeName = codeNameDom.value;
         var hasCode = getCode(yqCodeDom.value);
 
-        console.log('editHtml', editHtml)
 
         var reg = /^1[3-9]\d{9}$/;
         if (!reg.test(phone)) {
@@ -212,7 +211,7 @@
             return;
         }
 
-        if (!title || !content || editHtml == '<p><br></p>' || !signed || !codeName) {
+        if (!title || !content || !signed || !codeName) {
             alert("标题、内容、落款及名称不能为空");
             return;
         }
@@ -224,7 +223,7 @@
             yqCode: yqCode,
             title: title,
             content: content,
-            editHtml: editHtml,
+            // editHtml: editHtml,
             signed: signed,
             codeName: codeName,
         });
@@ -233,7 +232,7 @@
             gen: "hidden",
             tel: phone,
             title: title,
-            content: editHtml || content,
+            content: content,
             signed: signed,
             showList: "hidden", // 是否显示圆点列表
             showNotice: "block",
@@ -328,7 +327,7 @@
         phoneDom.value = "";
         titleDom.value = "";
         // contentDom.value = "";
-        window.editHtml = '';
+        // window.editHtml = '';
         signedDom.value = "";
         codeNameDom.value = "";
         qrcode && qrcode.clear();
