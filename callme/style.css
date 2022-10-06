@@ -172,6 +172,7 @@ p {
     overflow-y: scroll;
     margin-right: 5px;
     padding: 0 15px 40px 20px;
+    margin-bottom: 15px;
 }
 
 .callme-modal-close {
