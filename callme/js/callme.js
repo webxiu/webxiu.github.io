@@ -326,7 +326,7 @@
     $("#reset").onclick = function () {
         phoneDom.value = "";
         titleDom.value = "";
-        // contentDom.value = "";
+        contentDom.value = "";
         // window.editHtml = '';
         signedDom.value = "";
         codeNameDom.value = "";
