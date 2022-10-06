@@ -185,24 +185,24 @@
         };
 
         $("#submit").onclick = function () {
-            var hasCode = getCode(yqCodeDom.value);
-            if (yqCodeDom.value == '') {
-                alert("请输入邀请码");
-                return;
-            } else if (!hasCode) {
-                alert("邀请码错误, 请先获取");
-                return;
-            }
-
             var phone = phoneDom.value;
             var title = titleDom.value;
             var content = contentDom.value;
             var signed = signedDom.value;
             var codeName = codeNameDom.value;
+            var hasCode = getCode(yqCodeDom.value);
 
             var reg = /^1[3-9]\d{9}$/
             if (!reg.test(phone)) {
                 alert("手机号格式不正确");
+                return;
+            }
+
+            if (yqCodeDom.value == '') {
+                alert("请输入邀请码");
+                return;
+            } else if (!hasCode) {
+                alert("邀请码错误, 请先获取");
                 return;
             }
 
@@ -319,6 +319,7 @@
             titleDom.value = "";
             contentDom.value = "";
             signedDom.value = "";
+            codeNameDom.value = "";
             qrcode && qrcode.clear();
             $('.qrcode').innerHTML = '';
             scodeTipDom.style.display = 'none';
