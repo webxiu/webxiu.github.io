@@ -200,7 +200,7 @@ p {
 
 .form-label {
     min-width: 48px;
-    text-align: justify;
+    text-align: right;
     padding-top: 9px;
     white-space: nowrap;
 }
@@ -308,4 +308,51 @@ p {
 
 #download {
     display: none;
+}
+
+/* editor css */
+#editor—wrapper {
+    border: 1px solid #ccc;
+    z-index: 100;
+    width: 100%;
+}
+
+
+#editor-container {
+    height: 100px;
+}
+
+#editor-container .w-e-text-container [data-slate-editor] p {
+    margin: 2px 0 !important;
+}
+
+#editor-container .w-e-text-placeholder {
+    top: 4px;
+}
+
+#editor-container #w-e-element-3>span:nth-child(1) {
+    margin-right: 0 !important;
+}
+
+#toolbar-container {
+    border-bottom: 1px solid #ccc;
+}
+
+#toolbar-container .w-e-bar-item {
+    padding: 4px !important;
+    height: inherit !important;
+}
+
+#toolbar-container .w-e-bar-item button {
+    padding: 0px 2px !important;
+    height: 24px !important;
+}
+
+#toolbar-container .w-e-bar-item button .title {
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+#toolbar-container .select-button {
+    width: auto !important;
 }

@@ -7,10 +7,12 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Call Me</title>
+    <link href="./wangeditor.css" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    <script src="./js/wangeditor.js"></script>
     <script src="./js/md5.js"></script>
     <script src="./js/qrcode.js"></script>
-    <script src="./js/callme.js"></script>
+
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -56,7 +58,7 @@
                                 <input id="phone" name="phone" type="text" class="form-input" maxlength="11"
                                     placeholder="请输入手机号">
                             </div>
-                            <div class="form-item mb15 ml10" style="flex: 1">
+                            <div class="form-item mb15 ml10" style="width: 154px;">
                                 <label for="yqCode" class="form-label label-colon">邀请码</label>
                                 <input id="yqCode" name="yqCode" type="text" class="form-input" maxlength="11"
                                     placeholder="输入邀请码">
@@ -64,13 +66,24 @@
                         </div>
                         <div class="form-item mb15">
                             <label for="title" class="form-label label-colon">标题</label>
-                            <input id="title" name="title" type="text" class="form-input" maxlength="10"
-                                placeholder="请输入标题">
+                            <input id="title" name="title" type="text" class="form-input" maxlength="18"
+                                placeholder="标题限制18个字以内">
                         </div>
                         <div class="form-item mb15">
                             <label for="content" class="form-label label-colon">内容</label>
                             <textarea id="content" name="content" rows="3" maxlength="120" class="form-textarea"
-                                placeholder="请输入内容, 限制120个字以内"></textarea>
+                                placeholder="内容限制120个字以内"></textarea>
+                        </div>
+                        <div class="form-item mb15">
+                            <label for="editor—wrapper" class="form-label label-colon">内容</label>
+                            <div id="editor—wrapper">
+                                <div id="toolbar-container">
+                                    <!-- 工具栏 -->
+                                </div>
+                                <div id="editor-container">
+                                    <!-- 编辑器 -->
+                                </div>
+                            </div>
                         </div>
                         <div class="form-item mb15">
                             <label for="signed" class="form-label label-colon">落款</label>
@@ -98,6 +111,8 @@
             </div>
         </div>
     </div>
+    <script src="./js/editor.js"></script>
+    <script src="./js/callme.js"></script>
 </body>
 
 </html>
