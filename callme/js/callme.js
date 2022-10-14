@@ -95,17 +95,19 @@
 
     var descList = [
         "扫码一键拨打电话, 使用简单、方便、快捷",
-        "不限次数、永久使用, 访问受网络差异影响",
-        "自定义显示标题、内容、时间",
+        "自定义显示标题、内容、时间及二维码名称",
         "作为个人电子名片及提醒信息展示",
         "可以打印贴在车辆、门窗、公告栏等地方使用",
+        "使用次数不限、永久免费, 访问受网络差异影响",
         "所填信息仅生成二维码时使用, 不收集个人信息",
+        "为了大家能合理使用, 需要邀请码才能生成二维码",
+        "限时邀请码: b668, 11月1日过期",
     ];
 
     var link = '<a href="tel:' + params.tel + '" id="tel">直接呼叫</a>';
     $("#contact").innerHTML = link;
 
-    var descHtml = `<div class="introduce">Call Me是一个扫码拨打电话的快捷应用入口, 请使用微信扫码打开, 生成自己的二维码请点击右上角, 生成完成后扫码后即可查看, 并提示您是否拨打电话。它具备以下功能:</div>`;
+    var descHtml = `<div class="introduce">Call Me是一个扫码拨打电话的快捷应用入口, 请使用微信扫码打开, 生成自己的二维码请点击右上角入口, 生成完成后扫码即可查看, 并提示您是否拨打电话。它具备以下功能:</div>`;
     descList.forEach((item) => {
         descHtml += `<div class="list-item">${item}</div>`;
     });
@@ -119,6 +121,10 @@
                     <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
                  </div>
                 <div class="center">(添加微信 获取邀请码)</div>
+                <div class="center mt20">
+                <img style="width:75%" src="./images/callme.png" alt="邀请二维码" title="邀请二维码">
+                </div>
+                <div class="center">(长按保存·分享)</div>
                 `,
     };
 
