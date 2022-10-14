@@ -266,8 +266,7 @@
         });
 
         // 获取表单的值
-        // var url = `https://webxiu.github.io/callme/callme.html?${codeQuery}`;
-        var url = `https://webxiu.github.io/callme/callme.html?tel=10086&pro=yes`;
+        var url = `https://webxiu.github.io/callme/callme.html?${codeQuery}`;
         qrcode && qrcode.clear();
         try {
             qrcode = new QRCode($(".qrcode"), {
