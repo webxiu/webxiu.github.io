@@ -7,9 +7,9 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Call Me</title>
-    <!-- <link href="./wangeditor.css" rel="stylesheet"> -->
+    <link href="./wangeditor.css" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
-    <!-- <script src="./js/wangeditor.js"></script> -->
+    <script src="./js/wangeditor.js"></script>
     <script src="./js/md5.js"></script>
     <script src="./js/qrcode.js"></script>
 
@@ -69,18 +69,20 @@
                             <input id="title" name="title" type="text" class="form-input" maxlength="18"
                                 placeholder="标题限制18个字以内">
                         </div>
-                        <div class="form-item mb15">
-                            <label for="content" class="form-label label-colon">内容</label>
-                            <textarea id="content" name="content" rows="3" maxlength="120" class="form-textarea"
-                                placeholder="内容限制120个字以内"></textarea>
-                        </div>
-                        <!-- <div class="form-item mb15">
-                            <label for="editor—wrapper" class="form-label label-colon">内容</label>
-                            <div id="editor—wrapper">
-                                <div id="toolbar-container"></div>
-                                <div id="editor-container"></div>
+                        <div class="mb15">
+                            <div class="form-item" id="content_text">
+                                <label for="content" class="form-label label-colon">内容</label>
+                                <textarea id="content" name="content" rows="3" maxlength="120" class="form-textarea"
+                                    placeholder="内容限制120个字以内"></textarea>
                             </div>
-                        </div> -->
+                            <div class="form-item" id="content_pro">
+                                <label for="editor—wrapper" class="form-label label-colon">内容</label>
+                                <div id="editor—wrapper">
+                                    <div id="toolbar-container"></div>
+                                    <div id="editor-container"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-item mb15">
                             <label for="signed" class="form-label label-colon">时间</label>
                             <input id="signed" name="signed" type="text" class="form-input" maxlength="18"
@@ -107,7 +109,7 @@
             </div>
         </div>
     </div>
-    <!-- <script src="./js/editor.js"></script> -->
+    <script src="./js/editor.js"></script>
     <script src="./js/callme.js"></script>
 </body>
 

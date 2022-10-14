@@ -2,9 +2,7 @@
 
 ; (function (window, document) {
     var getUserInfo = () => JSON.parse(localStorage.getItem('user_key') || "{}");
-    var _userInfo = getUserInfo()
-    console.log('_userInfo', _userInfo)
-
+    var _userInfo = getUserInfo();
 
     window.editHtml = _userInfo.editHtml || '<p><br></p>';
     var { createEditor, createToolbar } = window.wangEditor;
@@ -96,4 +94,5 @@
         config: toolbarConfig,
         mode: "simple", // or 'simple'
     });
+    window._editor = editor;
 })(window, document);
