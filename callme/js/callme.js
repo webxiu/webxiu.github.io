@@ -238,7 +238,7 @@
             gen: "hidden",
             tel: phone,
             title: title,
-            content: content,
+            content: encodeURIComponent(content),
             signed: signed,
             showList: "hidden", // 是否显示圆点列表
             showNotice: "block",
@@ -248,14 +248,18 @@
         // 获取表单的值
         var url = `https://webxiu.github.io/callme/callme.html?${codeQuery}`;
         qrcode && qrcode.clear();
-        qrcode = new QRCode($(".qrcode"), {
-            text: url,
-            width: 400,
-            height: 400,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H,
-        });
+        try {
+            qrcode = new QRCode($(".qrcode"), {
+                text: url,
+                width: 400,
+                height: 400,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H,
+            });
+        } catch (error) {
+            alert('生成失败')
+        }
 
         var canvas = qrcode._el.childNodes[0];
         codeUrl = canvas.toDataURL("image/png");
