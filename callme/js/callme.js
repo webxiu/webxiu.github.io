@@ -99,7 +99,6 @@
         "可以作为个人电子名片及提醒信息展示",
         "方便打印贴在车辆、门窗、公告栏等地方使用",
         "扫码次数不限、永久免费, 访问受网络差异影响",
-        "Pro版支持编辑文本样式、颜色、大小等多种功能",
         "所填信息仅生成二维码时使用, 不会收集个人信息",
         "输入邀请码才能生成二维码, 限时邀请码: b668",
     ];
@@ -114,16 +113,13 @@
 
     var configContent = {
         title: params.title || "欢迎使用Call Me",
-        signed: params.signed || formatDate() + " Hailen",
+        time: params.time || formatDate() + " Hailen",
         content: params.content
             ? `<div class="detail">${params.content}</div>`
             : `<div class="center mt20">
                     <img style="width:75%" src="./images/wechat.jpg" alt="添加二维码" title="添加二维码">
                  </div>
                 <div class="center">(添加微信 获取邀请码)</div>
-                <div class="center mt20">
-                <img style="width:75%" src="./images/callme_pro.png" alt="富文本二维码" title="富文本二维码">
-                </div>
                 <div class="center mt20">
                 <img style="width:75%" src="./images/callme.png" alt="邀请二维码" title="邀请二维码">
                 </div>
@@ -135,7 +131,7 @@
     $(".list-wrap").innerHTML = descHtml;
     $(".title").innerHTML = configContent.title;
     $(".content").innerHTML = configContent.content;
-    $(".signed").innerHTML = configContent.signed;
+    $(".author").innerHTML = configContent.time;
     $(".make-qrcode").innerHTML = '<span id="show-code" class="text-button">生成我的二维码</span>';
 
     if (params.showList == "hidden") {
@@ -158,18 +154,12 @@
     } else {
         $("#tel").style.display = "none";
     }
-    // 是否显示富文本编辑
-    if (params.pro == "yes") {
-        $("#content_text").style.display = "none"
-    } else {
-        $("#content_pro").style.display = "none"
-    }
 
     var phoneDom = $("#phone");
     var yqCodeDom = $("#yqCode");
     var titleDom = $("#title");
     var contentDom = $("#content");
-    var signedDom = $("#signed");
+    var timeDom = $("#time");
     var codeNameDom = $("#codeName");
     var scodeTipDom = $(".code-tip");
     var qrcode = null;
@@ -186,7 +176,7 @@
         yqCodeDom.value = userInfo.yqCode || "";
         titleDom.value = userInfo.title || "";
         contentDom.value = userInfo.content || "";
-        signedDom.value = userInfo.signed || "";
+        timeDom.value = userInfo.time || "";
         codeNameDom.value = userInfo.codeName || "";
     }
     setFormData();
@@ -206,8 +196,8 @@
         var yqCode = yqCodeDom.value;
         var title = titleDom.value;
         var content = contentDom.value;
-        var editHtml = window.editHtml;
-        var signed = signedDom.value;
+        // var editHtml = window.editHtml;
+        var time = timeDom.value;
         var codeName = codeNameDom.value;
         var hasCode = getCode(yqCodeDom.value);
 
@@ -225,20 +215,8 @@
             return;
         }
 
-        if (params.pro == "yes") {
-            if (editHtml == '<p><br></p>') {
-                alert("内容不能为空");
-                return
-            }
-        } else {
-            if (!content) {
-                alert("内容不能为空!");
-                return
-            }
-        }
-
-        if (!title || !signed || !codeName) {
-            alert("标题、时间及名称不能为空");
+        if (!title || !content || !time || !codeName) {
+            alert("标题、内容、时间及名称不能为空");
             return;
         }
         // 清空qrcode生成内容
@@ -249,8 +227,8 @@
             yqCode: yqCode,
             title: title,
             content: content,
-            editHtml: editHtml,
-            signed: signed,
+            // editHtml: editHtml,
+            time: time,
             codeName: codeName,
         });
 
@@ -258,8 +236,8 @@
             gen: "hidden",
             tel: phone,
             title: encodeURIComponent(title),
-            content: encodeURIComponent(params.pro == 'yes' ? window.editHtml : content),
-            signed: encodeURIComponent(signed),
+            content: encodeURIComponent(content),
+            time: encodeURIComponent(time),
             showList: "hidden", // 是否显示圆点列表
             showNotice: "block",
             showFooter: "block",
@@ -357,11 +335,10 @@
         phoneDom.value = "";
         titleDom.value = "";
         contentDom.value = "";
-        window.editHtml = '';
-        signedDom.value = "";
+        // window.editHtml = '';
+        timeDom.value = "";
         codeNameDom.value = "";
         qrcode && qrcode.clear();
-        window._editor && window._editor.clear();
         $(".qrcode").innerHTML = "";
         scodeTipDom.style.display = "none";
         var userInfo = getUserInfo();
