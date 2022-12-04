@@ -49,8 +49,9 @@
     }
 
     function getCode(value) {
-        var d1 = formatDate().slice(0, 8);
-        var d2 = formatDate();
+        var d1 = formatDate().slice(0, 5);// YY
+        var d2 = formatDate().slice(0, 8);// YYMM
+        // var d2 = formatDate();// YYMMDD
         var c1 = md5(d1).slice(0, 4).toLowerCase();
         var c2 = md5(d2).slice(0, 4).toLowerCase();
         var vv = value.toLowerCase();
@@ -100,7 +101,7 @@
         "方便打印贴在车辆、门窗、公告栏等地方使用",
         "扫码次数不限、永久免费, 访问受网络差异影响",
         "所填信息仅生成二维码时使用, 不会收集个人信息",
-        "输入邀请码才能生成二维码, 限时邀请码: b668",
+        "输入邀请码才能生成二维码, 限时邀请码: e039",
     ];
 
     var link = '<a href="tel:' + params.tel + '" id="tel">直接呼叫</a>';
