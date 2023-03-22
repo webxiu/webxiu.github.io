@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <title>双色球选号</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      width: 100%;
+      height: 100vh;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .pour-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pour-info #number {
+      margin: 0 5px;
+    }
+
+    .list {
+      flex: 1;
+      overflow: hidden;
+      background-color: aqua;
+      margin-top: 20px;
+      padding: 15px 0 15px 0;
+    }
+
+    .numbers {
+      height: 100%;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .numbers .rows {
+      margin: 5px 0;
+    }
+
+    .numbers .index {
+      width: 20px;
+      height: 30px;
+      line-height: 30px;
+      display: inline-block;
+      margin-right: 10px;
+      color: #2300ff;
+    }
+
+    .numbers .ball {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      margin: 0 5px;
+      color: #c38ad2;
+    }
+
+    .numbers .ball:last-child {
+      background: #f00;
+      border-color: #f00;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>双色球选号</h1>
+    <div class="pour-info">
+      注数: <input type="range" name="number" id="number" min="1" max="100" step="1" value="5">
+      <span class="pour">0</span>
+    </div>
+    <div class="list">
+      <div class="numbers"></div>
+    </div>
+  </div>
+  <script>
+    window.onload = function () {
+
+      function $(selector) {
+        return document.querySelector(selector);
+      }
+
+      function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      function getBalls(number) {
+        const balls = [];
+        while (balls.length < number) {
+          const r = random(1, 33);
+          if (!balls.includes(r)) balls.push(r);
+        }
+        return balls.sort((a, b) => a - b);
+      }
+
+      function render(rows) {
+        let htmlStr = '';
+        const numberDom = $('.numbers');
+
+        for (let i = 0; i < rows; i++) {
+          const balls = getBalls(6);
+          const special = random(1, 16);
+          htmlStr += `<div class="rows">
+            <span class="index">${i+1}</span>`;
+          [...balls, special].forEach(item => {
+            htmlStr += `<span class="ball">${item}</span>`;
+          })
+          htmlStr += '</div>'
+        }
+        numberDom.innerHTML = htmlStr
+      }
+
+      function setData(value) {
+        pourDom.innerHTML = value
+        render(value)
+      }
+
+      const pour = 5
+      const numberDom = $('#number');
+      const pourDom = $('.pour');
+
+      setData(pour)
+      numberDom.addEventListener('change', (e) => {
+        const value = e.target.value || pour
+        setData(value)
+      })
+    }
+  </script>
+
+</body>
+
+</html>
