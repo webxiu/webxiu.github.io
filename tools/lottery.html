@@ -19,6 +19,11 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      background: #d1ffc6;
+    }
+
+    .box h3 {
+      margin: 10px;
     }
 
     .pour-info {
@@ -28,8 +33,14 @@
     }
 
     .pour-info #number {
-      margin: 0 5px;
+      margin-left: 5px;
     }
+
+    .pour-info .pour {
+      display: inline-block;
+      width: 36px;
+    }
+
 
     .list {
       flex: 1;
@@ -42,7 +53,6 @@
     .numbers {
       height: 100%;
       overflow-y: auto;
-      padding-right: 5px;
     }
 
     .numbers .rows {
@@ -80,7 +90,7 @@
 
 <body>
   <div class="box">
-    <h1>双色球选号</h1>
+    <h3>双色球选号</h3>
     <div class="pour-info">
       注数: <input type="range" name="number" id="number" min="1" max="100" step="1" value="5">
       <span class="pour">0</span>
@@ -112,12 +122,10 @@
       function render(rows) {
         let htmlStr = '';
         const numberDom = $('.numbers');
-
         for (let i = 0; i < rows; i++) {
           const balls = getBalls(6);
           const special = random(1, 16);
-          htmlStr += `<div class="rows">
-            <span class="index">${i+1}</span>`;
+          htmlStr += `<div class="rows"><span class="index">${i+1}</span>`;
           [...balls, special].forEach(item => {
             htmlStr += `<span class="ball">${item}</span>`;
           })
@@ -139,6 +147,9 @@
       numberDom.addEventListener('change', (e) => {
         const value = e.target.value || pour
         setData(value)
+      })
+      numberDom.addEventListener('input', (e) => {
+        pourDom.innerHTML = e.target.value || pour
       })
     }
   </script>

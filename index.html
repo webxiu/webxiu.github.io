@@ -73,6 +73,27 @@
         var MARGIN_TOP = 60;
         var MARGIN_LEFT = 20;
 
+        /** 判断是否为PC */
+        function isPC() {
+            let flag = true;
+            let userAgent = navigator.userAgent;
+            let userAgents = ['Android', 'iPhone', 'SymbianOS', 'Phone', 'iPad', 'iPod'];
+            for (let i = 0; i < userAgents.length; i++) {
+                if (userAgent.indexOf(userAgents[i]) > -1) {
+                    flag = false;
+                    break
+                }
+            }
+            return flag;
+        }
+        if (!isPC()) {
+            windowWidth = window.innerWidth - 40;
+            windowHeight = 200;
+            RADIUS = 2; // 点的大小
+            MARGIN_TOP = 60;
+            MARGIN_LEFT = 5;
+        }
+
         window.onload = function () {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext('2d')
