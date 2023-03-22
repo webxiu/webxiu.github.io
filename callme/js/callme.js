@@ -203,6 +203,16 @@
         var codeName = codeNameDom.value;
         var hasCode = getCode(yqCodeDom.value);
 
+        setUserInfo({
+            phone: phone,
+            yqCode: yqCode,
+            title: title,
+            content: content,
+            // editHtml: editHtml,
+            time: time,
+            codeName: codeName,
+        });
+
         var reg = /^1[3-9]\d{9}$/;
         if (!reg.test(phone)) {
             alert("手机号格式不正确");
@@ -221,18 +231,9 @@
             alert("标题、内容、时间及名称不能为空");
             return;
         }
-        // 清空qrcode生成内容
+        // 清空qrcode上次生成内容
         $(".qrcode").innerHTML = "";
 
-        setUserInfo({
-            phone: phone,
-            yqCode: yqCode,
-            title: title,
-            content: content,
-            // editHtml: editHtml,
-            time: time,
-            codeName: codeName,
-        });
 
         var codeQuery = jsonToUrlParam({
             gen: "hidden",
