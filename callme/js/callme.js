@@ -50,15 +50,16 @@
 
     function getCode(value) {
         var d1 = formatDate().slice(0, 5);// YY
-        var d2 = formatDate().slice(0, 8);// YYMM
-        // var d2 = formatDate();// YYMMDD
+        var d2 = formatDate().slice(0, 8);// YYMM 
         var c1 = md5(d1).slice(0, 4).toLowerCase();
         var c2 = md5(d2).slice(0, 4).toLowerCase();
-        var vv = value.toLowerCase();
-        if (vv == c1 || vv == c2) {
-            return true;
-        }
-        return false;
+        // 移除输入判断
+        // var vv = value.toLowerCase();
+        // if (vv == c1 || vv == c2) {
+        //     return true;
+        // }
+        // return false;
+        return c2;
     }
 
     function jsonToUrlParam(json) {
@@ -101,7 +102,7 @@
         "方便打印贴在车辆、门窗、公告栏等地方使用",
         "扫码次数不限、永久免费, 访问受网络差异影响",
         "所填信息仅生成二维码时使用, 不会收集个人信息",
-        "输入邀请码才能生成二维码, 限时邀请码: e039",
+        `输入邀请码才能生成二维码, 限时邀请码: ${getCode()}`,
     ];
 
     var link = '<a href="tel:' + params.tel + '" id="tel">直接呼叫</a>';
@@ -211,7 +212,7 @@
         if (yqCodeDom.value == "") {
             alert("请输入邀请码");
             return;
-        } else if (!hasCode) {
+        } else if (hasCode !== yqCodeDom.value) {
             alert("邀请码错误, 请先获取");
             return;
         }
