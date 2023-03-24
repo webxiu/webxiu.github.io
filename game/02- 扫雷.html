@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从0开发扫雷小游戏</title>
     <style>
         .box {
@@ -46,11 +48,15 @@
 <body>
     <div class="message"></div>
     <div class="box"></div>
+    <div style="text-align: center;margin-top: 15px;">
+        <button id="start">重新开始</button>
+    </div>
 </body>
 <script>
     const rows = 20
     const cols = 20
-    const size = 30
+    const size = window.screen.width / 20 - 1
+    console.log('size', size)
     const result = []
     let minesCount = 0
     const mines = {}
@@ -93,7 +99,10 @@
             if (minesCount === box.querySelectorAll('.hide').length) {
                 alert('恭喜您成功了')
             } else if (v.querySelector('.circle')) {
-                setTimeout(() => alert('游戏失败，踩中地雷了'), 100)
+                const timer = setTimeout(() => {
+                    alert('游戏失败，踩中地雷了')
+                    clearTimeout(timer)
+                }, 100)
             } else if (v.innerText.trim() === '') {
                 const indexs = v.getAttribute('data-v').split('-').map(v => Number(v))
                 const loop = (indexs) => {
@@ -107,7 +116,8 @@
                         [indexs[0] + 1, indexs[1]],
                         [indexs[0] + 1, indexs[1] + 1]
                     ].forEach(subIndexs => {
-                        const el = document.querySelector(`[data-v="${subIndexs.join('-')}"]`)
+                        const el = document.querySelector(
+                            `[data-v="${subIndexs.join('-')}"]`)
                         if (el) {
                             const text = el.querySelector('.number').innerText.trim()
                             if (el.className.indexOf('hide') >= 0 && text === '') {
@@ -128,6 +138,11 @@
             e.preventDefault()
         })
     })
+
+    // 重新开始
+    start.onclick = () => {
+        location.reload();
+    }
 </script>
 
 </html>
