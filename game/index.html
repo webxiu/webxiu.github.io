@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Welcome!</title>
+    <script src="../assets/utils.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ac96bc433c6e40a53e1cf5f02d1e4721";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <style>
+        .container {
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="link-box"></div>
+    </div>
+    <script>
+        (function () {
+            const links = [{
+                    url: "./01- 羊了个羊.html",
+                    name: "羊了个羊",
+                }, {
+                    url: "./02- 扫雷.html",
+                    name: "扫雷游戏",
+                },
+                {
+                    url: "./03- 钟摆.html",
+                    name: "钟摆游戏",
+                },
+                {
+                    url: "./04- 消消乐.html",
+                    name: "消消乐"
+                },
+            ];
+            const linkHtml = links.map((link) => `<div><a href="${link.url}">${link.name}</a></div>`).join("");
+            $(".link-box").innerHTML = linkHtml;
+        })();
+    </script>
+</body>
+
+</html>

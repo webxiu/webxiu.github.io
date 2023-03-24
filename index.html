@@ -64,6 +64,10 @@
                     url: "./tools/lottery.html",
                     name: "机选双色球",
                 },
+                {
+                    url: "./game/index.html",
+                    name: "小游戏",
+                },
             ];
             const linkHtml = links.map((link) => `<div><a href="${link.url}">${link.name}</a></div>`).join("");
             $(".link-box").innerHTML = linkHtml;
