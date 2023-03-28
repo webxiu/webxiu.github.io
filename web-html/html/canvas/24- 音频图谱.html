@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <script src="../../assets/js/tool.js"></script>
+  <script src="../../../assets/utils.js"></script>
   <style>
     * {
       margin: 0;
@@ -94,7 +94,12 @@
         this.bgCanvas.height = this.waveCanvas.height = this.audioHeight
         this.audioTrack.appendChild(this.waveCanvas)
         this.audioTrack.appendChild(this.bgCanvas)
-        this.bgCanvas.addEventListener('mousedown', this.onMouseDown)
+
+        if (isPC()) {
+          this.bgCanvas.addEventListener('mousedown', this.onMouseDown)
+        } else {
+          this.bgCanvas.addEventListener('touchstart', this.onMouseDown)
+        }
       }
       getAudioData = async () => {
         // 获取音频文件转成ArrayBuffer，再转成AudioBuffer
@@ -187,18 +192,43 @@
       }
 
       onMouseDown = (e) => {
-        this.drawLine(e.offsetX)
-        document.addEventListener('mousemove', this.onMouseMove)
-        document.addEventListener('mouseup', this.onMouseUp)
+        if (isPC()) {
+          this.drawLine(e.offsetX)
+        } else {
+          const rect = this.waveCanvas.getBoundingClientRect()
+          this.drawLine(e.touches[0].pageX - rect.left)
+        }
+        if (isPC()) {
+          document.addEventListener('mousemove', this.onMouseMove)
+          document.addEventListener('mouseup', this.onMouseUp)
+        } else {
+          document.addEventListener('touchmove', this.onMouseMove)
+          document.addEventListener('touchend', this.onMouseUp)
+
+        }
       }
 
       onMouseMove = throttle((e) => {
-        this.drawLine(e.offsetX)
+
+        if (isPC()) {
+          this.drawLine(e.offsetX)
+        } else {
+          const rect = this.waveCanvas.getBoundingClientRect()
+          this.drawLine(e.touches[0].pageX - rect.left)
+        }
+
       }, 20)
 
       onMouseUp = (e) => {
-        document.removeEventListener('mousedown', this.onMouseDown)
-        document.removeEventListener('mousemove', this.onMouseMove)
+        if (isPC()) {
+          document.removeEventListener('mousedown', this.onMouseDown)
+          document.removeEventListener('mousemove', this.onMouseMove)
+        } else {
+          document.removeEventListener('touchstart', this.onMouseDown)
+          document.removeEventListener('touchmove', this.onMouseMove)
+
+        }
+
       }
 
       drawLine = (pos) => {
