@@ -7,13 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
+  <link rel="stylesheet" href="../../../assets/cssbem.css">
   <script src="../../../assets/utils.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
 
+  <style>
     .container {
       padding: 15px;
     }
@@ -28,6 +25,16 @@
       display: inline-block;
       cursor: pointer;
       margin-left: 15px;
+    }
+
+    #length {
+      width: 80px;
+    }
+
+    #length span {
+      font-size: 12px;
+      display: inline-block;
+      width: 32px;
     }
 
     .audio-track {
@@ -48,7 +55,17 @@
 
 <body>
   <div class="container">
-    <button id="play-btn">播放</button>
+    <div class="flex just-between align-center">
+      <button id="play-btn">播放</button>
+      <select name="speed" id="speed">
+        <option value="1">1x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+        <option value="2.5">2.5x</option>
+        <option value="3">3x</option>
+      </select>
+      <div id="length"></div>
+    </div>
     <div id="audioTrack"></div>
   </div>
   <!-- <audio id="audio" src="http://media.mizuiren.com/cz.mp3"></audio> -->
@@ -65,8 +82,7 @@
         if (width && height) {
           this.audioTrack.style = `width: ${width}px;height: ${height}px`
         }
-        const rect = this.audioTrack.getBoundingClientRect()
-        console.log('width,height, rect', width, height, rect)
+        const rect = this.audioTrack.getBoundingClientRect();
         this.waveCanvas = null
         this.bgCanvas = null
         this.waveCtx = null
@@ -83,6 +99,9 @@
       init = async () => {
         this.createCanvasElement()
         await this.getAudioData()
+        utils.$('#speed').addEventListener('change', e => {
+          this.audio.playbackRate = e.target.value || 1
+        })
       }
       createCanvasElement = () => {
         this.waveCanvas = document.createElement('canvas')
@@ -95,7 +114,7 @@
         this.audioTrack.appendChild(this.waveCanvas)
         this.audioTrack.appendChild(this.bgCanvas)
 
-        if (isPC()) {
+        if (utils.isPC()) {
           this.bgCanvas.addEventListener('mousedown', this.onMouseDown)
         } else {
           this.bgCanvas.addEventListener('touchstart', this.onMouseDown)
@@ -164,10 +183,19 @@
         this.audio = new Audio();
         this.audio.loop = true
         this.audio.src = audioUrl
+
+        this.updateTime(this.audio.currentTime, this.totalMs)
         this.audio.ontimeupdate = (e) => {
           this.drawLine()
+          this.updateTime(this.audio.currentTime, this.totalMs)
         }
         this.playBtnDom.addEventListener('click', this.play)
+      }
+
+      updateTime = (currentMs, totalMs) => {
+        const currentLength = utils.toHHmmss(currentMs * 1000)
+        const totalLength = utils.toHHmmss(totalMs * 1000)
+        utils.$('#length').innerHTML = `<span>${currentLength}</span><span>/${totalLength}</span>`
       }
 
       play = () => {
@@ -192,35 +220,35 @@
       }
 
       onMouseDown = (e) => {
-        if (isPC()) {
+        if (utils.isPC()) {
           this.drawLine(e.offsetX)
         } else {
           const rect = this.waveCanvas.getBoundingClientRect()
           this.drawLine(e.touches[0].pageX - rect.left)
         }
-        if (isPC()) {
-          document.addEventListener('mousemove', this.onMouseMove)
-          document.addEventListener('mouseup', this.onMouseUp)
+        if (utils.isPC()) {
+          document.addEventListener('mousemove', this.onMouseMove, false)
+          document.addEventListener('mouseup', this.onMouseUp, false)
         } else {
-          document.addEventListener('touchmove', this.onMouseMove)
-          document.addEventListener('touchend', this.onMouseUp)
+          document.addEventListener('touchmove', this.onMouseMove, false)
+          document.addEventListener('touchend', this.onMouseUp, false)
 
         }
       }
 
-      onMouseMove = throttle((e) => {
-
-        if (isPC()) {
+      onMouseMove = utils.throttle((e) => {
+        if (utils.isPC()) {
           this.drawLine(e.offsetX)
         } else {
           const rect = this.waveCanvas.getBoundingClientRect()
           this.drawLine(e.touches[0].pageX - rect.left)
         }
+        return false
 
       }, 20)
 
       onMouseUp = (e) => {
-        if (isPC()) {
+        if (utils.isPC()) {
           document.removeEventListener('mousedown', this.onMouseDown)
           document.removeEventListener('mousemove', this.onMouseMove)
         } else {
