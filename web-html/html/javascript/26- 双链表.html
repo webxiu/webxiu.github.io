@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function DoubleLinkTable() {
+        // 添加节点
+        function Node(data) {
+          this.data = data;
+          this.next = null;
+          this.tail = null;
+        }
+        // 属性
+        this.head = null;
+        this.tail = null;
+        this.length = 0;
+        // 1.添加方法
+        DoubleLinkTable.prototype.append = function (data) {
+          // 1.创建行的节点
+          var newNode = new Node(data);
+          // 2.判断是否添加的是第一个节点
+          if (this.length === 0) {
+            this.head = newNode;
+            this.tail = newNode;
+          } else {
+            newNode.prev = this.tail;
+            this.tail.next = newNode;
+            this.tail = newNode;
+          }
+          // 3.链表长度添加
+          this.length += 1;
+        };
+        // 2. 链表转字符串
+        // 2.1 toString方法
+        DoubleLinkTable.prototype.toString = function () {
+          return this.afterString();
+        };
+        // 2.2 beforeString方法
+        DoubleLinkTable.prototype.beforeString = function () {
+          // 1.定义变量
+          var current = this.tail;
+          var resultString = "";
+
+          // 2.依次向后遍历, 获取每一个节点
+          while (current) {
+            resultString += JSON.stringify(current.data) + "--";
+            current = current.prev;
+          }
+          return resultString;
+        };
+
+        // 2.1 afterString方法
+        DoubleLinkTable.prototype.afterString = function () {
+          // 1.定义变量
+          var current = this.head;
+          var resultString = "";
+
+          // 2.依次向后遍历, 获取每一个节点
+          while (current) {
+            resultString += JSON.stringify(current.data) + "--";
+            current = current.next;
+          }
+          return resultString;
+        };
+
+        // 3.双向链表插入
+        DoubleLinkTable.prototype.insert = function (position, data) {
+          // 1.越界判断
+          if (position < 0 || position > this.length) return false;
+          // 2.根据data创建新的节点
+          var newNode = new Node(data);
+          // 3.判断原来的列表是否为空
+          if (this.length == 0) {
+            this.head = newNode;
+            this.tail = newNode;
+          } else {
+            if (position == 0) {
+              this.head.prev = newNode;
+              newNode.next = this.head;
+              this.head = newNode;
+            } else if (position == this.length) {
+              newNode.prev = this.tail;
+              this.tail.next = newNode;
+              this.tail = newNode;
+            } else {
+              var current = this.head;
+              var index = 0;
+              while (index++ < position) {
+                current = current.next;
+              }
+
+              // 修改指针
+              newNode.next = current;
+              newNode.prev = current.prev;
+              current.prev.next = newNode;
+              current.prev = newNode;
+            }
+          }
+          var current = this.head;
+          var resultString = "";
+
+          // 4.length+1
+          this.length += 1;
+          return true;
+        };
+      }
+
+      const link = new DoubleLinkTable();
+      link.append({ a: 3, b: 5 });
+      link.append({ a: 4, b: 7 });
+      link.append({ a: 5, b: 8 });
+      link.append({ a: 6, b: 9 });
+      console.log("link", link);
+
+      console.log("link.toString()", link.toString());
+      // console.log("link.beforeString()", link.beforeString());
+      // console.log("link.afterString()", link.afterString());
+      link.insert(2, { cc: 99, dd: "我是插入的数据" });
+      console.log("link.toString()", link.toString());
+    </script>
+  </body>
+</html>

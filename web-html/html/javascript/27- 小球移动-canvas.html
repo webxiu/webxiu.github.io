@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    #canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    canvas.width = 400;
+    canvas.height = 400;
+
+    function Ball(x, y, dx, dy, r, color) {
+      this.x = x;
+      this.y = y;
+      this.dx = dx;
+      this.dy = dy;
+      this.r = r;
+      this.color = color;
+      this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      };
+      this.update = function () {
+        if (this.x + this.r > canvas.width || this.x - this.r < 0) {
+          this.dx = -this.dx * Math.random();
+        }
+        if (this.y + this.r > canvas.height || this.y - this.r < 0) {
+          this.dy = -this.dy;
+        }
+        this.x += this.dx;
+        this.y += this.dy;
+        this.draw();
+      };
+    }
+
+    let colorArr = ["#f60", "#f0f", "00f", "#0f0", '#f6a']
+
+    let ballArr = []
+
+    for (let i = 0; i < 200; i++) {
+      let radius = Math.random() * 4 + 5;
+      let x = Math.random() * (canvas.width - 2 * radius) + radius;
+      let y = Math.random() * (canvas.height - 2 * radius) + radius;
+      let dx = (Math.random() - 0.5) * 2; //-1到1
+      let dy = (Math.random() - 0.5) * 2;
+      let color = colorArr[Math.floor(Math.random() * 5)]
+      ballArr.push(new Ball(x, y, dx, dy, radius, color))
+    }
+
+    function ballMove() {
+      requestAnimationFrame(arguments.callee);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const b of ballArr) {
+        b.update()
+      }
+    }
+    ballMove();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <!-- css样式 -->
+    <style>
+        #main {
+            position: relative;
+        }
+
+        #main div {
+            float: left;
+            width: auto;
+            height: auto;
+        }
+
+        #main img {
+            padding: 10px;
+            width: 180px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!--HTML样式 -->
+    <div id="main"></div>
+    <!--js样式 -->
+    <script>
+        //此加载出来的图片  是找的接口  不要介意呦\(^o^)/~
+        window.onload = function () {
+            http();
+        }
+        // 定义函数是为了在图片加载完成之后调用  否则获取不了高度
+        function layout(id, tag, img) {
+            // showImg  滚动执行函数
+            window.onscroll = showImg
+            var oMain = document.getElementById(id);
+            var oDiv = oMain.getElementsByTagName(tag);
+            var oImg = oMain.querySelectorAll(img);
+            imgPush(oMain, oDiv, oImg);
+        }
+        // 设置大盒子的宽度
+        function imgPush(oMain, oDiv, oImg) {
+            var oimg = [];
+            for (var i = 0; i < oImg.length; i++) {
+                oimg.push(oImg[i]);
+            }
+            var width = oimg[0].offsetWidth;
+            var DocuW = document.documentElement.clientWidth;
+            var list = Math.floor(DocuW / width);
+            oMain.style.cssText = "width:" + list * width + "px; margin: 0 auto;";
+            loca(oDiv, list, width);
+        }
+        // 让每个图片去该去的地方
+        function loca(oDiv, list, width) {
+            var Height = [];
+            for (var j = 0; j < oDiv.length; j++) {
+                if (j < list) {
+                    Height[j] = oDiv[j].offsetHeight
+                } else {
+                    var minH = Math.min.apply(null, Height);
+                    oDiv[j].style.position = 'absolute';
+                    oDiv[j].style.top = minH + 'px';
+                    oDiv[j].style.left = index() * width + 'px';
+                    Height[index()] += oDiv[j].offsetHeight;
+                }
+            }
+            // 获取每回遍历最小值的下标
+            function index() {
+                for (var h = 0; h < Height.length; h++) {
+                    if (Height[h] == minH) {
+                        return h;
+                    }
+                }
+            }
+        }
+        // 请求图片服务器  渲染页面
+        function http() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://www.apiopen.top/meituApi", true);
+            xhr.send();
+            var Main = document.getElementById("main");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(xhr.responseText).data
+                    for (var i = 0; i < data.length; i++) {
+                        var img = document.createElement("img");
+                        var div = document.createElement("div");
+                        img.src = data[i].url;
+                        div.appendChild(img);
+                        Main.appendChild(div);
+                    }
+                    // 当最后一个图片加载完毕  从新排序
+                    var img = document.getElementsByTagName("img");
+                    var subscript = img.length - 1;
+                    img[subscript].onload = function () {
+                        layout('main', 'div', 'img')
+                    }
+                }
+            }
+        }
+        //滚动事件
+        function showImg() {
+            var scollH = document.documentElement.scrollTop;
+            var cliH = document.documentElement.clientHeight;
+            var H = document.documentElement.scrollHeight;
+            var p = 1;
+            var s = 2;
+            if (H - scollH <= cliH + 150) {
+                console.log('========', p);
+                http();
+            }
+        }
+    </script>
+</body>
+
+</html>

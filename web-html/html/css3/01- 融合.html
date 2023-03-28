@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>融合</title>
+    <style type="text/css">
+      .container {
+        margin: 50px auto;
+        height: 140px;
+        width: 400px;
+        /* 给融合元素的父元素设置背景色 */
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* 给融合元素的父元素设置contrast */
+        filter: contrast(30);
+      }
+      .circle {
+        border-radius: 50%;
+        position: absolute;
+        /* 给融合元素设置blur */
+        filter: blur(10px);
+      }
+      .circle-1 {
+        height: 90px;
+        width: 90px;
+        background: #03a9f4;
+        transform: translate(-50px);
+        animation: 2s moving linear infinite alternate-reverse;
+      }
+      .circle-2 {
+        height: 60px;
+        width: 60px;
+        background: #0000ff;
+        transform: translate(50px);
+        animation: 2s moving linear infinite alternate;
+      }
+      /* 两个元素的移动 */
+      @keyframes moving {
+        0% {
+          transform: translate(50px);
+        }
+        100% {
+          transform: translate(-50px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="circle circle-1">1</div>
+      <div class="circle circle-2">2</div>
+    </div>
+  </body>
+</html>

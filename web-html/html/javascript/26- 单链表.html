@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function LinkTable() {
+        // 添加节点
+        function Node(data) {
+          this.data = data;
+          this.next = null;
+        }
+        // 属性
+        this.head = null;
+        this.length = 0;
+        // 1.添加方法
+        LinkTable.prototype.append = function (data) {
+          // 1.创建行的节点
+          var newNode = new Node(data);
+          // 2.判断是否添加的是第一个节点
+          if (this.length === 0) {
+            this.head = newNode;
+          } else {
+            // 找到最后一个节点
+            var current = this.head;
+            while (current.next) {
+              current = current.next;
+            }
+            // 最后节点的next指向新的节点
+            current.next = newNode;
+          }
+          // 3.链表长度添加
+          this.length += 1;
+        };
+      }
+
+      const link = new LinkTable();
+      link.append({ a: 3, b: 5 });
+      link.append({ a: 4, b: 7 });
+      console.log("link", link);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="../../assets/threejs/three.js"></script>
+  <script src="../../assets/threejs/OrbitControls.js"></script>
+  <script src="../../assets/js/tool.js"></script>
+</head>
+
+<body>
+  <div>
+    <h4>两帧渲染时间: <span class="time"></span></h4>
+    <h4>帧率FPS: <span class="fps"></span></h4>
+  </div>
+  <script>
+    function dom(selector) {
+      return document.querySelector(selector);
+    }
+    // 1.创建场景
+    const scene = new THREE.Scene();
+    // 2.创建长方体(x,y,z)
+    const geometry = new THREE.BoxGeometry(100, 100, 100);
+    // 3.创建材质
+    // const material = new THREE.MeshBasicMaterial({//不受光源影响
+    const material = new THREE.MeshLambertMaterial({
+      color: 0x00ffff,
+      transparent: true,
+      opacity: 0.5,
+    });
+    // 4.创建网格
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, 0);
+    // mesh.rotateY(Math.PI / 4);// 坐标旋转
+    // 网格添加到场景
+    scene.add(mesh);
+
+    // 5.1添加环境光
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+    // 5.2添加点光源
+    const pointLight = new THREE.PointLight(0xffffff, 0.4);
+    pointLight.position.set(150, 160, 30);
+    scene.add(pointLight);
+    // 5.3添加三维坐标系
+    const axesHelper = new THREE.AxesHelper(200); // 坐标长度
+    scene.add(axesHelper);
+    // 5.4可视化点光源
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, 10);
+    scene.add(pointLightHelper);
+
+    // 6.创建相机
+    const width = 800;
+    const height = 500;
+    const camera = new THREE.PerspectiveCamera(45, width / height, 1, 3000);
+    // 相机在三维坐标系的位置
+    camera.position.set(292, 223, 185);
+    // 观看的坐标
+    camera.lookAt(0, 0, 0);
+
+    // 7.创建渲染器
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height); // 设置渲染区域的尺寸
+    renderer.render(scene, camera); // 执行渲染
+    // 8.添加到页面中
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // 9.添加事件控制
+    controls.addEventListener("change", function () {
+      renderer.render(scene, camera);
+    });
+
+    // 计算每帧多少时间
+    const clock = new THREE.Clock();
+
+    function showReult(ctime) {
+      const fps = 1000 / ctime;
+      dom(".time").innerHTML = ctime.toFixed();
+      dom(".fps").innerHTML = ctime ? fps.toFixed() : 0;
+    }
+    const setFps = throttle(showReult, 2000);
+    // 旋转动画
+    function rotate() {
+      const ctime = clock.getDelta() * 1000;
+      setFps(ctime);
+      mesh.rotateY(0.01);
+      renderer.render(scene, camera);
+      requestAnimationFrame(rotate);
+    }
+    rotate();
+  </script>
+</body>
+
+</html>

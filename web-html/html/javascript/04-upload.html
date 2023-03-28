@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style type="text/css">
+    .show_a {
+      height: 25px;
+      display: inline-block;
+      position: relative;
+      padding: 0px 15px;
+      text-decoration: none;
+      color: #087ab2;
+      outline: none;
+      text-decoration: azure;
+      background-color: #fafafa;
+      border-radius: 7px;
+      border: 1px solid gainsboro;
+    }
+
+    .hid_inp {
+      position: absolute;
+      overflow: hidden;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .inp_btn {
+      height: 27px;
+      padding: 0px 20px;
+      text-decoration: azure;
+      background-color: #fafafa;
+      border-radius: 7px;
+      border: 1px solid gainsboro;
+      color: #087ab2;
+    }
+
+    .showinp {
+      padding-left: 10px;
+    }
+
+    body {
+      font-family: "Segoe UI", "PMingLiu", "PingFang SC", "WenQuanYi Micro Hei", Sans-serif;
+      font-size: 13px;
+      color: #454545;
+      line-height: 1.8;
+      -webkit-text-size-adjust: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input class="file_inp" />55555
+
+
+  <script>
+    //替换class=file_inp的元素为上传附件的div
+    function inpChangeFile() {
+      var inpcount = document.getElementsByClassName('file_inp').length;
+      if (inpcount > 0) {
+        for (var i = 0; i < inpcount; i++) {
+          var oldinp = document.getElementsByClassName('file_inp')[0];
+          var newform = creatdivs(i);
+          oldinp.parentNode.replaceChild(newform, oldinp);
+        }
+      } else {
+        return false;
+      }
+    }
+    //创建包含上传附件插件的div
+    function creatdivs(n) {
+      var div = document.createElement("div");
+      div.setAttribute("id", "fordiv" + n);
+      var a = document.createElement("a");
+      a.setAttribute("class", "show_a");
+      a.setAttribute("href", "javaScript:void(0)");
+      var inp0 = creatinps("file", "hidinp", n);
+      var inp1 = creatinps("button", "btninp", n);
+      var span = document.createElement("span");
+      span.setAttribute("id", "showinp" + n);
+      span.setAttribute("class", "showinp");
+      a.innerText = "选择文件";
+      a.appendChild(inp0);
+      div.appendChild(a);
+      div.appendChild(inp1);
+      div.appendChild(span);
+      return div;
+    }
+    function creatinps(type, objid, k) {
+      var inp = document.createElement("input");
+      if (type == "file") {
+        inp.setAttribute("multiple", "multiple");
+        inp.setAttribute("class", "hid_inp");
+        inp.setAttribute("onchange", "inpChangeText('" + k + "')");
+        inp.setAttribute("id", objid + k);
+      } else if (type == "button") {
+        inp.value = "删除";
+        inp.setAttribute("class", "inp_btn");
+        inp.setAttribute("onclick", "inpCleanText('" + k + "')");
+      }
+      inp.setAttribute("type", type);
+      return inp;
+    }
+    //将文件名显示到后面的span标签内
+    function inpChangeText(k) {
+      var file1 = document.getElementById('hidinp' + k).files[0];
+      var file2 = document.getElementById('showinp' + k);
+      file2.innerText = file1.name;
+    }
+    //删除文件
+    function inpCleanText(n) {
+      var file = document.getElementById("hidinp" + n).files[0];
+      if (file) {
+        var r = confirm("您是否要删除掉该文件(对您本地文件无影响)?");
+        if (r == true) {
+          var inpobj = creatinps('file', 'hidinp', n);
+          var aobj = document.getElementsByClassName("show_a")[n];
+          aobj.removeChild(document.getElementById("hidinp" + n));
+          aobj.appendChild(inpobj);
+          document.getElementById("showinp" + n).innerText = "";
+        } else {
+          return false;
+        }
+      }
+    }
+
+  </script>
+  <script type="text/javascript">
+    inpChangeFile();
+  </script>
+</body>
+
+</html>

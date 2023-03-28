@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    *{padding:0;margin:0}
+    a{text-decoration:none;color:#fff}
+    ul,li{list-style:none}
+    body{background:#333;font-size:12px;font-family:"微软雅黑"}
+    .box{width:120px;height:120px;background:red;position:absolute;top:0;left:0;border-radius:50%}
+    .box:hover{background:green}
+  </style>
+</head>
+<body>
+
+
+    <script>
+        window.onload = function(){
+            var arr = [];
+            for(var i=0;i<10;i++){
+                var boxDom = document.createElement('div');
+                boxDom.className = 'box';
+                boxDom.x = 0;
+                boxDom.y = 0;
+                boxDom.xstep = i+2;
+                boxDom.ystep = i+2;
+                //boxDom.bgcolor = 'red';
+                document.body.appendChild(boxDom);
+                arr.push(boxDom);
+                boxDom.onclick = function(){
+                    var items = arr.pop();
+                    document.body.removeChild(items);
+                }
+            }
+
+            function draw(){
+                for(var i=0;i<arr.length;i++){
+                    var boxDom = arr[i];
+                    var w = window.innerWidth - boxDom.offsetWidth;
+                    var h = window.innerHeight - boxDom.offsetHeight;
+                    boxDom.x+=boxDom.xstep;
+                    boxDom.y+=boxDom.ystep;
+
+                    if(boxDom.x>=w){
+                        boxDom.xstep = -boxDom.xstep;
+                        boxDom.x = w;
+                        boxDom.bgcolor = 'green';
+                    }
+                    if(boxDom.y>=h){
+                        boxDom.ystep = -boxDom.ystep;
+                        boxDom.y = h;
+                        boxDom.bgcolor = 'pink';
+                    }
+                    if(boxDom.x<=0){
+                        boxDom.x = 0;
+                        boxDom.xstep = -boxDom.xstep;
+                        boxDom.bgcolor = '#000';
+                    }
+                    if(boxDom.y<=0){
+                        boxDom.y = 0;
+                        boxDom.ystep = -boxDom.ystep;
+                        boxDom.bgcolor = 'orange';
+                    }
+
+                    boxDom.style.top = boxDom.y+'px';
+                    boxDom.style.left = boxDom.x+'px';
+                    boxDom.style.background = boxDom.bgcolor;
+
+
+                }
+            }
+            var timer = setInterval(draw,30);
+        }
+    </script>
+
+</body>
+</html>

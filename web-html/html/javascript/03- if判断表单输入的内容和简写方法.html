@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <input type="text" id="username" placeholder="情输入用户名称">
+        <input type="button" value="Ok" onclick="validator();" />
+    </form>
+    <hi id="result"></hi>
+
+    <script>
+        function validator(){
+            var username = document.getElementById('username').value || '没有输入';
+            var h1Dom = document.getElementById('result');
+            h1Dom.innerHTML = username;
+
+            // if(username!='' && username.length>0){
+            //     h1Dom.innerHTML = username;
+            // }else{
+            //     h1Dom.innerHTML = '没有输入';
+            // }
+
+        };
+    </script>
+
+</body>
+</html>

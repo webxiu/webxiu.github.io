@@ -1,0 +1,87 @@
+<!Doctype html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="关键词" />
+    <meta name="description" content="描述" />
+    <meta name="author" content="奇客艺术" />
+</head>
+
+<body>
+    <p id="GeoDisplay"></p>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        // 1.
+        //     var options = {
+        //       enableHighAccuracy: true,
+        //       timeout: 5000,
+        //       maximumAge: 0
+        //     };
+
+        // function success(pos) {
+        //   var crd = pos.coords;
+
+        //   console.log('Your current position is:');
+        //   console.log(`Latitude : ${crd.latitude}`);
+        //   console.log(`Longitude: ${crd.longitude}`);
+        //   console.log(`More or less ${crd.accuracy} meters.`);
+        // }
+
+        // function error(err) {
+        //   console.warn(`ERROR(${err.code}): ${err.message}`);
+        // }
+
+        // navigator.geolocation.getCurrentPosition(success, error, options);
+
+        // 2.解决苹果新系统获取位置限制
+        var options = {
+            enableHighAccuracy: true,
+            maximumAge: 30000,
+            timeout: 12000
+        }
+
+        window.locationCallback = function (err, position) {
+            if (err) {
+                showError(err);
+                return;
+            }
+
+            showPosition(position);
+        }
+
+
+        var str = '<iframe src="javascript:(function(){ ' +
+            'window.navigator.geolocation.getCurrentPosition(' +
+            'function(position){parent && parent.locationCallback && parent.locationCallback(null,position);}, ' +
+            'function(err){parent && parent.locationCallback && parent.locationCallback(err);}, ' +
+            '{enableHighAccuracy : ' + options.enableHighAccuracy + ', maximumAge : ' + options.maximumAge +
+            ', timeout :' + options.timeout + '})' +
+            ';})()" style="display:none;"></iframe>';
+        $(str).appendTo('body')
+
+
+        window.showPosition = function (position) {
+            //  TODO
+        }
+        window.showError = function (error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert('用户不允许地理定位!');
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert('无法获取当前位置!');
+                    break;
+                case error.TIMEOUT:
+                    alert('操作超时!');
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert('未知错误！');
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #canvas {
+      margin-top: 20px;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div>
+      <div>模拟播放条</div>
+      <button id="start">开始播放</button>
+      <button id="stop">停止播放</button>
+    </div>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script>
+    window.onload = function () {
+      function dom(selector) {
+        return document.querySelector(selector);
+      }
+
+      var canvas = dom("#canvas");
+      var context = canvas.getContext("2d");
+      canvas.width = 400;
+      canvas.height = 400;
+
+      let isPress = false;
+      let InOut = false;
+
+      let timer = null;
+      let xStart = 0;
+
+      function getRealPos(e) {
+        const {
+          clientX,
+          clientY
+        } = e;
+        const {
+          left,
+          top
+        } = e.target.getBoundingClientRect();
+        const x = clientX - left;
+        const y = clientY - top;
+        return {
+          x,
+          y,
+        };
+      }
+
+      canvas.addEventListener("mousemove", onBgmove);
+      /** 鼠标按下 */
+      canvas.addEventListener("mousedown", (e) => {
+        const {
+          x,
+          y
+        } = getRealPos(e);
+        InOut = context.isPointInPath(x, y);
+        if (InOut) isPress = true;
+        canvas.addEventListener("mouseup", onBgup);
+        timer && clearInterval(timer);
+        console.log("压下去", x, y, InOut);
+      });
+
+      /** 鼠标移动 */
+      function onBgmove(e) {
+        const {
+          clientX,
+          clientY
+        } = e;
+        const {
+          x,
+          y
+        } = getRealPos(e);
+        mInOut = context.isPointInPath(x, y);
+        console.log("在线上:", mInOut);
+        // 按压拖动
+        if (isPress) {
+          canvas.style.cursor = "col-resize";
+          if (InOut) {
+            // DrawLine(canvas, x);
+            DrawLine2(canvas, x);
+            if (y > canvas.height - 20) {
+              canvas.style.cursor = "pointer";
+            }
+          }
+        } else {
+          // 没有按压时移入区域
+          if (mInOut) {
+            canvas.style.cursor = "col-resize";
+            if (y > canvas.height - 20) {
+              canvas.style.cursor = "pointer";
+            }
+          } else {
+            canvas.style.cursor = "default";
+          }
+        }
+      }
+
+      function onBgup(e) {
+        const {
+          x,
+          y
+        } = getRealPos(e);
+        canvas.style.cursor = "default";
+        if (!InOut) {
+          // DrawLine(canvas, x);
+          DrawLine2(canvas, x);
+        }
+        isPress = false;
+        InOut = false;
+      }
+
+      /** 画线1 */
+      function DrawLine(canvas, x, w = 4) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.beginPath();
+        context.fillStyle = "blue";
+        context.strokeStyle = "blue";
+        context.rect(x - w / 2, 0, w, canvas.height);
+        context.fill();
+        context.stroke();
+      }
+      /** 画线2 */
+      function DrawLine2(canvas, x, w = 1) {
+        const gap = 5;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.beginPath();
+        context.moveTo(x, 0);
+        context.lineTo(x, canvas.height - 20);
+        context.lineTo(x - gap, canvas.height - 14);
+        context.lineTo(x - gap, canvas.height);
+
+        context.lineTo(x + w + gap, canvas.height);
+        context.lineTo(x + w + gap, canvas.height - 14);
+        context.lineTo(x + w, canvas.height - 20);
+        context.lineTo(x + w, 0);
+        context.closePath();
+        context.fillStyle = "blue";
+        context.strokeStyle = "blue";
+        context.fill();
+        context.stroke();
+      }
+
+      // 开始移动
+      dom("#start").addEventListener("click", () => {
+        timer && clearInterval(timer);
+        timer = setInterval(() => {
+          xStart++;
+          if (xStart === dom("#canvas").offsetWidth) {
+            xStart = 0;
+          }
+          DrawLine2(canvas, xStart);
+        }, 20);
+      });
+      // 停止移动
+      dom("#stop").addEventListener("click", () => {
+        clearInterval(timer);
+      });
+    };
+  </script>
+</body>
+
+</html>

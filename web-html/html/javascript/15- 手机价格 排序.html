@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{padding:0;margin:0}
+        a{text-decoration:none;color:#fff}
+        ul,li{list-style:none}
+        .fr{float:right}
+        body{font-size:12px;font-family:"微软雅黑"}
+        #box{width:640px;height:300px;margin:100px auto}
+        #box li{background:#333;color:#fff;padding:10px;margin-top:2px;}
+
+    </style>
+</head>
+<body>
+    <div id="box">
+        <ul>
+            <li>名称?<a href="javascript:void(0);" onclick="sortLi()"><span class='price fr'>价格</span></a></li>
+        </ul>
+        <ul id="shoplist">
+            <li>SanDisk 16GB存储卡（Class4） 黑色<span class='price fr'>20￥</span></li>
+            <li>适配机型： 小米平板 / 1 / 1S, 红米1S/红米, 红米Note/增强版, 红米手机2, 红米手机2A<span class='price fr'>2320￥</span></li>
+            <li>小米体重秤 白色<span class='price fr'>200￥</span></li>
+            <li>适配机型： 小米Note、小米4、小米3、红米2/2A、红米Note 4G<span class='price fr'>1200￥</span></li>
+            <li>因为玻璃商品特殊性，每台小米体重秤需单独加15元配送费<span class='price fr'>3200￥</span></li>
+            <li>适配机型： 小米Note、小米4、小米3、红米2/2A、红米Note 4G <span class='price fr'>2080￥</span></li>
+            <li>因为玻璃商品特殊性，每台小米体重秤需单独加15元配送费<span class='price fr'>21100￥</span></li>
+            <li>适配机型： 小米Note、小米4、小米3、红米2/2A、红米Note 4G <span class='price fr'>90230￥</span></li>
+            <li>因为玻璃商品特殊性，每台小米体重秤需单独加15元配送费<span class='price fr'>55300￥</span></li>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        var mark = true;
+        function sortLi(){
+            mark = !mark;
+            var arr = [];
+            var shoplistDom = document.getElementById('shoplist');
+            var liDoms = shoplistDom.children;
+            var len = liDoms.length;
+            for(var i=0;i<len;i++){
+                arr.push(liDoms[i]);
+            }
+            arr.sort(function(a,b){//a,b就是li，父元素
+                var p1 = parseInt(a.getElementsByTagName('span')[0].innerHTML);
+                var p2 = parseInt(b.getElementsByTagName('span')[0].innerHTML);
+                if(mark){
+                    return p2 - p1;
+                }else{
+                    return p1 - p2;
+                }
+            });
+
+            for(var i=0;i<arr.length;i++){
+                shoplistDom.appendChild(arr[i]);
+
+            }
+        }
+    </script>
+
+</body>
+</html>

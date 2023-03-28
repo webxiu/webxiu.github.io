@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{padding:0;margin:0}
+        a{text-decoration:none;color:#fff}
+        ul,li{list-style:none}
+        body{font-size:12px;font-family:"微软雅黑"}
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+
+    <script type="text/javascript">
+    var arr = ["小五","张三","王五","keke","小宇","小德","小冬","小强"]
+    for(var i in arr){
+        console.log(i + '==='+arr[i]);
+    }
+//封装的方法
+    function css(id,json){
+            var boxDom = document.getElementById(id);
+            for(var key in json){
+                var value = json[key];
+                if(typeof value=="number")value+="px";
+                boxDom.style[key] = value;
+            }
+        };
+
+        css("box",{
+            border:"10px solid green",
+            width:640,
+            height:200,
+            background:"red"
+        });
+
+    //取出所有的偶数
+    //如果遇到keke就循环退出 retrun跟循环无关系
+    for(var i=0;i<arr.length;i++){
+        var name = arr[i];
+        buyTip(name);
+        if(name=='keke'){
+            break;
+        }
+
+    }
+    function buyTip(name){
+        alert(name+'报到');
+
+    }
+
+    /*while 和 do while循环
+        var i = 0;
+        while(i<=9){
+            alert(i);
+            i++;
+        }
+
+       //先打印再判断
+       var j = 0;
+        do
+        {
+            alert(j);
+            j++;
+        }
+        while(j<7);
+    */
+
+
+    </script>
+
+</body>
+</html>

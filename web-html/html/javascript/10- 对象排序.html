@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{padding:0;margin:0}
+        a{text-decoration:none;color:#fff}
+        ul,li{list-style:none}
+        body{background:#333;font-size:12px;font-family:"微软雅黑"}
+    </style>
+
+</head>
+<body>
+    <script type="text/javascript">
+        var arr = [0,9,100,8,88,7,21,6,5,4,3,2,1]
+        //arr.sort();//默认是升序,sort默认的排序算法：火狐是:并归算法，google是：快速算法===分治算法
+        //算法：冒泡，选择，搜索算法，并归算法，快速。
+        //字母排序
+        Array.prototype.hmSort = function(mark){//mark代表 真假开关
+            this.sort(function(a,b){
+                if(mark){
+                    return a-b;
+                }else{
+                    return b-a;
+                }
+            });
+        };
+        arr.hmSort(false);//true正排   false反排
+        alert(arr);
+
+
+        //对象无法排序，必须要放入数组中才能排序，只有数组有排序
+        var json1 = {username:'b',age:30};
+        var json2 = {username:'c',age:15};
+        var json3 = {username:'a',age:10};
+        var arr = [];
+        arr.push(json1);
+        arr.push(json2);
+        arr.push(json3);
+
+        arr.sort(function(a,b){
+            var u1 = a.username;
+            var u2 = b.username;
+            if(u1.toLowerCase() < u2.toLowerCase()){
+                return  -1;
+            }
+        });
+        //alert(JSON.stringify(arr));
+    </script>
+</body>
+</html>

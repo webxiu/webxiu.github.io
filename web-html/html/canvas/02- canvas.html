@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas1"></canvas>
+
+    <script>
+      window.onload = function () {
+        var canvas1 = document.getElementById("canvas1");
+        var ctx = canvas1.getContext("2d");
+        canvas1.width = 400;
+        canvas1.height = 400;
+        ctx.fillStyle = "#eee";
+        ctx.fillRect(0, 0, canvas1.width, canvas1.height);
+        for (let i = 0; i < 200; i++) {
+          var r = Math.random() * 10 + 10;
+          var x = Math.random() * canvas1.width;
+          var y = Math.random() * canvas1.height;
+          var a = Math.random() * 360;
+          drawStart(ctx, r / 2, r, x, y, a);
+        }
+      };
+
+      /*
+      ctx: canvas上下文对象
+      r: 小圆半径
+      R: 大圆半径
+      x: 圆心x
+      x: 圆心y
+      */
+      function drawStart(ctx, r, R, x, y, angle) {
+        ctx.beginPath();
+        for (var i = 0; i < 5; i++) {
+          ctx.lineTo(
+            Math.cos(((18 + i * 72 - angle) / 180) * Math.PI) * R + x,
+            -Math.sin(((18 + i * 72 - angle) / 180) * Math.PI) * R + y
+          );
+          ctx.lineTo(
+            Math.cos(((54 + i * 72 - angle) / 180) * Math.PI) * r + x,
+            -Math.sin(((54 + i * 72 - angle) / 180) * Math.PI) * r + y
+          );
+        }
+        ctx.closePath();
+
+        ctx.fillStyle = "#0f0";
+        ctx.strokeStyle = "#f0f";
+        ctx.lineWidth = 2;
+        ctx.lineJoin = "round";
+
+        ctx.fill();
+        ctx.stroke();
+      }
+    </script>
+  </body>
+</html>

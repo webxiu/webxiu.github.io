@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{padding:0;margin:0}
+        a{text-decoration:none;color:#fff}
+        ul,li{list-style:none}
+        body{font-size:12px;font-family:"微软雅黑"}
+        #box2{position:relative;width:210px;height:210px;background:#111;margin:50px auto}
+        #box{width:4px;height:4px;position:absolute;background:red;border-radius: 50%}
+    </style>
+</head>
+<body>
+    <div id="box2">
+        <div id="box"></div>
+    </div>
+
+        <script type="text/javascript">
+            window.onload = function(){
+                var boxDom = document.getElementById('box');
+                var speed = 0.2;
+                var angle = 0;
+                var arr = [];
+                function draw(){
+                    var x = 100+Math.sin(angle)*100;//100为位置---200为半径
+                    var y = 100+Math.cos(angle)*100;
+                    angle+=speed;
+                    boxDom.style.left = y + 'px';
+                    boxDom.style.top = x + 'px';
+                    var ndiv = document.createElement('div');
+                    ndiv.style.width = '5px';
+                    ndiv.style.height = '5px';
+                    ndiv.style.background = 'blue';
+                    ndiv.style.position = 'absolute';
+                    ndiv.style.left = boxDom.offsetLeft+'px';
+                    ndiv.style.top = boxDom.offsetTop+'px';
+                    arr.push(ndiv);
+                    document.getElementById('box2').appendChild(ndiv);
+                    if(arr.length>25){
+                        document.getElementById('box2').removeChild(arr.shift());
+                    }
+                }
+                setInterval(draw,30);
+            }
+
+
+        </script>
+
+
+</body>
+</html>

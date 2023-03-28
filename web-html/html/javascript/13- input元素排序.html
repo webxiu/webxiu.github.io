@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>潭州学院-keke老师QQ:792185203</title>
+  <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+  <style>
+    *{padding:0;margin:0}
+    a{text-decoration:none;color:#fff}
+    ul,li{list-style:none}
+    body{background:#333;font-size:12px;font-family:"微软雅黑"}
+  </style>
+ </head>
+ <body>
+
+    <div id="box">
+        <input type="text" class="s2" value="2"/>
+        <input type="text" class="s1" value="1"/>
+        <input type="text" class="s3" value="3"/>
+        <input type="text" class="s4" value="4"/>
+        <input type="text" class="s5" value="5"/>
+    </div>
+
+
+    <div id="box">
+        <input type="text" class="s2" value="2"/>
+        <input type="text" class="s1" value="1"/>
+        <input type="text" class="s3" value="3"/>
+        <input type="text" class="s4" value="4"/>
+        <input type="text" class="s5" value="5"/>
+    </div>
+
+
+    <!--
+    <div id="box2">
+        <input type="text" class="s1" value="1"/>
+        <input type="text" class="s2" value="2"/>
+        <input type="text" class="s3" value="3"/>
+        <input type="text" class="s4" value="4"/>
+        <input type="text" class="s5" value="5"/>
+    </div>-->
+
+
+
+
+    <input type="button" value="排序" onclick="tzSort()"/>
+
+
+    <script type="text/javascript">
+        function tzSort(){
+            var arr = [];//初始化数组
+            var boxDom = document.getElementById("box");//document.getElementById 根据元素的id找到domd对象
+            var inputs = boxDom.children;//children找到一个元素下面所有在元素
+            var len = inputs.length;
+            for(var i=0;i<len;i++){
+                arr.push(inputs[i]);
+            };
+
+
+            arr.sort(function(a,b){
+                return b.value - a.value ;
+            });
+
+
+            boxDom.innerHTML = "";
+            //循环排序好的数组
+            for(var i=0;i<arr.length;i++){
+                boxDom.appendChild(arr[i]);//boxDom.appendChild(arr[i])添加一个元素的对象
+            }
+        }
+
+        //作业：更具div内容和中文排序
+    </script>
+ </body>
+</html>

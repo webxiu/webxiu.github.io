@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="../../assets/js/holder.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      padding: 15px;
+      background: #f1f1f1;
+      width: 80%;
+      height: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .wrapper {
+      position: relative;
+      /* columns: 5;
+        column-gap: 10px; */
+    }
+
+    .wf-item {
+      position: absolute;
+      box-shadow: 0px 0px 9px #f60;
+    }
+
+    .wf-item :hover {
+      box-shadow: 0px 0px 9px #333;
+    }
+
+    .wf-item .wf-img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="wrapper J_waterfall">
+      <div class="wf-item">
+        <img src="holder.js/100px150" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px250" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px350" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px230" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px365" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px125" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px187" class="wf-img" />
+      </div>
+      <div class="wf-item">
+        <img src="holder.js/100px160" class="wf-img" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function Waterfall(opt) {
+        this.el = document.getElementsByClassName(opt.el)[0];
+        this.oItems = this.el.getElementsByTagName("div");
+        this.colmun = opt.colmun;
+        this.gap = opt.gap;
+        this.itemWidth =
+          (this.el.offsetWidth - (this.colmun - 1) * this.gap) / this.colmun;
+
+        this.heightArr = [];
+        this.init();
+      }
+
+      Waterfall.prototype.init = function () {
+        for (let i = 0; i < this.oItems.length; i++) {
+          var item = this.oItems[i];
+          item.style.width = this.itemWidth + "px";
+
+          if (i < this.colmun) {
+            item.style.top = "0px";
+            item.style.left = i * (this.itemWidth + this.gap) + "px";
+            this.heightArr.push(item.offsetHeight);
+          } else {
+            var minIdx = getMinIdx(this.heightArr);
+            console.log(`minIdx:`, minIdx, this.heightArr);
+            item.style.left = this.oItems[minIdx].offsetLeft + "px";
+            item.style.top = this.heightArr[minIdx] + this.gap + "px";
+            this.heightArr[minIdx] += item.offsetHeight + this.gap;
+          }
+        }
+      };
+
+      function getMinIdx(arr) {
+        return arr.indexOf(Math.min.apply(null, arr));
+      }
+
+      window.Waterfall = Waterfall;
+    })();
+
+    // 需要等到dom加载完毕在获取元素的 offsetHeight, 否则获取的高度不能正确
+    window.onload = function () {
+      var maxColumn = window.innerWidth < 996 ? 3 : 5;
+      new Waterfall({
+        el: "J_waterfall",
+        colmun: maxColumn || 5,
+        gap: 20,
+      });
+    };
+  </script>
+</body>
+
+</html>

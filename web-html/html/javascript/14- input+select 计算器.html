@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="a">
+    <select name="" id="op">
+        <option value="+" selected="selected">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+        <option value="%">%</option>
+    </select>
+    <input type="text" id="b">
+    <input type="text" id="result">
+    <input type="button" onclick="test();" value="计算">
+
+    <script type="text/javascript">
+        function test() {
+            var a = document.getElementById('a').value *1;//*1转数字最快的方式
+            var b = document.getElementById('b').value *1;
+            var op = document.getElementById('op').value;
+            var c = eval(a+op+b);
+            document.getElementById('result').value = c;
+        }
+    </script>
+
+</body>
+</html>

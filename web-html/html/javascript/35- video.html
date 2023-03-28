@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <video src="../../assets/media/fffoi.mp4" controls></video>
+  <img id="img" alt="" />
+
+  <script>
+    window.onload = function () {
+      function dom(selector) {
+        return document.querySelector(selector);
+      }
+      /**
+       * 获取视频的封面图信息
+       * @param url 视频地址
+       * @param second 秒数
+       */
+      function getVideoBase64(url, second = 0) {
+        return new Promise((resolve, reject) => {
+          const video = document.createElement("video");
+          video.setAttribute("crossOrigin", "anonymous"); // 处理跨域
+          video.setAttribute("src", url);
+          // 静音操作，防止播放失败
+          video.setAttribute("muted", "muted");
+          video.addEventListener("loadeddata", async () => {
+            const canvas = document.createElement("canvas");
+            const {
+              width,
+              height
+            } = video; // canvas的尺寸和图片一样
+            canvas.width = width || 368;
+            canvas.height = height || 654;
+
+            if (second) {
+              video.currentTime = 5;
+              // 播放到当前时间的帧，才能截取到当前的画面
+              await video.play();
+              await video.pause();
+            }
+            console.log("video.currentTime", video.currentTime);
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, width, height);
+            const url = canvas.toDataURL("image/jpeg");
+            console.log("ctx", ctx.getImageData(50, 50, 100, 100));
+            resolve(url);
+          });
+        });
+      }
+
+      getVideoBase64("http://localhost/web-html/source/media/fffoi.mp4", 12).then((res) => {
+        console.log("res", res);
+        dom("#img").src = res;
+      });
+    };
+
+    const arr = [1];
+    const uniques = (arr) => {
+      const map = new Map();
+      const res = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (!map.has(arr[i])) {
+          map.set(arr[i], true);
+          res.push(arr[i]);
+        }
+        return res;
+      }
+    };
+  </script>
+</body>
+
+</html>
