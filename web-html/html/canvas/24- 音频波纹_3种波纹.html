@@ -1,221 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        background: linear-gradient(to right, #e9d362, #333333);
+        display: grid;
+        place-content: center;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #e9d362, #333333);
-      display: grid;
-      place-content: center;
-    }
+      canvas {
+        position: fixed;
 
-    canvas {
-      position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        z-index: -100;
+      }
 
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100vw;
-      z-index: -100;
-    }
+      .play-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+      }
 
-    .play-area {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 15px;
-    }
+      .btn {
+        border: 1px solid transparent;
+        font-size: 16px;
+        padding: 4px 20px;
+        border-radius: 20px;
+        margin-right: 15px;
+        overflow: hidden;
+        display: inline-block;
+        cursor: pointer;
+        margin-left: 15px;
+      }
+    </style>
+  </head>
 
-    .btn {
-      border: 1px solid transparent;
-      font-size: 16px;
-      padding: 4px 20px;
-      border-radius: 20px;
-      margin-right: 15px;
-      overflow: hidden;
-      display: inline-block;
-      cursor: pointer;
-      margin-left: 15px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="player">
-    <div class="play-area">
-      <audio src="../../assets/media/cz.mp3" controls="controls"></audio>
-      <button class="btn normalBar">normalBar</button>
-      <button class="btn circleBar">circleBar</button>
-      <button class="btn ball">ball</button>
+  <body>
+    <div class="player">
+      <div class="play-area">
+        <audio src="../../assets/media/车站.mp3" controls="controls"></audio>
+        <button class="btn normalBar">normalBar</button>
+        <button class="btn circleBar">circleBar</button>
+        <button class="btn ball">ball</button>
+      </div>
     </div>
-  </div>
-  <canvas></canvas>
-</body>
-<script>
-  let audioElement,
-    audioCtx,
-    analyser,
-    source,
-    bufferLength,
-    dataArray,
-    frameID,
-    myContainer = []; //存储 需保持的图形(会动的)
-  const canvas = document.querySelector("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.save();
+    <canvas></canvas>
+  </body>
+  <script>
+    let audioElement,
+      audioCtx,
+      analyser,
+      source,
+      bufferLength,
+      dataArray,
+      frameID,
+      myContainer = []; //存储 需保持的图形(会动的)
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.save();
 
-  function initAudio() {
-    //获取媒体元素,用来生成声音源
-    audioElement = document.querySelector("audio");
-    // 设置允许跨域,audioContext连接对跨域有限制
-    audioElement.crossOrigin = "anonymous";
-    audioCtx = new AudioContext();
-    //利用接口得到分析器
-    analyser = audioCtx.createAnalyser();
-    //得到音源
-    source = audioCtx.createMediaElementSource(audioElement);
-    // source=>middle
-    source.connect(analyser);
-    //middle=>termial
-    analyser.connect(audioCtx.destination);
-    // 设置傅里叶变化的参数,用来设置分析范围
-    analyser.fftSize = 128;
-    //根据范围得到不同音频的数量的长度
-    bufferLength = analyser.frequencyBinCount;
-    //生成8位为一个item,长度为bufferLength的array
-    dataArray = new Uint8Array(bufferLength);
-  }
-
-  function drawBar() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // const bar_w = canvas.width / bufferLength;
-    const bar_w = 10;
-    for (let i = 0; i < bufferLength; i++) {
-      let bar_x = canvas.width / 2 + i * bar_w;
-      let bar_h = (dataArray[i] / 255) * canvas.height;
-      let bar_y = canvas.height - bar_h;
-      ctx.fillStyle = `green`;
-      ctx.fillRect(bar_x + i * 6, bar_y / 2, bar_w, bar_h);
-      ctx.fillRect((canvas.width / 2 - i * bar_w) - i * 6, bar_y / 2, bar_w, bar_h);
-
-    }
-  }
-
-  function drawCircleBar() {
-    ctx.clearRect(-canvas.width, -canvas.height, 2 * canvas.width, 2 * canvas.height);
-    const bar_w = canvas.width / bufferLength;
-    for (let i = 0; i < bufferLength; i++) {
-      ctx.rotate(Math.PI / (bufferLength / 2));
-      let bar_x = 0;
-      let bar_h = ((dataArray[i] / 255) * canvas.height) / 2;
-      let bar_y = -60 - bar_h;
-      ctx.fillStyle = `rgba(98, 233, 121, ${i / 100 + 0.3})`;
-      ctx.fillRect(bar_x, bar_y, bar_w, bar_h);
-    }
-  }
-
-  // musicBall
-  class MusicBall {
-    constructor(x, y, speedX, speedY, radius, color) {
-      this.x = x;
-      this.y = y;
-      this.SpdX = speedX;
-      this.SpdY = speedY;
-      this.radius = radius;
-      this.color = color;
-    }
-    static create(bufferLength, container, detail) {
-      for (let i = 0; i < bufferLength; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        let speedX = (Math.random() - 0.5) * 1;
-        let speedY = (Math.random() - 0.5) * 1;
-        let color =
-          detail.colorList[
-            Math.floor(Math.random() * detail.colorList.length)
-          ];
-        let radius = 0;
-        container.push(new MusicBall(x, y, speedX, speedY, radius, color));
-      }
+    function initAudio() {
+      //获取媒体元素,用来生成声音源
+      audioElement = document.querySelector("audio");
+      // 设置允许跨域,audioContext连接对跨域有限制
+      audioElement.crossOrigin = "anonymous";
+      audioCtx = new AudioContext();
+      //利用接口得到分析器
+      analyser = audioCtx.createAnalyser();
+      //得到音源
+      source = audioCtx.createMediaElementSource(audioElement);
+      // source=>middle
+      source.connect(analyser);
+      //middle=>termial
+      analyser.connect(audioCtx.destination);
+      // 设置傅里叶变化的参数,用来设置分析范围
+      analyser.fftSize = 128;
+      //根据范围得到不同音频的数量的长度
+      bufferLength = analyser.frequencyBinCount;
+      //生成8位为一个item,长度为bufferLength的array
+      dataArray = new Uint8Array(bufferLength);
     }
 
-    static drawBall() {
+    function drawBar() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      myContainer.forEach((ball, index) => ball.update(dataArray[index]));
+      // const bar_w = canvas.width / bufferLength;
+      const bar_w = 10;
+      for (let i = 0; i < bufferLength; i++) {
+        let bar_x = canvas.width / 2 + i * bar_w;
+        let bar_h = (dataArray[i] / 255) * canvas.height;
+        let bar_y = canvas.height - bar_h;
+        ctx.fillStyle = `green`;
+        ctx.fillRect(bar_x + i * 6, bar_y / 2, bar_w, bar_h);
+        ctx.fillRect(canvas.width / 2 - i * bar_w - i * 6, bar_y / 2, bar_w, bar_h);
+      }
     }
-    draw() {
-      ctx.beginPath(); //开始绘制
 
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      ctx.fillStyle = this.color;
-      ctx.fill();
+    function drawCircleBar() {
+      ctx.clearRect(-canvas.width, -canvas.height, 2 * canvas.width, 2 * canvas.height);
+      const bar_w = canvas.width / bufferLength;
+      for (let i = 0; i < bufferLength; i++) {
+        ctx.rotate(Math.PI / (bufferLength / 2));
+        let bar_x = 0;
+        let bar_h = ((dataArray[i] / 255) * canvas.height) / 2;
+        let bar_y = -60 - bar_h;
+        ctx.fillStyle = `rgba(98, 233, 121, ${i / 100 + 0.3})`;
+        ctx.fillRect(bar_x, bar_y, bar_w, bar_h);
+      }
     }
-    update(frequencyVolume) {
-      this.draw();
-      if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
-        this.SpdX = -this.SpdX;
+
+    // musicBall
+    class MusicBall {
+      constructor(x, y, speedX, speedY, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.SpdX = speedX;
+        this.SpdY = speedY;
+        this.radius = radius;
+        this.color = color;
+      }
+      static create(bufferLength, container, detail) {
+        for (let i = 0; i < bufferLength; i++) {
+          let x = Math.random() * canvas.width;
+          let y = Math.random() * canvas.height;
+          let speedX = (Math.random() - 0.5) * 1;
+          let speedY = (Math.random() - 0.5) * 1;
+          let color = detail.colorList[Math.floor(Math.random() * detail.colorList.length)];
+          let radius = 0;
+          container.push(new MusicBall(x, y, speedX, speedY, radius, color));
+        }
+      }
+
+      static drawBall() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        myContainer.forEach((ball, index) => ball.update(dataArray[index]));
+      }
+      draw() {
+        ctx.beginPath(); //开始绘制
+
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+      update(frequencyVolume) {
+        this.draw();
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+          this.SpdX = -this.SpdX;
+          this.x = this.x + this.SpdX;
+        }
+        if (this.y + this.radius > canvas.heyight || this.y - this.radius < 0) {
+          this.SpdY = -this.SpdY;
+          this.y = this.y + this.SpdY;
+        }
         this.x = this.x + this.SpdX;
-      }
-      if (this.y + this.radius > canvas.heyight || this.y - this.radius < 0) {
-        this.SpdY = -this.SpdY;
         this.y = this.y + this.SpdY;
+        this.radius = frequencyVolume - 90 > 0 ? (frequencyVolume - 90) * 1.5 : 0;
       }
-      this.x = this.x + this.SpdX;
-      this.y = this.y + this.SpdY;
-      this.radius =
-        frequencyVolume - 90 > 0 ? (frequencyVolume - 90) * 1.5 : 0;
     }
-  }
 
-  function rockMusic(drawFnc) {
-    // requestAnimationFrame 保证与屏幕刷新率一致,在每次执行时绘制canvas数据
-    frameID = requestAnimationFrame(rockMusic.bind(this, drawFnc));
-    analyser.getByteFrequencyData(dataArray);
-    drawFnc();
-  }
+    function rockMusic(drawFnc) {
+      // requestAnimationFrame 保证与屏幕刷新率一致,在每次执行时绘制canvas数据
+      frameID = requestAnimationFrame(rockMusic.bind(this, drawFnc));
+      analyser.getByteFrequencyData(dataArray);
+      drawFnc();
+    }
 
-  window.onload = () => initAudio();
+    window.onload = () => initAudio();
 
-  document.querySelector(".normalBar").addEventListener("click", () => {
-    ctx.restore();
-    ctx.save();
-    frameID ? cancelAnimationFrame(frameID) : "";
-    audioCtx.resume().then(() => rockMusic(drawBar));
-  });
-  document.querySelector(".circleBar").addEventListener("click", () => {
-    //由于做环绕图形需要移动画布,所以每次更改图形时需要恢复画布
-    ctx.restore();
-    ctx.save();
-    frameID ? cancelAnimationFrame(frameID) : "";
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    audioCtx.resume().then(() => rockMusic(drawCircleBar));
-  });
-  document.querySelector(".ball").addEventListener("click", () => {
-    ctx.restore();
-    ctx.save();
-    MusicBall.create(bufferLength, myContainer, {
-      colorList: [
-        "#F7B2B78a",
-        "#F7717D8a",
-        "#DE639A8a",
-        "#7F29828a",
-        "#16001E8a",
-      ],
+    document.querySelector(".normalBar").addEventListener("click", () => {
+      ctx.restore();
+      ctx.save();
+      frameID ? cancelAnimationFrame(frameID) : "";
+      audioCtx.resume().then(() => rockMusic(drawBar));
     });
-    frameID ? cancelAnimationFrame(frameID) : "";
-    audioCtx.resume().then(() => rockMusic(MusicBall.drawBall));
-  });
+    document.querySelector(".circleBar").addEventListener("click", () => {
+      //由于做环绕图形需要移动画布,所以每次更改图形时需要恢复画布
+      ctx.restore();
+      ctx.save();
+      frameID ? cancelAnimationFrame(frameID) : "";
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      audioCtx.resume().then(() => rockMusic(drawCircleBar));
+    });
+    document.querySelector(".ball").addEventListener("click", () => {
+      ctx.restore();
+      ctx.save();
+      MusicBall.create(bufferLength, myContainer, {
+        colorList: ["#F7B2B78a", "#F7717D8a", "#DE639A8a", "#7F29828a", "#16001E8a"],
+      });
+      frameID ? cancelAnimationFrame(frameID) : "";
+      audioCtx.resume().then(() => rockMusic(MusicBall.drawBall));
+    });
 
-  // document.querySelector("audio").addEventListener("pause", () => {
-  //   frameID ? cancelAnimationFrame(frameID) : "";
-  // });
-</script>
-
+    // document.querySelector("audio").addEventListener("pause", () => {
+    //   frameID ? cancelAnimationFrame(frameID) : "";
+    // });
+  </script>
 </html>
