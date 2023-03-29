@@ -326,7 +326,7 @@
           const mousedown = utils.isPC() ? "mousedown" : "touchstart";
           this.scanCanvas.addEventListener(mousedown, this.onMouseDown);
           document.addEventListener("keydown", (e) => {
-            if (e.code === "Space") this.play();
+            if (e.code === "Space") this.onPlay();
           });
         },
         computed: {
