@@ -5,7 +5,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Document</title>
+    <title>Music Player</title>
+    <link rel="shortcut icon" href="../../../assets/imgage/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="../../../assets/cssbem.css" />
     <script src="../../../assets/utils.js"></script>
     <script src="../../../assets/vue/vue3.global.js"></script>
@@ -24,6 +25,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        max-width: 480px;
+        margin: auto;
       }
       .play-effect {
         flex: 1;
@@ -146,7 +149,7 @@
             <div
               class="audio-logo move"
               :style="{
-                backgroundImage: `url(${playInfo.img})`, 
+                backgroundImage: `url(${playInfo.img ||imgBlank})`, 
                 animationPlayState:playing? 'running' : 'paused'
               }"
             ></div>
@@ -195,7 +198,6 @@
             waveHeight: 200, // 波形高度
             barWidth: 4, // 波形条宽
             barGap: 4, // 波形条宽
-            info: "当前歌曲",
           };
         },
         watch: {
@@ -250,7 +252,7 @@
             const step = Math.round(this.dataArray.length / count);
             const bar_w = this.oW / this.bufferLength;
             this.ctx.clearRect(0, 0, this.oW, this.oH);
-            const energy = 0.2;
+            const energy = 0.3;
             for (let i = 0; i < count; i++) {
               const rateHeight = this.dataArray[step * i];
               this.ctx.fillStyle = this.color;
@@ -297,11 +299,13 @@
         components: { boyComponent },
         data() {
           return {
-            audioUrl: "", //'http://media.mizuiren.com/cz.mp3',
+            imgBlank: "../../assets/media/empty.png", //'http://media.mizuiren.com/cz.mp3',
+            audioUrl: "../../assets/media/cz.mp3", //'http://media.mizuiren.com/cz.mp3',
             urlList: [
               { url: "../../assets/media/cz.mp3", name: "车站.mp3", img: "../../assets/media/lebo_home.png" },
               { url: "../../assets/media/dj.mp3", name: "超重低音-DJ.mp3", img: "../../assets/media/logo.png" },
               { url: "../../assets/media/header.mp3", name: "最强大脑.mp3", img: "../../assets/media/lebo_home.png" },
+              { url: "../../assets/media/xhqg.mp3", name: "西海情歌.mp3", img: "../../assets/media/xhqg.png" },
             ],
             waveCanvas: null,
             scanCanvas: null,
@@ -323,7 +327,7 @@
         },
         mounted() {
           this.init();
-          const mousedown = utils.isPC() ? "mousedown" : "touchstart";
+          const mousedown = window.isPC() ? "mousedown" : "touchstart";
           this.scanCanvas.addEventListener(mousedown, this.onMouseDown);
           document.addEventListener("keydown", (e) => {
             if (e.code === "Space") this.onPlay();
@@ -331,8 +335,8 @@
         },
         computed: {
           audioTime() {
-            const currentMs = utils.toHHmmss(this.currentTime * 1000);
-            const totalMs = utils.toHHmmss(this.totalMs * 1000);
+            const currentMs = window.toHHmmss(this.currentTime * 1000);
+            const totalMs = window.toHHmmss(this.totalMs * 1000);
             return { currentMs, totalMs };
           },
         },
@@ -401,6 +405,7 @@
             this.$refs.audioTrack.appendChild(this.scanCanvas);
 
             this.audio = new Audio();
+            this.audio.src = this.audioUrl;
             this.audio.crossOrigin = "anonymous";
             this.audio.onended = (e) => this.onNext();
             this.audio.ontimeupdate = (e) => this.drawLine();
@@ -458,19 +463,19 @@
 
           onMouseDown(e) {
             this.onMouseMove(e);
-            const mouseup = utils.isPC() ? "mouseup" : "touchend";
-            const mousemove = utils.isPC() ? "mousemove" : "touchmove";
+            const mouseup = window.isPC() ? "mouseup" : "touchend";
+            const mousemove = window.isPC() ? "mousemove" : "touchmove";
             document.addEventListener(mouseup, this.onMouseUp, false);
             document.addEventListener(mousemove, this.onMouseMove, false);
           },
           onMouseMove(e) {
             const rect = this.scanCanvas.getBoundingClientRect();
-            const xx = utils.isPC() ? e.clientX - rect.left : e.touches[0].pageX - rect.left;
+            const xx = window.isPC() ? e.clientX - rect.left : e.touches[0].pageX - rect.left;
             this.drawLine(xx);
           },
           onMouseUp(e) {
-            const mousedown = utils.isPC() ? "mousedown" : "touchstart";
-            const mousemove = utils.isPC() ? "mousemove" : "touchmove";
+            const mousedown = window.isPC() ? "mousedown" : "touchstart";
+            const mousemove = window.isPC() ? "mousemove" : "touchmove";
             document.removeEventListener(mousedown, this.onMouseDown);
             document.removeEventListener(mousemove, this.onMouseMove);
           },
