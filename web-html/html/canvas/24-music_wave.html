@@ -27,6 +27,7 @@
         justify-content: space-between;
         max-width: 480px;
         margin: auto;
+        user-select: none;
       }
       .play-effect {
         flex: 1;
@@ -46,7 +47,7 @@
         width: 80%;
         padding-bottom: 80%;
         border-radius: 50%;
-        background-size: 100%;
+        background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
       }
@@ -111,6 +112,7 @@
         font-size: 12px;
         height: 22px;
         width: 46px;
+        padding-left: 5px;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
       .control-area .play-btn {
@@ -133,9 +135,11 @@
 
       .play-wave {
         width: 100%;
+        font-size: 0;
       }
       .play-wave canvas {
         border-radius: 16px;
+        width: 100%;
         background-color: rgba(160, 160, 160, 0.3);
       }
     </style>
@@ -284,13 +288,9 @@
             this.frameID = requestAnimationFrame(this.draw);
           },
         },
-        template: `
-                <div class="jump-wave">
-                  <div class="play-wave" ref="playWave">
-                    <canvas ref="amplitude"></canvas>
-                  </div>
-                </div>
-        `,
+        template: `<div class="play-wave" ref="playWave">
+                    <canvas ref="amplitude" :style="{height: waveHeight + 'px'}"></canvas>
+                  </div>`,
       };
 
       const { createApp } = Vue;
@@ -311,6 +311,7 @@
             scanCanvas: null,
             waveCtx: null,
             audio: null,
+            audioContext: null,
             audioWidth: 0,
             audioHeight: 20,
             channelData: [],
@@ -326,11 +327,15 @@
           };
         },
         mounted() {
-          this.init();
           const mousedown = window.isPC() ? "mousedown" : "touchstart";
-          this.scanCanvas.addEventListener(mousedown, this.onMouseDown);
           document.addEventListener("keydown", (e) => {
             if (e.code === "Space") this.onPlay();
+          });
+          document.addEventListener(mousedown, () => {
+            if (!this.totalMs) {
+              this.init();
+              this.scanCanvas.addEventListener(mousedown, this.onMouseDown);
+            }
           });
         },
         computed: {
@@ -360,6 +365,7 @@
             this.audio.play();
             this.playText = "暂停";
             this.playing = true;
+            this.audio.muted = false;
           },
           pause() {
             this.playing = false;
@@ -406,6 +412,7 @@
 
             this.audio = new Audio();
             this.audio.src = this.audioUrl;
+            this.audio.muted = true;
             this.audio.crossOrigin = "anonymous";
             this.audio.onended = (e) => this.onNext();
             this.audio.ontimeupdate = (e) => this.drawLine();
@@ -414,9 +421,9 @@
             // 获取音频ArrayBuffer 和 AudioBuffer
             const arrayBuffer = await this.getAudioArrayBuffer(audioUrl); //
             const audioBuffer = await new Promise((resolve, reject) => {
-              const context = new AudioContext();
-              context.crossOrigin = "anonymous";
-              context.decodeAudioData(arrayBuffer, resolve, reject);
+              this.audioContext = new AudioContext();
+              this.audioContext.crossOrigin = "anonymous";
+              this.audioContext.decodeAudioData(arrayBuffer, resolve, reject);
             });
             this.totalMs = audioBuffer?.duration;
             this.channelData = audioBuffer.getChannelData(0); // 通道的PCM数据,Float32Array数据类型,0为第一个通道
