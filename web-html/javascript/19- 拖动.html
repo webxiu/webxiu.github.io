@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Document</title>
+  <style>
+    #box {
+      width: 100px;
+      height: 100px;
+      background: red;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+
+  <script>
+    window.onload = function () {
+      var boxDom = document.getElementById("box");
+      boxDom.onmousedown = function (e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        var left = e.target.offsetLeft;
+        var top = e.target.offsetTop;
+
+        document.onmousemove = function (e) {
+          var xx = e.clientX;
+          var yy = e.clientY;
+          var nl = xx - x + left;
+          var nt = yy - y + top;
+          boxDom.style.left = nl + "px";
+          boxDom.style.top = nt + "px";
+        };
+
+        document.onmouseup = function () {
+          document.onmousedown = null;
+          document.onmousemove = null;
+        };
+      };
+    };
+  </script>
+</body>
+
+</html>

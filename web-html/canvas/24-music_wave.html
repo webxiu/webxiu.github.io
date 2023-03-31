@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <header name="Access-Control-Allow-Origin" value="*" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Music Player</title>
+  <link rel="shortcut icon" href="../../assets/imgage/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="../../assets/css/cssbem.css" />
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/vue/vue3.global.js"></script>
+
+  <style>
+    #app {
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      padding: 15px;
+      box-sizing: border-box;
+      background: #7f627d;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-width: 480px;
+      margin: auto;
+      user-select: none;
+    }
+
+    .play-effect {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .play-effect .audio-img {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .play-effect .audio-logo {
+      position: relative;
+      width: 80%;
+      padding-bottom: 80%;
+      border-radius: 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .move {
+      animation: mymove 10s linear infinite;
+    }
+
+    @keyframes mymove {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .play-info {
+      font-size: 12px;
+      margin-top: 10px;
+      color: #fff;
+    }
+
+    .audioTrack {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      font-size: 0;
+      background-color: #d7d0fd;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 0 5px;
+      z-index: 3;
+    }
+
+    .audio-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .audio-progress .time {
+      font-size: 12px;
+      display: inline-block;
+      width: 32px;
+      vertical-align: middle;
+      color: #cdcdcd;
+    }
+
+    .control-area {
+      height: 46px;
+      line-height: 46px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-area .speed {
+      color: #cdcdcd;
+      background: transparent;
+      border: 1px solid #cdcdcd;
+      border-radius: 10px;
+      outline: none;
+      font-size: 12px;
+      height: 22px;
+      width: 46px;
+      padding-left: 5px;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .control-area .play-btn {
+      border: 1px solid transparent;
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-right: 15px;
+      overflow: hidden;
+      display: inline-block;
+      cursor: pointer;
+      color: #fff;
+      background-color: #8d7bff;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .control-area .play-btn:active,
+    .control-area .play-btn.active {
+      background-color: #1440a1;
+    }
+
+    .play-wave {
+      width: 100%;
+      font-size: 0;
+    }
+
+    .play-wave canvas {
+      border-radius: 16px;
+      width: 100%;
+      background-color: rgba(160, 160, 160, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="play-effect">
+        <div class="audio-img">
+          <div class="audio-logo move" :style="{
+                backgroundImage: `url(${playInfo.img ||imgBlank})`, 
+                animationPlayState:playing? 'running' : 'paused'
+              }"></div>
+        </div>
+        <boy-component :audio="audio" :playing="playing"></boy-component>
+      </div>
+      <div class="bottom-area">
+        <div class="play-info" v-show="playInfo.name">正在播放: {{playInfo.name}}</div>
+        <div class="audio-progress">
+          <span class="time">{{audioTime.currentMs}}</span>
+          <div ref="audioTrack" class="audioTrack"></div>
+          <span class="time">{{audioTime.totalMs}}</span>
+        </div>
+        <div class="control-area">
+          <button class="play-btn" :class="{active: isCircle }" @click="onCircle">循环</button>
+          <div class="control-btns">
+            <button class="play-btn" @click="onPrev">上一曲</button>
+            <button class="play-btn" @click="onPlay">{{playText}}</button>
+            <button class="play-btn" @click="onNext">下一曲</button>
+          </div>
+          <select class="speed" @change="onSpeedChange">
+            <option v-for="item in playRateList" :value="item">{{item}}x</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    // https://cn.vuejs.org/guide/quick-start.html#using-vue-from-cdn
+    const boyComponent = {
+      props: {
+        audio: { required: true },
+        playing: { type: Boolean, required: true },
+      },
+      data() {
+        return {
+          oAudio: null,
+          frameID: null,
+          analyser: null,
+          color: null,
+          ctx: null,
+          dataArray: [],
+          bufferLength: [],
+          oW: 0,
+          oH: 0,
+          waveHeight: 200, // 波形高度
+          barWidth: 4, // 波形条宽
+          barGap: 4, // 波形条宽
+        };
+      },
+      watch: {
+        audio(v) {
+          this.oAudio = v;
+          if (!v) return;
+          this.init();
+        },
+        playing(play) {
+          if (play) {
+            this.draw();
+          } else {
+            cancelAnimationFrame(this.frameID);
+          }
+        },
+      },
+      computed: {
+        status() {
+          return this.playing === "播放" ? "暂停" : "播放";
+        },
+      },
+      mounted() { },
+      methods: {
+        init() {
+          const playWave = this.$refs.playWave;
+          const canvas = this.$refs.amplitude;
+          const rect = playWave.getBoundingClientRect();
+          const context = new AudioContext();
+          context.crossOrigin = "anonymous";
+          const audioSrc = context.createMediaElementSource(this.oAudio);
+          this.analyser = context.createAnalyser();
+          audioSrc.connect(this.analyser);
+          this.analyser.connect(context.destination);
+          //根据范围得到不同音频的数量的长度
+          this.bufferLength = this.analyser.frequencyBinCount;
+          this.dataArray = new Uint8Array(this.bufferLength);
+
+          this.ctx = canvas.getContext("2d");
+          canvas.width = rect.width;
+          canvas.height = this.waveHeight;
+          this.oW = canvas.width;
+          this.oH = canvas.height;
+          // canvas线性渐变
+          this.color = this.ctx.createLinearGradient(this.oW / 2, this.oH / 2 - 30, this.oW / 2, this.oH / 2 + 10);
+          this.color.addColorStop(0, "#0f0");
+          this.color.addColorStop(1, "#f6f");
+        },
+        draw() {
+          // 方法1:4个部分拼接的图谱
+          this.analyser.getByteFrequencyData(this.dataArray);
+          const count = this.oW / (this.barGap + this.barWidth); // 条数:总宽度÷(间隙+条宽)+偏移量
+          const step = Math.round(this.dataArray.length / count);
+          const bar_w = this.oW / this.bufferLength;
+          this.ctx.clearRect(0, 0, this.oW, this.oH);
+          const energy = 0.3;
+          for (let i = 0; i < count; i++) {
+            const rateHeight = this.dataArray[step * i];
+            this.ctx.fillStyle = this.color;
+            // 正向波形
+            this.ctx.fillRect(this.oW / 2 + i * this.barGap, this.oH / 2, this.barWidth, -rateHeight * energy);
+            this.ctx.fillRect(this.oW / 2 - i * this.barGap, this.oH / 2, this.barWidth, -rateHeight * energy);
+            // 倒置波形
+            this.ctx.fillRect(this.oW / 2 + i * this.barGap, this.oH / 2, this.barWidth, rateHeight * energy);
+            this.ctx.fillRect(this.oW / 2 - i * this.barGap, this.oH / 2, this.barWidth, rateHeight * energy);
+          }
+
+          // 方法2:左右拼接的图谱
+          // this.analyser.getByteFrequencyData(this.dataArray);
+          // const count = this.oW / (this.barGap + this.barWidth) + 20;
+          // this.ctx.clearRect(0, 0, this.oW, this.oH);
+          // const bar_w = this.oW / this.bufferLength;
+          // for (let i = 0; i < this.bufferLength / 4; i++) {
+          //   let bar_x = this.oW / 2 + i * bar_w;
+          //   let bar_h = (this.dataArray[i] / 255) * this.oH;
+          //   let bar_y = this.oH - bar_h;
+          //   this.ctx.fillStyle = this.color;
+          //   // 绘制右边
+          //   this.ctx.fillRect(bar_x, bar_y / 2, bar_w, bar_h);
+          //   // 绘制左边
+          //   this.ctx.fillRect(this.oW / 2 - i * bar_w, bar_y / 2, bar_w, bar_h);
+          // }
+
+          // console.log("this.dataArray", this.dataArray);
+          this.frameID = requestAnimationFrame(this.draw);
+        },
+      },
+      template: `<div class="play-wave" ref="playWave">
+                    <canvas ref="amplitude" :style="{height: waveHeight + 'px'}"></canvas>
+                  </div>`,
+    };
+
+    const { createApp } = Vue;
+
+    createApp({
+      components: { boyComponent },
+      data() {
+        return {
+          imgBlank: "../assets/media/empty.png", //'http://media.mizuiren.com/cz.mp3',
+          audioUrl: "../assets/media/cz.mp3", //'http://media.mizuiren.com/cz.mp3',
+          urlList: [
+            { url: "../assets/media/cz.mp3", name: "车站.mp3", img: "../assets/media/lebo_home.png" },
+            { url: "../assets/media/dj.mp3", name: "超重低音-DJ.mp3", img: "../assets/media/logo.png" },
+            { url: "../assets/media/header.mp3", name: "最强大脑.mp3", img: "../assets/media/lebo_home.png" },
+            { url: "../assets/media/xhqg.mp3", name: "西海情歌.mp3", img: "../assets/media/xhqg.png" },
+          ],
+          waveCanvas: null,
+          scanCanvas: null,
+          waveCtx: null,
+          audio: null,
+          audioContext: null,
+          audioWidth: 0,
+          audioHeight: 20,
+          channelData: [],
+          totalMs: 0,
+          currentTime: 0,
+          playing: false,
+          isCircle: false,
+          playText: "播放",
+          playbackRate: 1,
+          playIndex: 0,
+          playRateList: [1, 1.5, 2, 2.5, 3],
+          playInfo: {},
+        };
+      },
+      mounted() {
+        const mousedown = window.isPC() ? "mousedown" : "touchstart";
+        document.addEventListener("keydown", (e) => {
+          if (e.code === "Space") this.onPlay();
+        });
+        document.addEventListener(mousedown, () => {
+          if (!this.totalMs) {
+            this.init();
+            this.scanCanvas.addEventListener(mousedown, this.onMouseDown);
+          }
+        });
+      },
+      computed: {
+        audioTime() {
+          const currentMs = window.toHHmmss(this.currentTime * 1000);
+          const totalMs = window.toHHmmss(this.totalMs * 1000);
+          return { currentMs, totalMs };
+        },
+      },
+      methods: {
+        async init() {
+          this.playInfo = this.urlList[this.playIndex];
+          this.audioUrl = this.playInfo.url;
+          await this.createCanvasElement();
+          await this.getAudioData(this.audioUrl);
+          this.audio.src = this.audioUrl;
+        },
+        onSpeedChange(e) {
+          const rate = e.target.value || 1;
+          this.audio.playbackRate = rate;
+          this.playbackRate = rate;
+        },
+        onPlay() {
+          this.playing ? this.pause() : this.play();
+        },
+        play() {
+          this.audio.play();
+          this.playText = "暂停";
+          this.playing = true;
+          this.audio.muted = false;
+        },
+        pause() {
+          this.playing = false;
+          this.audio.pause();
+          this.playText = "播放";
+        },
+        onCircle() {
+          this.isCircle = !this.isCircle;
+          this.audio.loop = this.isCircle;
+        },
+        onPrev() {
+          if (--this.playIndex < 0) {
+            this.playIndex = this.urlList.length - 1;
+          } else {
+            this.playIndex = this.playIndex % this.urlList.length;
+          }
+          this.onSwitch();
+        },
+        onNext() {
+          this.playIndex = ++this.playIndex % this.urlList.length;
+          this.onSwitch();
+        },
+        onSwitch() {
+          this.playing = true;
+          this.playInfo = this.urlList[this.playIndex];
+          this.audioUrl = this.playInfo.url;
+          this.audio.currentTime = 0;
+          this.audio.src = this.audioUrl;
+          this.getAudioData(this.audioUrl);
+          this.play();
+        },
+        createCanvasElement() {
+          const rect = this.$refs.audioTrack.getBoundingClientRect();
+          this.waveCanvas = document.createElement("canvas");
+          this.scanCanvas = document.createElement("canvas");
+          this.waveCtx = this.waveCanvas.getContext("2d");
+          this.scanCtx = this.scanCanvas.getContext("2d");
+          this.scanCanvas.style = `position: absolute;top: 0;left: 0;z-index: 2;`;
+          this.$refs.audioTrack.style.height = this.audioHeight + "px";
+          this.scanCanvas.width = this.waveCanvas.width = this.audioWidth = rect.width;
+          this.scanCanvas.height = this.waveCanvas.height = this.audioHeight;
+          this.$refs.audioTrack.appendChild(this.waveCanvas);
+          this.$refs.audioTrack.appendChild(this.scanCanvas);
+
+          this.audio = new Audio();
+          this.audio.src = this.audioUrl;
+          this.audio.muted = true;
+          this.audio.crossOrigin = "anonymous";
+          this.audio.onended = (e) => this.onNext();
+          this.audio.ontimeupdate = (e) => this.drawLine();
+        },
+        async getAudioData(audioUrl) {
+          // 获取音频ArrayBuffer 和 AudioBuffer
+          const arrayBuffer = await this.getAudioArrayBuffer(audioUrl); //
+          const audioBuffer = await new Promise((resolve, reject) => {
+            this.audioContext = new AudioContext();
+            this.audioContext.crossOrigin = "anonymous";
+            this.audioContext.decodeAudioData(arrayBuffer, resolve, reject);
+          });
+          this.totalMs = audioBuffer?.duration;
+          this.channelData = audioBuffer.getChannelData(0); // 通道的PCM数据,Float32Array数据类型,0为第一个通道
+          if (this.channelData) this.drawTrack();
+        },
+        async getAudioArrayBuffer(audioUrl) {
+          const res = await fetch(audioUrl);
+          return res.arrayBuffer();
+        },
+        drawTrack() {
+          // 绘制音频图谱
+          this.waveCtx.clearRect(0, 0, this.audioWidth, this.audioHeight);
+          this.waveCtx.fillStyle = "rgb(0 22 237)";
+          // 计算获取音频帧的集合，然后绘出每一帧
+          const audioTrackList = this.getAudioTrackList(this.channelData, this.audioWidth);
+          audioTrackList.forEach((item, index) => {
+            if (index % 2) return;
+            const barHeight = Math.max(1, item * this.audioHeight * 0.4);
+            const barWidth = 1;
+            this.waveCtx.fillRect(index, (this.audioHeight - barHeight) / 2, barWidth, barHeight);
+          });
+        },
+        // 获取音频轨道数据
+        getAudioTrackList(channelData, trackTotalWidth) {
+          let i = 0;
+          let min = 1;
+          let max = -1;
+          const list = [];
+          let stepIndex = 0;
+          const unitWidth = Math.floor(channelData.length / trackTotalWidth);
+          while (stepIndex++ < trackTotalWidth) {
+            min = 1;
+            max = -1;
+            const end = Math.min(stepIndex * unitWidth, channelData.length);
+            while (i++ < end) {
+              const current = channelData[i];
+              if (current > max) max = current;
+              if (current < min) min = current;
+            }
+            list.push(max - min);
+          }
+          return list;
+        },
+
+        onMouseDown(e) {
+          this.onMouseMove(e);
+          const mouseup = window.isPC() ? "mouseup" : "touchend";
+          const mousemove = window.isPC() ? "mousemove" : "touchmove";
+          document.addEventListener(mouseup, this.onMouseUp, false);
+          document.addEventListener(mousemove, this.onMouseMove, false);
+        },
+        onMouseMove(e) {
+          const rect = this.scanCanvas.getBoundingClientRect();
+          const xx = window.isPC() ? e.clientX - rect.left : e.touches[0].pageX - rect.left;
+          this.drawLine(xx);
+        },
+        onMouseUp(e) {
+          const mousedown = window.isPC() ? "mousedown" : "touchstart";
+          const mousemove = window.isPC() ? "mousemove" : "touchmove";
+          document.removeEventListener(mousedown, this.onMouseDown);
+          document.removeEventListener(mousemove, this.onMouseMove);
+        },
+        drawLine(pos) {
+          let x = pos;
+          if (pos) {
+            this.currentTime = (pos * this.totalMs) / this.audioWidth;
+            this.audio.currentTime = this.currentTime;
+          } else {
+            this.currentTime = this.audio.currentTime;
+            x = (this.currentTime / this.totalMs) * this.audioWidth;
+          }
+          this.scanCtx.clearRect(0, 0, this.audioWidth, this.audioHeight);
+          this.scanCtx.fillStyle = "rgba(80,80,80,.5)";
+          this.scanCtx.fillRect(0, 0, x, this.audioHeight);
+        },
+      },
+    }).mount("#app");
+  </script>
+</body>
+
+</html>

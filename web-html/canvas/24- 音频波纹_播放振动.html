@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <header name="Access-Control-Allow-Origin" value="*" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音频波纹_服务环境</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #canvas {
+      display: block;
+      background: linear-gradient(135deg, rgb(142, 13, 133) 0%, rgb(230, 132, 110) 100%);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      z-index: -100;
+    }
+
+    .play-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    #btn {
+      border: 1px solid transparent;
+      font-size: 16px;
+      padding: 4px 20px;
+      border-radius: 20px;
+      margin-right: 15px;
+      overflow: hidden;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="play-area">
+    <audio id="audio" src="../assets/media/cz.mp3" controls></audio>
+    <button onclick="play()" id="btn">播放</button>
+  </div>
+  <canvas id="canvas"></canvas>
+  <!-- <audio id="audio" src="http://media.mizuiren.com/cz.mp3"></audio> -->
+  <script>
+    const oAudio = document.querySelector("#audio");
+    const canvas = document.querySelector("#canvas");
+    oAudio.crossOrigin = "anonymous";
+    console.log("oAudio", oAudio);
+
+    const context = new AudioContext();
+    const audioSrc = context.createMediaElementSource(oAudio);
+    const analyser = context.createAnalyser();
+    audioSrc.connect(analyser);
+    analyser.connect(context.destination);
+    //根据范围得到不同音频的数量的长度
+    bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 100;
+    const oW = canvas.width;
+    const oH = canvas.height;
+    // canvas线性渐变
+    const color = ctx.createLinearGradient(oW / 2, oH / 2 - 30, oW / 2, oW / 2 - 100);
+    color.addColorStop(0, "#0f0");
+    color.addColorStop(1, "#f6f");
+
+    let frameID;
+    const count = 200; // 波形数量
+    const barWidth = 5; // 波形条宽
+    const barGap = 8; // 波形条宽
+
+    function draw() {
+      // 方法1:4个部分拼接的图谱
+      analyser.getByteFrequencyData(dataArray);
+      const step = Math.round(dataArray.length / count);
+      const bar_w = oW / bufferLength;
+      ctx.clearRect(0, 0, oW, oH);
+      for (let i = 0; i < count; i++) {
+        const audioHeight = dataArray[step * i];
+        ctx.fillStyle = color;
+        // 正向波形
+        ctx.fillRect(oW / 2 + i * barGap, oH / 2, barWidth, -audioHeight);
+        ctx.fillRect(oW / 2 - i * barGap, oH / 2, barWidth, -audioHeight);
+        // 倒置波形
+        ctx.fillRect(oW / 2 + i * barGap, oH / 2, barWidth, audioHeight);
+        ctx.fillRect(oW / 2 - i * barGap, oH / 2, barWidth, audioHeight);
+      }
+
+      // 方法2:左右拼接的图谱
+      // analyser.getByteFrequencyData(dataArray);
+      // ctx.clearRect(0, 0, oW, oH);
+      // const bar_w = oW / bufferLength;
+      // for (let i = 0; i < bufferLength / 2; i++) {
+      //   let bar_x = oW / 2 + i * bar_w;
+      //   let bar_h = (dataArray[i] / 255) * oH;
+      //   let bar_y = oH - bar_h;
+      //   ctx.fillStyle = color;
+      //   // 绘制右边
+      //   ctx.fillRect(bar_x, bar_y / 2, bar_w, bar_h);
+      //   // 绘制左边
+      //   ctx.fillRect(oW / 2 - i * bar_w, bar_y / 2, bar_w, bar_h);
+      // }
+
+      // console.log("dataArray", dataArray);
+      frameID = requestAnimationFrame(draw);
+    }
+
+    let a = false;
+    const btnDom = document.querySelector("#btn");
+
+    function play() {
+      a = !a;
+      isPlay(a);
+    }
+
+    function isPlay(a) {
+      if (a) {
+        draw();
+        oAudio.play();
+        btnDom.innerHTML = "暂停";
+      } else {
+        oAudio.pause();
+        cancelAnimationFrame(frameID);
+        btnDom.innerHTML = "播放";
+      }
+    }
+
+    oAudio.addEventListener("play", () => {
+      a = true;
+      isPlay(a);
+    });
+    oAudio.addEventListener("pause", () => {
+      a = false;
+      isPlay(a);
+    });
+  </script>
+</body>
+
+</html>

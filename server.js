@@ -4,7 +4,7 @@ const app = express()
 const path = require('path')
 const fs = require('fs')
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '.')))
 
 
 const port = 3000
@@ -13,3 +13,4 @@ app.listen(port, () => {
     const address = `http://localhost:${port}`.blue;
     console.log(title + address)
 })
+

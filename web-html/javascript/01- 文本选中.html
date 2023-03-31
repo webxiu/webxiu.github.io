@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=., initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .box {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      background: #eee;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="left">
+      <div style="cursor: pointer">收货地址</div>
+    </div>
+    <div class="right">
+      <div>
+        <button>编辑</button>
+        <button>删除</button>
+      </div>
+    </div>
+  </div>
+  <p>
+    <input type="text" id="Textbox" class="input-demo" data-abc="5" size="40" value="选中文字" />
+  </p>
+  <p><button onclick="SelectSomeText ()">选中输入框文字</button></p>
+
+  <hr />
+  <h4>rgba颜色转16进制</h4>
+  <input type="text" id="color" value="rgba(255, 255, 255, 0.5)" placeholder="请输入rgba颜色如: rgba(0,0,0,0.2)" />
+  <button onclick="changeColor()" style="margin-bottom: 50px">转换</button>
+
+  <div style="display: flex">
+    <span style="padding-right: 5px">业务领域确认：</span>
+    <span>
+      本大队业务领域人员<br />
+      重点人物1
+    </span>
+  </div>
+  <div style="display: flex">
+    <span style="padding-right: 5px">人员信息确认：</span>
+    <span>
+      修改【英文名】Xun为XieXun<br />
+      修改【民族】塔吉克族为汉族<br />
+      修改【籍贯】光明顶为冰火岛
+    </span>
+  </div>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.4/locale/af.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.11.7/dayjs.min.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector);
+    }
+
+    function SelectSomeText() {
+      var input = document.getElementById("Textbox");
+      window.input = input;
+      input.select();
+    }
+    window.moment = moment;
+    var obj = { a: 5, b: 6 };
+    var query = "a=5&b=6";
+    console.log("Qs:", Qs);
+    console.log("Qs.stringify:", Qs.stringify(obj)); // a=5&b=6
+    console.log("Qs.parse:", Qs.parse(query)); // {a: "5", b: "6"}
+    console.log(
+      "获取当前时间戳_dayjs(new Date()).valueOf():",
+      dayjs(new Date()).valueOf()
+    );
+    console.log(
+      "获取当前时间戳_moment(new Date()).valueOf():",
+      moment(new Date()).valueOf()
+    );
+    console.log(
+      'moment(1605456000000).format("YYYY-MM-DD HH:mm:ss"): ',
+      moment(1605456000000).format("YYYY-MM-DD HH:mm:ss")
+    );
+
+    console.log(
+      '获取某个日期当月的最后一天 moment("2019-04-05").endOf("month").format("YYYYMMDD")',
+      moment("2019-04-05").endOf("month").format("YYYY-MM-DD")
+    );
+    console.log(
+      "获取前天的日期 moment(new Date()).add(-2,'days').format('YYYY-MM-DD')",
+      moment(new Date()).add(-2, "days").format("YYYY-MM-DD")
+    );
+    console.log(
+      "获取后天的日期 moment(new Date()).add(+2,'days').format('YYYY-MM-DD')",
+      moment(new Date())
+        .add(+2, "days")
+        .format("YYYY-MM-DD")
+    );
+    console.log(`Thu Jun 27 2019 15:11:32 GMT+0800 (中国标准时间)"这种格式转成时间戳
+        var d = moment(val).hours(23).minutes(59).seconds(59).valueOf()
+        再parseInt(d/1000);`);
+    console.log("-----------------------------");
+    console.log(
+      "==================",
+      moment(76070).utc().zone(-8).format("HH:mm:ss.SSS")
+    );
+
+    /** rgba */
+    function hexify(color) {
+      var values = color
+        .replace(/rgba?\(/, "")
+        .replace(/\)/, "")
+        .replace(/[\s+]/g, "")
+        .split(",");
+      var a = parseFloat(values[3] || 1),
+        r = Math.floor(a * parseInt(values[0]) + (1 - a) * 255),
+        g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255),
+        b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
+      return (
+        "#" +
+        ("0" + r.toString(16)).slice(-2) +
+        ("0" + g.toString(16)).slice(-2) +
+        ("0" + b.toString(16)).slice(-2)
+      );
+    }
+
+    function changeColor() {
+      var colorStr = $("#color").value;
+      console.log(colorStr);
+      var myHex = hexify(colorStr);
+      alert(myHex);
+    }
+
+    // 186155  -  3:06:154
+    // 76070   -    01:16:70
+    // 350086464 - 97:14:46:464
+    const aaaa = moment(186155).utcOffset(8).format("HH:mm:ss.SSS");
+
+    console.log(`A时间====>`, aaaa);
+    console.log(`B时间====>`, toHHmmss(186155));
+    console.log(`B时间====>`, toHHmmss(350086464));
+    console.log(`B时间====>`, toHHmmss(76070));
+    console.log(`B时间====>`, toHHmmss(63290));
+
+    function toHHmmss(ms, fmt = "HH:mm:ss") {
+      // return moment(new Date(ms).getTime()).utc().format(fmt);
+      const seconds = Math.floor(ms / 1000);
+      let timeArr = [];
+      const hours = (seconds / 60 / 60).toFixed(),
+        minutes = ((seconds / 60) % 60).toFixed(),
+        lastSeconds = (seconds % 60).toFixed(),
+        millisecond = (ms % 1000).toFixed();
+      const sss = millisecond.padStart(3, "0");
+      if (seconds >= 3600) {
+        timeArr = [hours, minutes, lastSeconds, sss];
+      } else {
+        timeArr = [minutes, lastSeconds, sss];
+      }
+      return timeArr
+        .join(":")
+        .replace(/\b(\d)\b/g, "0$1")
+        .replace(/(.*):/, "$1.");
+    }
+  </script>
+</body>
+
+</html>

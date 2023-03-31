@@ -1,0 +1,221 @@
+function getGameTemplate(data) {
+  const template = `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>静态页面</title>
+  <!--设定title的小图标-->
+  <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+  <script src="./assets/js/jquery-1.11.2.min.js"></script>
+  <script src="./assets/js/bootstrap.min.js"></script>
+  <script src="./assets/js/jquery.toggle.js"></script>
+  <script src="./assets/js/holder.min.js"></script>
+  <script src="../assets/vue/vue3.global.js"></script>
+
+  <style type="text/css">
+    * {
+      font-family: 微软雅黑;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: bold;
+    }
+
+    body {
+      padding-top: 70px;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    .list-group {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /*
+          ::-webkit-scrollbar — 整个滚动条.
+          ::-webkit-scrollbar-button — 滚动条上的按钮 (上下箭头).
+          ::-webkit-scrollbar-thumb — 滚动条上的滚动滑块.
+          ::-webkit-scrollbar-track — 滚动条轨道.
+          ::-webkit-scrollbar-track-piece — 滚动条没有滑块的轨道部分.
+          ::-webkit-scrollbar-corner — 当同时有垂直滚动条和水平滚动条时交汇的部分.
+          ::-webkit-resizer — 某些元素的corner部分的部分样式(例:textarea的可拖动按钮).
+          ::-webkit-scrollbar-corner —  滚动条左下角交叉方块
+        */
+    .scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+      background-color: #f0f;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      border-radius: 10px;
+      background-color: #eee;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+      background-color: #337ab7;
+    }
+
+    ::-webkit-scrollbar-corner {
+      /*
+            background-image: url(resources/corner.png);
+            background-repeat: no-repeat;
+          */
+      background-color: #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="container-fluid" style="height: 100%">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">个人中心</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../../home/index.html" target="_blank">首页</a></li>
+            <li><a href="game/fly_bird/fly_bird.html" target="_blank">游戏</a></li>
+            <li><a href="http://tool.oschina.net" target="_blank">工具</a></li>
+            <li><a href="https://github.com/" target="_blank">Github</a></li>
+            <li><a href="http://www.iconfont.cn/" target="_blank">阿里图标</a></li>
+            <li><a href="https://msdn.itellyou.cn/" target="_blank">MSDN</a></li>
+            <li><a href="http://123.207.254.124/browse/" target="_blank">模板</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                后台管理
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">admin</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#myModal" data-toggle="modal">修改密码</a></li>
+                <li><a href="../login.html">退出系统</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">管理员密码修改:</h4>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group">
+                <label for="">旧密码</label>
+                <input type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="">新密码</label>
+                <input type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="">确认新密码</label>
+                <input type="password" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary">修改</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- 左侧设计 -->
+      <div class="col-md-2">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-primary" v-for="(item, key,index) in cateList">
+            <div class="panel-heading" role="tab" id="heading">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                  :href="'#handing_'+key" aria-expanded="true" aria-controls="collapseOne">
+                  {{key}}
+                </a>
+              </h4>
+            </div>
+            <!--  类名: panel-collapse collapse in ,加in展开, 不加in折叠 -->
+            <div :id="'handing_'+key" class="panel-collapse collapse" :class="index===0?'in':''" role="tabpanel"
+              :aria-labelledby="'handing-'+key">
+              <div class="list-group">
+                <a v-for="(cell,idx) in item" :key="idx" :href="cell" class="list-group-item" target="iframe">
+                  {{cell.split('/')[cell.split('/').length - 1]}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 右侧设计 -->
+      <div class="col-md-10" style="height: calc(100vh - 90px); overflow-y: auto; padding-top: 5px">
+        <iframe name="iframe" id="iframe" :src="firstData" width="100%" height="100%"
+          frameborder="none" style="box-shadow: 0px 0px 6px #ccc"></iframe>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    // https://cn.vuejs.org/guide/quick-start.html#using-vue-from-cdn
+
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          cateList: ${data}
+        }
+      },
+      computed: {
+        firstData(){
+          return Object.entries(this.cateList)[0][1][0]
+        }
+      },
+      mounted() { },
+      methods: {},
+    }).mount("#app");
+  </script>
+</body>
+
+</html>`
+  return template
+}
+
+module.exports = {
+  getGameTemplate
+}

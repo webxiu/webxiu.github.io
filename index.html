@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Welcome!</title>
-    <link rel="stylesheet" href="./assets/index.css" />
-    <script src="./assets/utils.js"></script>
-    <script type="text/javascript" src="./digit.js"></script>
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <script src="./assets/js/utils.js"></script>
+    <script type="text/javascript" src="./assets/js/digit.js"></script>
 
     <script>
         var _hmt = _hmt || [];
@@ -38,36 +38,36 @@
                 return
             }
             const links = [{
-                    url: "./callme/callme.html?tel=10086",
-                    name: "CallMe",
-                }, {
-                    url: "./callme/code.html",
-                    name: "验证码",
-                },
-                {
-                    url: "./course/index.html",
-                    name: "课程答题",
-                },
-                {
-                    url: "./group/group.html",
-                    name: "开发交流群",
-                },
-                {
-                    url: "./space/index.html",
-                    name: "技术文章",
-                },
-                {
-                    url: "./webpack5-docs/index.html",
-                    name: "Webpack 5",
-                },
-                {
-                    url: "./tools/lottery.html",
-                    name: "机选双色球",
-                },
-                {
-                    url: "./game/index.html",
-                    name: "小游戏",
-                },
+                url: "./callme/callme.html?tel=10086",
+                name: "CallMe",
+            }, {
+                url: "./callme/code.html",
+                name: "验证码",
+            },
+            {
+                url: "./course/index.html",
+                name: "课程答题",
+            },
+            {
+                url: "./group/group.html",
+                name: "开发交流群",
+            },
+            {
+                url: "./space/index.html",
+                name: "技术文章",
+            },
+            {
+                url: "./webpack5-docs/index.html",
+                name: "Webpack 5",
+            },
+            {
+                url: "./tools/lottery.html",
+                name: "机选双色球",
+            },
+            {
+                url: "./game/index.html",
+                name: "小游戏",
+            },
             ];
             const linkHtml = links.map((link) => `<div><a href="${link.url}">${link.name}</a></div>`).join("");
             $(".link-box").innerHTML = linkHtml;
