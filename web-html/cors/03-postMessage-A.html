@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>postMessage跨域请求</title>
+  </head>
+  <body>
+    <div>document.domain + iframe 只能实现同一个域名下的通信</div>
+    <div>A和B同一级域名,a.qq.com 和 b.qq.com可以</div>
+    <div>A页面:</div>
+    <div>A页面通过iframe引入B页面,如果B页面是服务器</div>
+
+    <hr />
+    <iframe id="iframe" src="http://localhost:81/web-html/cors/03-postMessage-B.html" frameborder="1"></iframe>
+
+    <script type="text/javascript">
+      const iframe = document.getElementById("iframe");
+      iframe.onload = function () {
+        // 向iframe中的B页面发送数据
+        iframe.contentWindow.postMessage({ name: "A", info: "A页面的数据" }, "http://localhost:81"); // 数据, 源地址
+      };
+      // 监听B页面传过来的消息
+      window.onmessage = function (ev) {
+        console.log("***A页面: 获取到B页面数据:", ev.data);
+      };
+    </script>
+  </body>
+</html>

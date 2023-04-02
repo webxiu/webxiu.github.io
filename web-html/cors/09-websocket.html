@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>websocket跨域请求</title>
+  </head>
+  <body>
+    <div>websocket跨域请求</div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <script type="text/javascript">
+      // 对应server下的 09-websocket.js 文件
+      const url = `http://localhost:9009`;
+      const client = io.connect(url);
+
+      client.on("connect", function () {
+        showData("已经连接服务端");
+        client.on("news", function (msg) {
+          showData("收到消息:", msg);
+          const elDom = document.createElement("h1");
+          elDom.innerHTML = msg.hello;
+          document.body.appendChild(elDom);
+          client.emit("cEvent", { my: "data" });
+        });
+        client.on("disconnect", function (code) {
+          showData("服务端断开了连接:", code);
+        });
+      });
+
+      function showData(msg, data = "") {
+        console.log(msg, data);
+      }
+    </script>
+  </body>
+</html>

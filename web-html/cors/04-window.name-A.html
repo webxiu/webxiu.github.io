@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>跨域请求</title>
+  </head>
+  <body>
+    <div>window.name + iframe</div>
+    <div>A和B不同域名, A和C同域名</div>
+    <div>A页面:</div>
+    <div>A页面通过iframe引入B页面,如果B页面是服务器, 瞬间吧B页面用C页面赋值</div>
+    <hr />
+    <iframe id="iframe" src="http://localhost:81/web-html/cors/04-window.name-B.html" frameborder="1"></iframe>
+    <script type="text/javascript">
+      const iframe = document.getElementById("iframe");
+      let count = 0;
+      iframe.onload = function () {
+        console.log("count", count);
+        if (count === 0) {
+          // 拔地址先指向同源
+          iframe.src = "http://localhost:81/web-html/cors/04-window.name-C.html";
+          count++;
+          return;
+        }
+
+        console.log("name", iframe.contentWindow.name);
+      };
+    </script>
+  </body>
+</html>

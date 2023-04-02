@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>跨域请求</title>
+  </head>
+  <body>
+    <div>C页面:</div>
+    <div>location.hash + iframe</div>
+    <script type="text/javascript">
+      // 监听B传过来的hash改变, 再传给A页面
+      window.onhashchange = function () {
+        // 再通过操作同域A的js回调方法, 将结果传回
+        window.parent.parent.getData(location.hash);
+      };
+    </script>
+  </body>
+</html>

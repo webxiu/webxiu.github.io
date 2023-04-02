@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>跨域请求</title>
+  </head>
+  <body>
+    <div>location.hash + iframe</div>
+    <div>B页面:</div>
+    <hr />
+    <iframe id="iframe" src="http://localhost:81/web-html/cors/05-location.hash-C.html" frameborder="1"></iframe>
+    <script type="text/javascript">
+      const iframe = document.getElementById("iframe");
+      window.onhashchange = function () {
+        // 监听A传过来的hash改变, 再传给C页面
+        iframe.src = "http://localhost:81/web-html/cors/05-location.hash-C.html" + location.hash;
+      };
+    </script>
+  </body>
+</html>

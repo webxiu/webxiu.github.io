@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>跨域请求</title>
+  </head>
+  <body>
+    <div>B页面通过window.name发数据给A页面</div>
+    <script type="text/javascript">
+      // 返回给A的信息都在window.name中
+      window.name = JSON.stringify({ name: "B", info: "我是B页面的数据@@" });
+    </script>
+  </body>
+</html>

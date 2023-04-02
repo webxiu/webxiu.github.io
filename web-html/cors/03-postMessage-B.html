@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>postMessage跨域请求</title>
+  </head>
+  <body>
+    <div>B页面:</div>
+    <div>获取到数据在发给A页面</div>
+    <script type="text/javascript">
+      window.onmessage = function (ev) {
+        console.log("===B页面: 获取到A页面数据:", ev.data);
+        console.log("ev", ev);
+        // 给A页面回复消息
+        ev.source.postMessage({ name: "B", info: "B页面的数据@@" }, ev.origin);
+      };
+    </script>
+  </body>
+</html>
