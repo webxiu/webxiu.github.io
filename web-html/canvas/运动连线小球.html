@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      canvas {
+        box-shadow: 0 0 1px 1px #ccc;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="ball" width="500" height="500"></canvas>
+    <script>
+      const canvas = document.getElementById("ball");
+      const ctx = canvas.getContext("2d");
+
+      window.canvas = canvas;
+      const { width, height } = canvas.getClientRects()[0];
+      console.log(`width`, width);
+
+      /* 绘制线段 */
+      function drawLine(x1, y1, x2, y2, color) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.closePath();
+      }
+      /* 绘制圆 */
+      function drawCircle(x, y, r, color) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = color || "#000";
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      /* 绘制文字 */
+      function drawText(text, x, y) {
+        ctx.font = "20px 楷体";
+        ctx.textAlign = "center";
+        ctx.textBaseLine = "middle";
+        ctx.fillStyle = "#f60";
+        ctx.fillText(text, x, y);
+      }
+
+      /* 随机数 */
+      function r(num) {
+        return parseInt(Math.random() * num);
+      }
+
+      function Ball(text) {
+        this.x = r(380) + 60; // 60-440
+        this.y = r(380) + 60;
+        this.r = r(10) + 30;
+        this.color = "#" + parseInt(Math.random() * 0xffffff).toString(16);
+        this.xSpeed = r(4) + 1;
+        this.ySpeed = r(2) + 1;
+        this.text = text;
+      }
+      /* 绘制小球 */
+      Ball.prototype.draw = function () {
+        drawCircle(this.x, this.y, this.r, this.color);
+        drawText(this.text, this.x, this.y);
+      };
+
+      /* 小球运动 */
+      Ball.prototype.run = function () {
+        if (this.x - this.r <= 0 || this.x + this.r >= width) {
+          this.xSpeed = -this.xSpeed;
+        }
+        if (this.y - this.r <= 0 || this.y + this.r >= height) {
+          this.ySpeed = -this.ySpeed;
+        }
+        this.x = this.x + this.xSpeed;
+        this.y = this.y + this.ySpeed;
+      };
+
+      const ballArr = [];
+      const txt = "aa bb cc dd ee ff gg hh ii jj kk ll mm nn".split(" ");
+      for (let i = 0; i < 10; i++) {
+        const ball = new Ball(txt[i]);
+        ballArr.push(ball);
+        ball.draw();
+      }
+
+      function move() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < ballArr.length; i++) {
+          const ball = ballArr[i];
+          ball.draw();
+          ball.run();
+
+          /* 小球连线 */
+          for (let j = 0; j < i; j++) {
+            const prevBall = ballArr[j];
+            // if (Math.sqrt(ball.x * 2, ball.y * 2) < 20) {
+            drawLine(ball.x, ball.y, prevBall.x, prevBall.y, "#bbb");
+            // }else{  clearLine()}
+          }
+        }
+        window.requestAnimationFrame(move);
+      }
+      //第一帧渲染
+      window.requestAnimationFrame(move);
+    </script>
+  </body>
+</html>

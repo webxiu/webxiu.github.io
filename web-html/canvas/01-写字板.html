@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>canvas</title>
+
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <input type="color" id="myColor" />
+  画笔大小
+  <input type="range" id="pen" min="1" max="5" />
+
+  <button id="clearBtn">清除</button>
+  <script type="text/javascript">
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var isMouseDown = false;        //画笔开关,默认关闭
+    var lineColor = "#000";         //默认颜色
+    var startLoc = { x : 0,y : 0 }; //起点坐标
+    var pen = 3;                    //笔的默认粗细
+
+    //全局绘制矩形框
+    draw();
+    //选择颜色
+    document.getElementById("myColor").onchange=function(){
+      document.getElementById("myColor").onclick=function(){}
+      lineColor = this.value;
+      console.log(this.value);
+    }
+    //清空画布
+    document.getElementById("clearBtn").onclick = function () {
+      ctx.clearRect(0,0,400,400);
+      draw();
+    }
+    //设置笔的粗细
+    document.getElementById("pen").onchange = function(){
+      pen = this.value;
+      console.log(pen);
+    }
+    canvas.onmousedown = function(e){//按下鼠标
+      isMouseDown = true;//鼠标按下打开画笔开关
+      startLoc = getPoint(e.clintX, e.clientY);//获取画笔位置
+    }
+    canvas.onmouseup = function(){//松开鼠标
+      isMouseDown = false;//鼠标抬起不打开开关
+    }
+    canvas.onmouseout = function(){//鼠标移除
+      isMouseDown = false;//鼠标移除不打开开关
+    }
+    canvas.onmousemove = function(e){//移动鼠标
+      if (isMouseDown) {//判断开关是否为true
+        var endLoc = getPoint(e.clientX, e.clientY);
+        ctx.beginPath();
+        ctx.lineWidth = pen;
+        ctx.strokeStyle = lineColor;
+        ctx.moveTo(startLoc.x, startLoc.y);
+        ctx.lineTo(endLoc.x, endLoc.y);
+        ctx.stroke();
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        startLoc = endLoc;
+      };
+    }
+    //获取画笔位置函数
+    function getPoint(clientX, clientY){
+      var lineEnd = canvas.getBoundingClientRect();
+      return { x: clientX - lineEnd.left, y:clientY - lineEnd.top };
+
+    }
+    // 绘制画布函数
+    function draw () {
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 1;
+      //画线框
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(400, 0);
+      ctx.lineTo(400, 400);
+      ctx.lineTo(0, 400);
+      ctx.closePath();//闭合路径
+      ctx.stroke();//绘制路径
+
+      //画 米 字格(可选)
+      // ctx.beginPath();
+      // ctx.moveTo(0, 0);
+      // ctx.lineTo(400, 400);
+      // ctx.moveTo(400, 0);
+      // ctx.lineTo(0, 400);
+      // ctx.moveTo(200, 0);
+      // ctx.lineTo(200, 400);
+      // ctx.moveTo(0, 200);
+      // ctx.lineTo(400, 200);
+      ctx.stroke();//绘制路径
+    }
+
+  </script>
+
+</body>
+</html>

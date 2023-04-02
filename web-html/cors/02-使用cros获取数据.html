@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cros跨域请求</title>
+  </head>
+  <body>
+    <button onclick="getCros()">使用cros获取数据</button>
+    <script type="text/javascript">
+      const url = `http://localhost:9001/cors?page=1&pageSize=10`;
+
+      function getCros() {
+        fetch(url, {
+          body: JSON.stringify({ name: "Mike" }), // JSON格式的请求数据
+          cache: "no-cache", // default, no-cache, reload, force-cache, only-if-cached 缓存配置
+          credentials: "same-origin", // include, same-origin, omit 请求凭据
+          headers: {
+            "user-agent": "Mozilla/4.0 Test",
+            "content-type": "application/json",
+          },
+          method: "POST", // GET, POST, PUT, DELETE之类的请求方式
+          mode: "cors", // no-cors, cors, same-origin 跨域策略
+          redirect: "follow", // manual, follow, error 重定向
+          referrer: "no-referrer", // client, no-referrer 来源引用
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            console.log("res", res);
+          });
+      }
+    </script>
+  </body>
+</html>

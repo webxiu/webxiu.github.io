@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Jsonp跨域请求</title>
+    <script src="../assets/js/jquery-1.11.2.min.js"></script>
+  </head>
+  <body>
+    <button onclick="getScriptJsonp()">创建Script标签获取Jsonp获取数据</button>
+    <button onclick="getJqueryJsonp()">使用Jquery的Ajax获取Jsonp获取数据</button>
+    <script type="text/javascript">
+      const url = `http://localhost:9000/jsonp?callback=jsonpCallback`;
+
+      // 1.创建Script标签获取Jsonp获取数据
+      function jsonpCallback(result) {
+        console.log("ScriptJsonp", result);
+      }
+      function getScriptJsonp() {
+        const script = document.createElement("script");
+        script.src = url;
+        document.body.appendChild(script);
+      }
+
+      //2.使用Jquery的Ajax获取Jsonp获取数据
+      function getJqueryJsonp() {
+        $.ajax({
+          url: url,
+          method: "get",
+          jsonpCallback: "cb", // 会同时执行全局cb函数
+          dataType: "jsonp",
+          success: (result) => {
+            console.log("JqueryJsonp", result);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
