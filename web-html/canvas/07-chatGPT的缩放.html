@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas Zoom and Pan</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+        cursor: move;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+
+    <script>
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 初始化缩放比例、偏移量和鼠标位置
+      var scale = 1.0;
+      var offsetX = 0;
+      var offsetY = 0;
+      var mouseDownX = 0;
+      var mouseDownY = 0;
+
+      // 加载图像并绘制
+      var image = new Image();
+      image.onload = function () {
+        ctx.drawImage(image, 0, 0);
+      };
+      image.src = "https://source.unsplash.com/1080x720/?cat";
+
+      // 鼠标按下时记录位置
+      canvas.addEventListener("mousedown", function (event) {
+        mouseDownX = event.clientX;
+        mouseDownY = event.clientY;
+      });
+
+      // 鼠标移动时根据鼠标位置计算偏移量
+      canvas.addEventListener("mousemove", function (event) {
+        if (event.buttons !== 1) {
+          return;
+        }
+        var deltaX = event.clientX - mouseDownX;
+        var deltaY = event.clientY - mouseDownY;
+        offsetX += deltaX / scale;
+        offsetY += deltaY / scale;
+        mouseDownX = event.clientX;
+        mouseDownY = event.clientY;
+        draw();
+      });
+
+      // 鼠标滚轮事件处理
+      canvas.addEventListener("wheel", function (event) {
+        event.preventDefault();
+        var wheelDelta = event.deltaY > 0 ? -0.1 : 0.1;
+        var oldScale = scale;
+        scale = Math.max(0.1, Math.min(10, scale + wheelDelta));
+        offsetX += (canvas.width / 2 - offsetX) * (scale / oldScale - 1);
+        offsetY += (canvas.height / 2 - offsetY) * (scale / oldScale - 1);
+        draw();
+      });
+
+      // 绘制图像
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(offsetX, offsetY);
+        ctx.scale(scale, scale);
+        ctx.drawImage(image, 0, 0);
+        ctx.restore();
+      }
+    </script>
+  </body>
+</html>

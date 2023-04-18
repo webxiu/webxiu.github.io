@@ -17,7 +17,7 @@
         client.on("news", function (msg) {
           showData("收到消息:", msg);
           const elDom = document.createElement("h1");
-          elDom.innerHTML = msg.hello;
+          elDom.innerHTML = msg.hello + msg.count;
           document.body.appendChild(elDom);
           client.emit("cEvent", { my: "data" });
         });
