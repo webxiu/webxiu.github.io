@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <header name="Access-Control-Allow-Origin" value="*" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>网速</title>
+    <script src="../../assets/vue/vue3.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h3>网络状态</h3>
+      <div>网络类型: {{ type }}</div>
+      <div>网络速度: {{ speed }}Mbps</div>
+      <div>网络状态: {{ rtt }}ms</div>
+    </div>
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            connection: {},
+            rtt: 0,
+            speed: 0,
+            effectiveType: "",
+          };
+        },
+        mounted() {
+          this.connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          this.connection.addEventListener("change", this.onUpdateStatus);
+          this.onUpdateStatus();
+        },
+
+        methods: {
+          onUpdateStatus() {
+            this.rtt = this.connection.rtt;
+            this.speed = this.connection.downlink;
+            this.type = this.connection.effectiveType;
+            console.log("connection", this.connection);
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

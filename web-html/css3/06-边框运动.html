@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<header name="Access-Control-Allow-Origin" value="*" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<title>CSS渐变边框</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			body {
+				width: 100%;
+				min-height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center; 
+			}
+
+			.container {
+				position: relative;
+				width: 220px;
+				height: 220px;
+				border-radius: 12px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				box-shadow: 16px 14px 20px #0000008c;
+			}
+
+			.container::before {
+				content: '';
+				background-image: conic-gradient(#0084ff 20deg, transparent 120deg);
+				width: 150%;
+				height: 150%;
+				position: absolute;
+				animation: mymove 3s linear infinite;
+
+			}
+
+			.container::after {
+				position: absolute;
+				width: 210px;
+				height: 210px;
+				content: 'CSS is fun';
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+				font-size: 30px;
+				font-weight: 100;
+				text-transform: uppercase;
+				border-radius: 10px;
+				color: #0084ff;
+				background: #e0e0e0;
+				box-shadow: inset 20px 20px 20px #0000008c;
+			}
+
+			@keyframes mymove {
+				from {
+					transform: rotate(0deg)
+				}
+
+				to {
+					transform: rotate(-360deg)
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+
+		</div>
+	</body>
+</html>
