@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="320" name="MobileOptimized" />
+    <meta content="telephone=no" name="format-detection" />
+
+    <title>项目内容</title>
+    <style type="text/css">
+      /* 标签重定义 */
+      body {
+        padding: 0;
+        margin: 0;
+        background: #ddd url(images/bg.jpg) repeat;
+      }
+      img {
+        border: none;
+      }
+      a {
+        text-decoration: none;
+        color: #444;
+      }
+      a:hover {
+        color: #999;
+        margin-top: -5px;
+      }
+      #title {
+        margin: 20px auto;
+        text-align: center;
+      }
+      /* 定义关键帧 */
+      @-webkit-keyframes shade {
+        from {
+          opacity: 1;
+        }
+        15% {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @-moz-keyframes shade {
+        from {
+          opacity: 1;
+        }
+        15% {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @-ms-keyframes shade {
+        from {
+          opacity: 1;
+        }
+        15% {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @-o-keyframes shade {
+        from {
+          opacity: 1;
+        }
+        15% {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes shade {
+        from {
+          opacity: 1;
+        }
+        15% {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      /* wrap */
+      #wrap {
+        width: auto;
+        height: auto;
+        margin: 0 auto;
+        position: relative;
+      }
+      #wrap .box {
+        width: 920px;
+        height: auto;
+        padding: 10px;
+        border: none;
+        float: left;
+      }
+
+      #wrap .box .info {
+        width: 920px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 11px #666;
+        background: #fff;
+      }
+      #wrap .box .info .pic {
+        width: 900px;
+        height: auto;
+        margin: 0 auto;
+        padding-top: 10px;
+        cursor: pointer;
+      }
+      #wrap .box .info .pic:hover {
+        -webkit-animation: shade 2s ease-in-out 1;
+        -moz-animation: shade 2s ease-in-out 1;
+        -ms-animation: shade 2s ease-in-out 1;
+        -o-animation: shade 2s ease-in-out 1;
+        animation: shade 2s ease-in-out 1;
+      }
+      #wrap .box .info .pic img {
+        width: 900px;
+        border-radius: 3px;
+      }
+      #wrap .box .info .title {
+        width: 900px;
+        height: 40px;
+        margin: 0 auto;
+        line-height: 40px;
+        text-align: center;
+        color: #666;
+        font-size: 18px;
+        font-weight: bold;
+        overflow: hidden;
+      }
+      #text {
+        opacity: 0;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        tansition: all 0.5s;
+        background: #000;
+        color: #fff;
+        z-index: -2;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: -71px;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="title">
+      <h2>项目内容(独立开发)</h2>
+    </section>
+
+    <div id="wrap"></div>
+    <div style="text-align: center; clear: both"></div>
+    <div id="text"></div>
+    <input id="doc" readonly style="opacity: 0; z-index: -1" />
+
+    <script type="text/javascript" src="../assets/js/jquery-1.11.2.min.js"></script>
+
+    <script type="text/javascript">
+      var data = [
+        { src: "./images/pay_0100.mp4", title: "聚合支付" },
+        { src: "./images/lieyin_01.mp4", title: "猎音系统" },
+        { src: "./images/lijian_v01.mp4", title: "国音利剑系统" },
+        { src: "./images/lijian_v02.mp4", title: "数据列表与流程图" },
+      ];
+      // 往盒子里面渲染div
+      for (var i = 0; i < data.length; i++) {
+        //创建box
+        var box = document.createElement("div");
+        box.className = "box";
+        wrap.appendChild(box);
+        //创建info
+        var info = document.createElement("div");
+        info.className = "info";
+        box.appendChild(info);
+        //创建title
+        var title = document.createElement("div");
+        title.className = "title";
+        info.appendChild(title);
+        //创建pic
+        var pic = document.createElement("div");
+        pic.className = "pic";
+        info.appendChild(pic);
+        //创建img
+        var video = document.createElement("video");
+        // img.src = 'images/'+data[i].src;
+        video.src = data[i].src;
+        video.crossOrigin = true;
+        video.controls = "controls";
+        video.style.width = "900px";
+        video.style.height = "600px";
+        video.style.background = "#000";
+        pic.appendChild(video);
+        //创建a标记
+        var a = document.createElement("a");
+        a.innerHTML = data[i].title;
+        a.setAttribute("href", "javascript:;");
+        title.appendChild(a);
+      }
+    </script>
+    <script type="text/javascript">
+      window.onload = function () {
+        //运行瀑布流主函数
+        PBL("wrap", "box");
+
+        //设置滚动加载
+        // window.onscroll = function(){
+        window.onload = function () {
+          var winWidth = window.innerWidth + "px";
+          var wrapWidth = document.getElementById("wrap");
+          wrapWidth.setAttribute("style", "width:" + winWidth);
+          console.log(winWidth);
+          //校验数据请求
+          if (getCheck()) {
+            PBL("wrap", "box");
+          }
+        };
+      };
+      /**
+       * 瀑布流主函数
+       * @param  wrap  [Str] 外层元素的ID
+       * @param  box   [Str] 每一个box的类名
+       */
+      function PBL(wrap, box) {
+        //  1.获得外层以及每一个box
+        var wrap = document.getElementById(wrap);
+        var boxs = getClass(wrap, box);
+        //  2.获得屏幕可显示的列数
+        var boxW = boxs[0].offsetWidth;
+        var colsNum = Math.floor(document.documentElement.clientWidth / boxW);
+        wrap.style.width = boxW * colsNum + "px"; //为外层赋值宽度
+        //  3.循环出所有的box并按照瀑布流排列
+        var everyH = []; //定义一个数组存储每一列的高度
+        for (var i = 0; i < boxs.length; i++) {
+          if (i < colsNum) {
+            everyH[i] = boxs[i].offsetHeight;
+          } else {
+            var minH = Math.min.apply(null, everyH); //获得最小的列的高度
+            var minIndex = getIndex(minH, everyH); //获得最小列的索引
+            getStyle(boxs[i], minH, boxs[minIndex].offsetLeft, i);
+            everyH[minIndex] += boxs[i].offsetHeight; //更新最小列的高度
+          }
+        }
+      }
+      /**
+       * 获取类元素
+       * @param  warp      [Obj] 外层
+       * @param  className [Str] 类名
+       */
+      function getClass(wrap, className) {
+        var obj = wrap.getElementsByTagName("*");
+        var arr = [];
+        for (var i = 0; i < obj.length; i++) {
+          if (obj[i].className == className) {
+            arr.push(obj[i]);
+          }
+        }
+        return arr;
+      }
+      /**
+       * 获取最小列的索引
+       * @param  minH   [Num] 最小高度
+       * @param  everyH [Arr] 所有列高度的数组
+       */
+      function getIndex(minH, everyH) {
+        for (index in everyH) {
+          if (everyH[index] == minH) return index;
+        }
+      }
+      /**
+       * 数据请求检验
+       */
+      function getCheck() {
+        var documentH = document.documentElement.clientHeight;
+        var scrollH = document.documentElement.scrollTop || document.body.scrollTop;
+        return documentH + scrollH >= getLastH() ? true : false;
+      }
+      /**
+       * 获得最后一个box所在列的高度
+       */
+      function getLastH() {
+        var wrap = document.getElementById("wrap");
+        var boxs = getClass(wrap, "box");
+        return boxs[boxs.length - 1].offsetTop + boxs[boxs.length - 1].offsetHeight;
+      }
+      /**
+       * 设置加载样式
+       * @param  box   [obj] 设置的Box
+       * @param  top   [Num] box的top值
+       * @param  left  [Num] box的left值
+       * @param  index [Num] box的第几个
+       */
+      var getStartNum = 0; //设置请求加载的条数的位置
+      function getStyle(box, top, left, index) {
+        if (getStartNum >= index) return;
+        $(box).css({
+          position: "absolute",
+          top: top,
+          left: left,
+          opacity: "0",
+        });
+        $(box).stop().animate(
+          {
+            opacity: "1",
+          },
+          999
+        );
+        getStartNum = index; //更新请求数据的条数位置
+      }
+    </script>
+    <!-- copy url -->
+    <script type="text/javascript">
+      $(".box .pic img").click(function () {
+        var url = $(this).attr("src");
+        $("#doc").val(url);
+        $("#doc").select();
+        document.execCommand("copy");
+        $("#doc").blur();
+
+        $("#text").html("图片地址复制成功!");
+        $("#text").stop(true, true).css({ opacity: 1, "z-index": 22222 });
+        setTimeout(function () {
+          $("#text").animate({ opacity: 0, "z-index": -2 });
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>
