@@ -114,8 +114,7 @@
         width: 500px;
         height: auto;
         margin: 0 auto;
-        padding-top: 10px;
-        cursor: pointer;
+        padding-top: 10px; 
       }
       #wrap .box .info .pic:hover {
         -webkit-animation: shade 2s ease-in-out 1;
@@ -315,21 +314,6 @@
         getStartNum = index; //更新请求数据的条数位置
       }
     </script>
-    <!-- copy url -->
-    <script type="text/javascript">
-      $(".box .pic img").click(function () {
-        var url = $(this).attr("src");
-        $("#doc").val(url);
-        $("#doc").select();
-        document.execCommand("copy");
-        $("#doc").blur();
-
-        $("#text").html("图片地址复制成功!");
-        $("#text").stop(true, true).css({ opacity: 1, "z-index": 22222 });
-        setTimeout(function () {
-          $("#text").animate({ opacity: 0, "z-index": -2 });
-        }, 2000);
-      });
     </script>
   </body>
 </html>
