@@ -223,7 +223,7 @@ function getProjectTemplate(data) {
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>静态页面</title>
+  <title>项目预览</title>
   <!--设定title的小图标-->
   <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
@@ -315,7 +315,7 @@ function getProjectTemplate(data) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">项目预览</a>
+          <a class="navbar-brand" href="./index.html">项目预览</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
