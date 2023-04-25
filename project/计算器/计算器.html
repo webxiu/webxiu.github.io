@@ -179,15 +179,17 @@
               case "-":
               case "*":
               case "/":
+                this.isDot = false;
                 const repeat = ["+", "-", "*", "/"].includes(end);
-                console.log("repeat", repeat);
-
+                if (repeat) {
+                  this.value = this.value.slice(0, -1) + value;
+                  return;
+                }
                 if (repeat || this.value.length === 0 || end === ".") {
                   this.showTip("输入错误");
                   return;
                 }
                 this.value += value;
-                this.isDot = false;
                 break;
               case "AC":
                 this.showTip("数据清零");
