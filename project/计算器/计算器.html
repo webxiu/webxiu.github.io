@@ -20,9 +20,9 @@
         background: #828282;
       }
       .container {
-        width: 500px;
+        width: 420px;
         margin: auto;
-        padding: 8px;
+        padding: 20px 8px;
         background: #434445;
         border-radius: 12px;
         overflow: hidden;
@@ -45,6 +45,10 @@
         background: transparent;
         border: none;
         color: #fff;
+        padding: 0 10px;
+      }
+      ::-webkit-input-placeholder {
+        color: #fff;
       }
       .calc-wrap {
         width: 100%;
@@ -56,24 +60,32 @@
         grid-gap: 10px 10px;
       }
       .key-item {
+        width: 92px;
+        height: 92px;
         display: flex;
         align-items: center;
         justify-content: center;
         user-select: none;
-        border-radius: 4px;
+        border-radius: 50px;
         font-size: 32px;
         cursor: pointer;
         color: #fff;
-        background: #717273;
+        margin: auto;
+        background: #333;
       }
       .key-item.two {
         grid-column-start: 1;
         grid-column-end: 3;
+        width: auto;
+        margin: initial;
       }
       .key-item.opt {
         background: #f2a23c;
       }
-      .key-item:active {
+      .key-item.opt2 {
+        background: #a5a5a5;
+      }
+      .key-item:focus {
         background: #8bc4ea;
       }
     </style>
@@ -82,11 +94,11 @@
     <div id="app">
       <div class="container">
         <div class="input-wrap">
-          <input type="text" v-model="value" placeholder="0" @click="onClickInpt" ref="inputRef" />
+          <input type="text" v-model="value" placeholder="0" readonly @click="onClickInpt" ref="inputRef" />
         </div>
         <div class="calc-wrap">
-          <div class="key-item" :class="{'two': item.key==='0', 'opt': item.type===2}" v-for="item in keys" :key="item.key" @click="onInput(item.key, $event)">
-            <span>{{item.key}}</span>
+          <div class="key-item" :class="keyClass(item)" v-for="item in keys" :key="item.key" @click="onInput(item.key, $event)">
+            <span>{{item.label}}</span>
           </div>
         </div>
       </div>
@@ -97,29 +109,30 @@
         data() {
           return {
             flag: false,
+            isDot: false,
             value: "",
             timer: null,
             msgDom: null,
             keys: [
-              { key: "AC", type: 2 },
-              { key: "+/-", type: 2 },
-              { key: "%", type: 2 },
-              { key: "+", type: 2 },
-              { key: "1", type: 1 },
-              { key: "2", type: 1 },
-              { key: "3", type: 1 },
-              { key: "-", type: 2 },
-              { key: "4", type: 1 },
-              { key: "5", type: 1 },
-              { key: "6", type: 1 },
-              { key: "*", type: 2 },
-              { key: "7", type: 1 },
-              { key: "8", type: 1 },
-              { key: "9", type: 1 },
-              { key: "/", type: 2 },
-              { key: "0", type: 1 },
-              { key: ".", type: 1 },
-              { key: "=", type: 2 },
+              { key: "AC", label: "AC", type: 3 },
+              { key: "+/-", label: "+/-", type: 3 },
+              { key: "%", label: "%", type: 3 },
+              { key: "+", label: "+", type: 2 },
+              { key: "1", label: "1", type: 1 },
+              { key: "2", label: "2", type: 1 },
+              { key: "3", label: "3", type: 1 },
+              { key: "-", label: "-", type: 2 },
+              { key: "4", label: "4", type: 1 },
+              { key: "5", label: "5", type: 1 },
+              { key: "6", label: "6", type: 1 },
+              { key: "*", label: "x", type: 2 },
+              { key: "7", label: "7", type: 1 },
+              { key: "8", label: "8", type: 1 },
+              { key: "9", label: "9", type: 1 },
+              { key: "/", label: "÷", type: 2 },
+              { key: "0", label: "0", type: 1 },
+              { key: ".", label: ".", type: 1 },
+              { key: "=", label: "=", type: 2 },
             ],
           };
         },
@@ -152,10 +165,14 @@
               this.msgDom.style.top = "-100%";
             }, 2000);
           },
+          keyClass(item) {
+            return { two: item.key === "0", opt: item.type === 2, opt2: item.type === 3 };
+          },
           onInput(value, e) {
             if (this.flag) this.value = "";
             this.flag = false;
             const end = this.value.split("").pop();
+            console.log("this.value", this.value);
 
             switch (value) {
               case "+":
@@ -163,21 +180,32 @@
               case "*":
               case "/":
                 const repeat = ["+", "-", "*", "/"].includes(end);
-                if (repeat || this.value.length === 0) {
+                console.log("repeat", repeat);
+
+                if (repeat || this.value.length === 0 || end === ".") {
                   this.showTip("输入错误");
                   return;
                 }
-                this.value += `${value}`;
+                this.value += value;
+                this.isDot = false;
                 break;
               case "AC":
+                this.showTip("数据清零");
                 this.value = "";
                 break;
               case "%":
               case "+/-":
                 this.showTip("敬请期待");
                 break;
+              case "0":
+                if (!this.isDot) {
+                  this.value += value;
+                  this.isDot = true;
+                }
+                break;
               case "=":
                 this.flag = true;
+                this.isDot = false;
                 this.value = eval(this.value);
                 break;
               default:
@@ -185,8 +213,11 @@
                   this.showTip("输入错误");
                   return;
                 }
-
-                this.value += `${value}`;
+                if (this.value === value && this.value === "0") {
+                  this.value = value;
+                  return;
+                }
+                this.value += value;
             }
           },
           onClickInpt() {

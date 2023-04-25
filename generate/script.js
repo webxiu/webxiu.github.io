@@ -19,7 +19,7 @@ function createWebHtml() {
 }
 // createWebHtml()
 
-// console.log('__dirname', path.join(__dirname, '../web-html')) // xxxx/webxiu.github.io/generate
+// 按住 control + option + N 编译模板到project
 function createWebHtml2() {
   const inputPath = path.join(__dirname, '../project');
   const outPath = path.join(__dirname, '../project/index.html');
