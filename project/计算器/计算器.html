@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>简易计算器</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.47/vue.global.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #app {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #828282;
+      }
+      .container {
+        width: 500px;
+        margin: auto;
+        padding: 8px;
+        background: #434445;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0px 0px 3px #eee;
+      }
+      .input-wrap {
+        text-align: center;
+        width: 100%;
+        margin: auto;
+      }
+      .input-wrap input {
+        width: 100%;
+        height: 70px;
+        line-height: 70px;
+        outline: none;
+        font-size: 46px;
+        border-radius: 4px;
+        text-align: right;
+        box-sizing: border-box;
+        background: transparent;
+        border: none;
+        color: #fff;
+      }
+      .calc-wrap {
+        width: 100%;
+        height: 500px;
+        margin: 20px auto auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 10px 10px;
+      }
+      .key-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        border-radius: 4px;
+        font-size: 32px;
+        cursor: pointer;
+        color: #fff;
+        background: #717273;
+      }
+      .key-item.two {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+      .key-item.opt {
+        background: #f2a23c;
+      }
+      .key-item:active {
+        background: #8bc4ea;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="input-wrap">
+          <input type="text" v-model="value" placeholder="0" @click="onClickInpt" ref="inputRef" />
+        </div>
+        <div class="calc-wrap">
+          <div class="key-item" :class="{'two': item.key==='0', 'opt': item.type===2}" v-for="item in keys" :key="item.key" @click="onInput(item.key, $event)">
+            <span>{{item.key}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const { createApp } = Vue;
+      createApp({
+        data() {
+          return {
+            flag: false,
+            value: "",
+            timer: null,
+            msgDom: null,
+            keys: [
+              { key: "AC", type: 2 },
+              { key: "+/-", type: 2 },
+              { key: "%", type: 2 },
+              { key: "+", type: 2 },
+              { key: "1", type: 1 },
+              { key: "2", type: 1 },
+              { key: "3", type: 1 },
+              { key: "-", type: 2 },
+              { key: "4", type: 1 },
+              { key: "5", type: 1 },
+              { key: "6", type: 1 },
+              { key: "*", type: 2 },
+              { key: "7", type: 1 },
+              { key: "8", type: 1 },
+              { key: "9", type: 1 },
+              { key: "/", type: 2 },
+              { key: "0", type: 1 },
+              { key: ".", type: 1 },
+              { key: "=", type: 2 },
+            ],
+          };
+        },
+        mounted() {
+          this.onCreateMsgEle();
+        },
+        methods: {
+          onCreateMsgEle() {
+            this.msgDom = document.querySelector(".xh_msg");
+            if (!this.msgDom) {
+              var box = document.createElement("div");
+              box.className = "xh_msg";
+              box.style.cssText = `z-index: 334455;position: fixed;display: none;top: 9%;left: 50%;transform: translate(-50%, -18%);background: rgb(142 158 255);border-radius: 4px;transition: top 2s;padding: 10px 20px;text-align: center;font-size: 16px;box-shadow: 0 0 3px rgb(89 89 89);color: #fff;`;
+              document.body.appendChild(box);
+              var observer = new IntersectionObserver((mutaions) => {
+                if (!mutaions[0].isIntersecting) {
+                  this.msgDom.style.display = "none";
+                }
+              });
+              observer.observe(box);
+              this.msgDom = box;
+            }
+          },
+          showTip(msg) {
+            this.msgDom.style.top = "9%";
+            this.msgDom.style.display = "block";
+            this.msgDom.innerHTML = msg;
+            this.timer && clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+              this.msgDom.style.top = "-100%";
+            }, 2000);
+          },
+          onInput(value, e) {
+            if (this.flag) this.value = "";
+            this.flag = false;
+            const end = this.value.split("").pop();
+
+            switch (value) {
+              case "+":
+              case "-":
+              case "*":
+              case "/":
+                const repeat = ["+", "-", "*", "/"].includes(end);
+                if (repeat || this.value.length === 0) {
+                  this.showTip("输入错误");
+                  return;
+                }
+                this.value += `${value}`;
+                break;
+              case "AC":
+                this.value = "";
+                break;
+              case "%":
+              case "+/-":
+                this.showTip("敬请期待");
+                break;
+              case "=":
+                this.flag = true;
+                this.value = eval(this.value);
+                break;
+              default:
+                if (this.value.length === 0 && (value === "." || end === "0")) {
+                  this.showTip("输入错误");
+                  return;
+                }
+
+                this.value += `${value}`;
+            }
+          },
+          onClickInpt() {
+            if (this.value && this.flag) {
+              this.$refs.inputRef.select();
+              document.execCommand("copy");
+              this.showTip("复制成功");
+              this.$refs.inputRef.blur();
+            }
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
