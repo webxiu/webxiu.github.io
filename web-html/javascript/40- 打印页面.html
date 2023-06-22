@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>三级菜单</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <style type="text/css">
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        background-color: #d3d3d3;
+      }
+      .top,
+      .top_menu {
+        background-color: white;
+        color: black;
+        padding: 10px 10px 15px;
+        margin: 15px 5px;
+      }
+      .middle {
+        display: none;
+        background-color: white;
+        color: black;
+        margin: 15px 5px;
+        padding: 5px 15px 20px;
+      }
+      .money button,
+      .top_menu button {
+        margin: 10px 0.8%;
+        width: 22%;
+        height: 30px;
+        background-color: white;
+        border: 1px solid lightgrey;
+      }
+
+      .middleDetail {
+        width: 30px;
+        margin: 10px 20%;
+      }
+      #pointOut {
+        color: darkorange;
+        padding: 15px;
+      }
+      #bottom {
+        width: 50%;
+        height: 50px;
+        margin: 0 20%;
+        background-color: orange;
+        font-size: 20px;
+        color: white;
+        margin-bottom: 30px;
+      }
+      .money .active {
+        color: orange;
+        border: 1px solid orange;
+        background-color: white;
+      }
+
+      .middie_menu li {
+        list-style-type: none;
+      }
+      .money_input {
+        /*background-color: red;*/
+        margin: 10px;
+        text-align: center;
+      }
+      .money_input input {
+        width: 50%;
+        /*background-color: blue;*/
+        margin: 5px;
+        text-align: center;
+        line-height: 20px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="button">打印本页面</button>
+    <div class="top_menu">
+      <p class="topTitle">请选择方式</p>
+      <div class="money">
+        <button class="menu_btn active">方式一</button>
+        <button class="menu_btn">方式二</button>
+        <button class="menu_btn">方式三</button>
+        <button class="menu_btn" value="4">方式四</button>
+      </div>
+    </div>
+    <div class="middie_menu">
+      <ul>
+        <li>
+          <div class="top" id="chagerWay1">
+            <p class="topTitle">请选择金额</p>
+            <div class="money">
+              <button class="btn">10元</button>
+              <button class="btn">20元</button>
+              <button class="btn">30元</button>
+              <button class="btn" value="4">自定义</button>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="top hidden" id="chagerWay2">
+            <p class="topTitle">请时间电量</p>
+            <div class="money">
+              <button class="btn">0.5小时</button>
+              <button class="btn">1小时</button>
+              <button class="btn">1.5小时</button>
+              <button class="btn" value="4">自定义</button>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="top hidden" id="chagerWay3">
+            <p class="topTitle">请选择电量</p>
+            <div class="money">
+              <button class="btn">10度</button>
+              <button class="btn">20度</button>
+              <button class="btn">30度</button>
+              <button class="btn" value="4">自定义</button>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="top hidden" id="chagerWay4">
+            <p class="topTitle">请输入账号/充电卡号</p>
+            <div class="money_input">
+              <span>账号：</span><input type="" name="" id="" value="" />
+              <br />
+              <span>密码：</span><input type="" name="" id="" value="" />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="middle">
+      <p class="middleTitle">自定义金额</p>
+      <span class="middleDetail"><input placeholder="请输入" id="middle_input" /><span id="middle_input_span">元</span></span>
+    </div>
+    <p id="pointOut">如已充满或者其他意外情而停止，导致未完成系统会自动退回剩余充电金额到您的支付账户。</p>
+    <button id="bottom">确定</button>
+    <iframe src="https://blog.csdn.net/" frameborder="1" width="100%" height="500"></iframe>
+  </body>
+  <script type="text/javascript">
+    var index = 0;
+    var money = 0;
+    var chargeWayIndex = 0;
+
+    $(document).ready(function () {
+      //点击确定按钮，获取菜单参数
+      $("#bottom").click(function () {
+        var y = $(".menu_btn");
+        console.log($(".menu_btn"));
+        console.log($(".btn .active"));
+        console.log(y[chargeWayIndex]);
+        var btn = y[chargeWayIndex];
+        console.log(btn.innerHTML);
+
+        var x = $(".btn");
+        console.log(x);
+        console.log("index:" + index);
+        console.log("chargeWayIndex:" + chargeWayIndex);
+        console.log(x[index]);
+        var indexy = index + chargeWayIndex * 4;
+        console.log(indexy);
+        var xhtml = x[indexy].innerHTML;
+        console.log(xhtml);
+        console.log(xhtml.substring(0, xhtml.length - 1));
+      });
+      //  二级菜单点击事件
+      $(".btn").on("click", function () {
+        $(this).addClass("active").siblings().removeClass("active");
+        var sbtitle = $(".middle");
+        if ($(this).index() == "3") {
+          //判断是否点击了自定义
+
+          if (sbtitle.length) {
+            sbtitle.show();
+          }
+        } else {
+          sbtitle.hide();
+        }
+        index = $(this).index();
+      });
+    });
+
+    //以及菜单点击事件
+    $(".menu_btn").on("click", function () {
+      $(this).addClass("active").siblings().removeClass("active");
+
+      var sbtitle = $(".top");
+      chargeWayIndex = $(this).index();
+      //alert(chargeWayIndex);
+      //  $(".btn").removeClass("active");
+      showtopmenu(chargeWayIndex);
+    });
+
+    //改变三级菜单自定义选项卡
+    function showtopmenu(i) {
+      //以下三行代码不能少，会出现BUG
+      $(".top").hide();
+      $(".middle").hide();
+      $(".btn").removeClass("active");
+      switch (i) {
+        case 0:
+          //alert("电量");
+          var visible = $("#chagerWay1");
+          visible.show();
+          //                      document.getElementsByClassName("middleTitle").innerHTML = "自定义充电金额";
+          $(".middleTitle").html("自定义充电金额");
+          $("#middle_input_span").html("元");
+          break;
+        case 1:
+          //alert("时间");
+          //                      $("middleTitle").innerText="自定义充电时长";
+          var visible = $("#chagerWay2");
+          visible.show();
+          //                      document.getElementsByClassName("middleTitle").val = "自定义充电时长";
+          var a = document.getElementById("middleTitle");
+          $(".middleTitle").html("自定义充电时长");
+          $("#middle_input_span").html("小时");
+          break;
+        case 2:
+          //alert("电量");
+          var visible = $("#chagerWay3");
+          visible.show();
+          //                      document.getElementsByClassName("middleTitle").innerHTML = "自定义充电电量";
+          $(".middleTitle").html("自定义充电电量");
+          $("#middle_input_span").html("度");
+          break;
+        default:
+          //alert("充满");
+          var visible = $("#chagerWay4");
+          visible.show();
+          var sbtitle = $(".middle");
+          sbtitle.hide();
+          break;
+      }
+    }
+  </script>
+
+  <!-- 
+    打印开始
+    ⼆、通过jspdf、html2canvas库来直接导出pdf
+    这种⽅式导出的pdf⽐较模糊，代码⾥⾯的图⽚必须是base64的格式才能显示，⽽且分⻚是会截断⽂字和图⽚
+  -->
+  <script>
+    const btn = document.querySelector("#button");
+    btn.onclick = function () {
+      // window.print();
+      pdfMap();
+    };
+
+    function pdfMap() {
+      html2canvas(document.body, {
+        onrendered: function (canvas) {
+          const contentWidth = canvas.width;
+          const contentHeight = canvas.height;
+          const pageHeight = (contentWidth / 595.28) * 841.89; //一页pdf显示html页面生成的canvas高度;
+          const leftHeight = contentHeight; //未生成pdf的html页面高度
+          const position = 0; //pdf页面偏移 //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+
+          const imgWidth = 555.28;
+          const imgHeight = (555.28 / contentWidth) * contentHeight;
+          const pageData = canvas.toDataURL("image/jpeg", 1.0);
+          const pdf = new jsPDF("", "pt", "a4"); //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89) //当内容未超过pdf一页显示的范围，无需分页
+          if (leftHeight < pageHeight) {
+            pdf.addImage(pageData, "JPEG", 20, 0, imgWidth, imgHeight);
+          } else {
+            while (leftHeight > 0) {
+              pdf.addImage(pageData, "JPEG", 20, position, imgWidth, imgHeight);
+              leftHeight -= pageHeight;
+              position -= 841.89; //避免添加空白页
+              if (leftHeight > 0) {
+                pdf.addPage();
+              }
+            }
+          }
+          pdf.save("content.pdf");
+        },
+      });
+    }
+  </script>
+</html>
