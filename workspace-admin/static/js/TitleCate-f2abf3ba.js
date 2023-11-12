@@ -1,1 +1,0 @@
-import{e as t,o as a,c as _,t as s,_ as n}from"./index-f181d78b.js";const o={class:"cate-title"},c=t({__name:"TitleCate",props:{name:{type:String,default:""}},setup(e){return(i,p)=>(a(),_("div",o,s(e.name),1))}});const r=n(c,[["__scopeId","data-v-9dbe565e"]]);export{r as T};
