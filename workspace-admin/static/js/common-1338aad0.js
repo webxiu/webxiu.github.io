@@ -1,0 +1,1 @@
+import"./common-d40e9681.js";import{r as n,h as u}from"./index-9e436c07.js";function s(o,r){const e=n(0);return u(()=>{const t=document.querySelector(o);t&&(e.value=t.offsetHeight-r)}),e}export{s as u};
