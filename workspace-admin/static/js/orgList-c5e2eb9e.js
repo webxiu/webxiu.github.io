@@ -1,1 +1,0 @@
-import{aE as o}from"./index-9e436c07.js";const e=t=>o.request("post","/config/org",{data:t}),n=t=>o.request("post","/config/org/insertorg",{data:t}),a=t=>o.request("post","/config/org/updateorg",{data:t}),s=t=>o.request("post","/config/org/deleteorg",{data:t});export{n as a,s as d,e as o,a as u};
