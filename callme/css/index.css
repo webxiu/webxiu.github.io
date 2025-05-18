@@ -1,0 +1,6 @@
+@import url("mixin.css");
+@import url("main.css");
+@import url("transition.css");
+@import url("../../assets/vue/element-plus@2.9.7.css");
+@import url("../../assets/vue/vant@4.index.css");
+@import url("qrcode.css");

@@ -1,0 +1,171 @@
+/* ====================================== 页面内容 ====================================== */
+.callme {
+  height: 100%;
+  width: 100%; 
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.callme .head { 
+  height: 32px;
+  line-height: 32px; 
+  padding: 4px 6px;
+  background: #e6e6e6;
+}
+
+.callme .logo{
+  background: #1989fa;
+  color: #fff; 
+  line-height: 22px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 14px;
+
+}
+
+.callme .content { 
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  padding: 0 15px 15px;
+  flex: 1;
+}
+/* introduce */
+
+.callme .introduce {
+  text-align: left; 
+  flex: 1;
+}
+
+.introduce .title {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.introduce .list-title {
+  margin-bottom: 20px;
+  text-indent: 2rem;
+}
+.introduce .list-item {
+  position: relative;
+  padding-left: 10px;
+  color: #434343;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.callme .list-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.introduce .content {
+  text-align: left;
+} 
+.introduce .author {
+  text-align: right;
+  margin-top: 30px;
+}
+
+.callme .footer {
+  margin-top: auto;
+  text-align: center;
+  font-size: 12px;
+  padding-top: 99px;
+  color: #7a7a7a;
+} 
+ 
+
+/* 预览 */
+.preview  {
+  width: 100%;
+  flex: 1;
+}
+.preview .detail {
+  text-indent: 2rem;
+}
+
+.preview .date {
+  text-align: right;
+  margin-top: 30px;
+}
+.preview .call {
+  margin-top: 100px;
+  text-align: center;
+}
+.preview .call-btn{
+  text-decoration: none;
+  border: 1px solid #1989fa;
+  border-radius: 20px;
+  padding: 6px 20px;
+  color: #1989fa;
+  user-select: none;
+  display: inline-block;
+}
+
+/* 弹窗 */
+.layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.layer-wrap  {
+  width: 90%;
+  height: 90%;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.layer-head{
+  background: #eee;
+  user-select: none;
+  position: relative;
+  text-align: center;
+  display: flex;
+  justify-content:center;
+  padding: 5px 0;
+  
+}
+.layer-head .layer-close{
+  content: '×';
+  font-size: 24px;
+  padding: 0 14px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+  right: 0px;
+  color: #6d6d6d;
+}
+ 
+.layer-body{
+  overflow-y: auto;
+  padding: 4px;
+  flex: 1;
+}
+
+/* 显示二维码 */
+.qrcode-box{   
+  transition: all 0.3s ease-in-out;
+}
+.qrcode-box .code-img{
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+ 

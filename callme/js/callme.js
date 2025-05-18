@@ -91,8 +91,8 @@
 
     var params = getURLParameters(location.href);
     if (!params.tel) {
-        location.href = "../404.html";
-        return;
+        // location.href = "../404.html";
+        // return;
     }
 
     var descList = [
