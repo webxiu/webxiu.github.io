@@ -125,7 +125,7 @@
         </div>
       </div>
       <!-- 弹窗 -->
-      <van-overlay :show="visible" @click="visible = false">
+      <van-overlay :show="visible" @click="visible = false" :lock-scroll="false">
         <div class="layer">
           <div class="layer-wrap" @click.stop>
             <div class="layer-head flex-between">

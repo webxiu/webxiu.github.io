@@ -83,7 +83,7 @@ export default {
       const fieldRules = rules[field];
       for (const rule of fieldRules) {
         if (field === "code" && rule.pattern) {
-          if (!this.getCode() === value) {
+          if (this.getCode() !== value) {
             errors.push({ field, message: rule.message });
             break;
           }
