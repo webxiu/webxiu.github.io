@@ -18,7 +18,7 @@ export default defineComponent({
     const callRef = ref();
     const codeImg = ref("");
 
-    const url = location.host + "/callme/#/qrcode";
+    const url = location.origin + "/callme/#/qrcode";
     const wechat = ref("./images/wechat.jpg");
     const callme = ref("./images/callme.png");
     const { setItem, getItem, removeItem } = storage.createStorage(storage.CallMe_Key, true);
