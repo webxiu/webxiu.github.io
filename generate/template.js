@@ -14,7 +14,7 @@ function getGameTemplate(data) {
   <script src="./assets/js/bootstrap.min.js"></script>
   <script src="./assets/js/jquery.toggle.js"></script>
   <script src="./assets/js/holder.min.js"></script>
-  <script src="../assets/vue/vue3.global.js"></script>
+  <script src="../assets/vue/vue@3.5.14.global.prod"></script>
 
   <style type="text/css">
     * {
@@ -231,7 +231,7 @@ function getProjectTemplate(data) {
   <script src="./assets/js/bootstrap.min.js"></script>
   <script src="./assets/js/jquery.toggle.js"></script>
   <script src="./assets/js/holder.min.js"></script>
-  <script src="../assets/vue/vue3.global.js"></script>
+  <script src="../assets/vue/vue@3.5.14.global.prod"></script>
 
   <style type="text/css">
     * {

@@ -3,11 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>CallMe</title>
     <link rel="stylesheet" href="./css/index.css" />
 
-    <script src="../assets/vue/vue@3.5.13.global.js"></script>
+    <script src="../assets/vue/vue@3.5.14.global.prod.js"></script>
     <script src="../assets/vue/vue-router@4.5.0.global.js"></script>
     <script src="../assets/vue/element-plus@2.9.7.js"></script>
     <script src="../assets/vue/vant@4.min.js"></script>
@@ -84,7 +87,9 @@
       <div class="callme">
         <div v-if="viewData.gen!=='hidden'" class="head flex-between">
           <div @click="onClickMe" class="logo">CallMe</div>
-          <el-button type="primary" link @click="onOpen"> 生成二维码 </el-button>
+          <el-button type="primary" link @click="onOpen">
+            生成二维码
+          </el-button>
         </div>
         <div class="content">
           <!-- 介绍 -->
@@ -92,10 +97,18 @@
             <h3 class="title">欢迎使用CallMe</h3>
             <div class="list-wrap">
               <div class="list-title">
-                CallMe是一个扫码拨打电话的快捷应用, 通过点击右上角"生成二维码"按钮, 填写需要展示的内容生成二维码, 然后使用微信扫码,
+                CallMe是一个扫码拨打电话的快捷应用,
+                通过点击右上角"生成二维码"按钮, 填写需要展示的内容生成二维码,
+                然后使用微信扫码,
                 即可查看内容并提示您是否拨打电话。它具备以下功能:
               </div>
-              <div v-for="(item, index) in descList" class="list-item" :key="index">{{item}}</div>
+              <div
+                v-for="(item, index) in descList"
+                class="list-item"
+                :key="index"
+              >
+                {{item}}
+              </div>
             </div>
             <div class="content">
               <div class="ui-ta-c mt20">
@@ -115,17 +128,25 @@
             <div class="detail">{{viewData.content}}</div>
             <p class="date">{{viewData.name}} {{viewData.date}}</p>
             <div class="call">
-              <a ref="callRef" :href="'tel:' + viewData.phone" class="call-btn">直接呼叫</a>
+              <a ref="callRef" :href="'tel:' + viewData.phone" class="call-btn"
+                >直接呼叫</a
+              >
             </div>
           </div>
           <div class="footer">
             <span>如有疑问, 请添加微信<b>@Hailen</b>咨询 </span>
-            <span class="no-wrap">或搜索视频号<b>Hailen108</b>, 在评论区留言反馈</span>
+            <span class="no-wrap"
+              >或搜索视频号<b>Hailen108</b>, 在评论区留言反馈</span
+            >
           </div>
         </div>
       </div>
       <!-- 弹窗 -->
-      <van-overlay :show="visible" @click="visible = false" :lock-scroll="false">
+      <van-overlay
+        :show="visible"
+        @click="visible = false"
+        :lock-scroll="false"
+      >
         <div class="layer">
           <div class="layer-wrap" @click.stop>
             <div class="layer-head flex-between">
@@ -175,15 +196,29 @@
                 </van-cell-group>
 
                 <div style="margin: 16px;" class="flex-center">
-                  <van-button size="small" type="primary" @click="onSubmit"> 提交生成 </van-button>
-                  <van-button size="small" @click="onReset" style="margin-left: 15px;"> 清空 </van-button>
+                  <van-button size="small" type="primary" @click="onSubmit">
+                    提交生成
+                  </van-button>
+                  <van-button
+                    size="small"
+                    @click="onReset"
+                    style="margin-left: 15px;"
+                  >
+                    清空
+                  </van-button>
                 </div>
               </van-form>
               <div v-if="codeImg" class="qrcode-box">
                 <img :src="codeImg" class="code-img" alt="二维码" />
                 <div class="mt10 ui-ta-c">
                   <div v-if="isWechat" class="press-code">(长按二维码保存)</div>
-                  <van-button v-else type="primary" size="small" @click="onDownload">下载二维码</van-button>
+                  <van-button
+                    v-else
+                    type="primary"
+                    size="small"
+                    @click="onDownload"
+                    >下载二维码</van-button
+                  >
                 </div>
               </div>
             </div>

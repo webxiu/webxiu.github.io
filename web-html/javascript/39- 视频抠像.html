@@ -4,9 +4,12 @@
     <header name="Access-Control-Allow-Origin" value="*" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>视频抠像</title>
-    <script src="../../assets/vue/vue3.global.js"></script>
+    <script src="../../assets/vue/vue@3.5.14.global.prod"></script>
     <!-- 机器学习开发库 -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.1.0/dist/tf.min.js"></script>
     <!-- 机器学习模型 -->
@@ -27,8 +30,26 @@
   <body>
     <div id="app">
       <!--  https://static.animpen.com/u/320/video/girl.mp4  -->
-      <video ref="video" src="../assets/media/girl.mp4" anonymous muted loop autoplay controls width="800" height="450"></video>
-      调节: <input type="range" min="0" max="1" step="0.05" value="0.5" @input="changeRange" />
+      <video
+        ref="video"
+        src="../assets/media/girl.mp4"
+        anonymous
+        muted
+        loop
+        autoplay
+        controls
+        width="800"
+        height="450"
+      ></video>
+      调节:
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.5"
+        @input="changeRange"
+      />
       <div class="output">
         <canvas ref="canvas" width="800" height="450"></canvas>
       </div>
@@ -65,18 +86,33 @@
             this.video.crossOrigin = "anonymous";
           },
           animate() {
-            this.ctxTemp.drawImage(this.video, 0, 0, this.video.width, this.video.height);
-            const frame = this.ctxTemp.getImageData(0, 0, this.video.width, this.video.height);
+            this.ctxTemp.drawImage(
+              this.video,
+              0,
+              0,
+              this.video.width,
+              this.video.height
+            );
+            const frame = this.ctxTemp.getImageData(
+              0,
+              0,
+              this.video.width,
+              this.video.height
+            );
             // tf处理
-            this.model.segmentPerson(this.canvasTemp, { segmentationThreshold: this.range }).then((segmentation) => {
-              for (let i = 0; i < segmentation.data.length; i++) {
-                if (segmentation.data[i] === 0) {
-                  frame.data[i * 4 + 3] = 0;
+            this.model
+              .segmentPerson(this.canvasTemp, {
+                segmentationThreshold: this.range,
+              })
+              .then((segmentation) => {
+                for (let i = 0; i < segmentation.data.length; i++) {
+                  if (segmentation.data[i] === 0) {
+                    frame.data[i * 4 + 3] = 0;
+                  }
                 }
-              }
-              this.ctx.putImageData(frame, 0, 0);
-              requestAnimationFrame(this.animate);
-            });
+                this.ctx.putImageData(frame, 0, 0);
+                requestAnimationFrame(this.animate);
+              });
           },
         },
       }).mount("#app");
